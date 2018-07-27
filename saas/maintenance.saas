@@ -1,0 +1,120 @@
+#starsBox span, .continer .counter div
+  display: inline-block
+
+body
+  background: #111
+
+#starsBox
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background: rgba(0, 0, 0, 0.75)
+  opacity: .5
+  span
+    width: auto
+    position: absolute
+    border-radius: 100%
+    transition: 100s linear
+
+.continer
+  padding: 30px 20px 10px
+  color: #fff
+  width: 450px
+  margin: auto
+  .counter
+    padding: 25px
+    margin: 25px 0 15px
+    background-color: transparent
+    font-weight: 700
+    min-height: 80px
+    .days, .hours, .minutes, .seconds
+      width: 25%
+      float: left
+      text-align: center
+    .days .value, .hours .value, .minutes .value, .seconds .value
+      font-size: 36pt
+      width: 100%
+      display: block
+    .days span, .hours span, .minutes span, .seconds span
+      font-size: 8pt
+      opacity: .8
+      width: 100%
+      display: block
+    .hours::before, .minutes::before, .seconds::before
+      content: ":"
+      float: left
+      font-size: 20pt
+      position: relative
+      margin-top: 10px
+      opacity: .7
+      -webkit-animation: pink 1s ease-in-out infinite
+      animation: pink 1s ease-in-out infinite
+
+.centerIt
+  position: absolute
+  top: 40%
+  left: 50%
+  -webkit-transform: translateX(-50%) translateY(-50%)
+  transform: translateX(-50%) translateY(-50%)
+
+@-webkit-keyframes pink
+  0%,100%
+    opacity: 1
+
+  50%
+    opacity: .5
+
+
+@keyframes pink
+  0%,100%
+    opacity: 1
+
+  50%
+    opacity: .5
+
+
+@keyframes text-glow
+  66%
+    text-shadow: (-1px) 1px 0 #E123FF, 1px -1px 0 #4D7FFF, 0 0 9px rgba(255, 255, 255, 1)
+
+  68%
+    text-shadow: (-2px) 2px 0 #E123FF, 2px -2px 0 #4D7FFF, 0 0 9px rgba(255, 255, 255, 1)
+
+  70%,85%
+    opacity: 1
+    text-shadow: (-1px) 1px 0 #E123FF, 1px -1px 0 #4D7FFF, 0 0 9px rgba(255, 255, 255, 1)
+
+  71%,80%,84%
+    opacity: .6
+
+  72%,79%,81%,83%
+    opacity: 1
+
+  100%
+    text-shadow: (-1px) 1px 0 #E123FF, 1px -1px 0 #4D7FFF, 0 0 14px rgba(255, 255, 255, 1)
+
+
+.glow
+  outline: 0
+  font-family: Menlo,monospace
+  font-size: 16px
+  color: #fff
+  text-align: center
+  text-shadow: (-1px) 1px 0 #E123FF, 1px -1px 0 #4D7FFF, 0 0 9px rgba(255, 255, 255, 1)
+  animation: text-glow 2s infinite alternate ease-in-out
+
+.end
+  position: fixed
+  bottom: 10px
+  font-size: 12px
+
+.start
+  position: fixed
+  bottom: 10px
+  font-size: 12px
+  left: 10px
+
+.end
+  right: 10px

@@ -1,0 +1,1896 @@
+@import url(font-awesome.min.css)
+
+a:hover
+  color: #2ebaae !important
+  &:before
+    color: #2ebaae !important
+
+body, h1, h2, h3, h4, h5, h6, input, select, textarea
+  font-family: Ubuntu,Helvetica,sans-serif
+
+p, pre
+  margin: 0 0 2em
+
+#menu, .shade
+  right: 0
+  top: 0
+
+#header
+  #search, .main ul li, h1
+    white-space: nowrap
+
+.author
+  white-space: nowrap
+
+#menu
+  box-shadow: none
+
+input
+  &[type=text]:invalid, &[type=password]:invalid, &[type=email]:invalid, &[type=tel]:invalid
+    box-shadow: none
+
+select:invalid, textarea:invalid
+  box-shadow: none
+
+#pages .jump-text, #sign input, .lightbox
+  box-sizing: border-box
+
+@font-face
+  font-family: Ubuntu
+  font-style: normal
+  font-weight: 400
+  src: local("Ubuntu Regular"), local("Ubuntu-Regular"), url(../fonts/ubuntu.woff2) format("woff2")
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215
+
+
+@-ms-viewport
+  width: device-width
+
+
+body
+  -ms-overflow-style: scrollbar
+  background: #f4f4f4
+  &.is-loading
+    *, :after, :before
+      -moz-animation: none !important
+      -webkit-animation: none !important
+      -ms-animation: none !important
+      animation: none !important
+      -moz-transition: none !important
+      -webkit-transition: none !important
+      -ms-transition: none !important
+      transition: none !important
+  color: #646464
+  font-size: 14pt
+  font-weight: 400
+  line-height: 1.75
+
+input, select, textarea
+  color: #646464
+  font-size: 14pt
+  font-weight: 400
+  line-height: 1.75
+
+@media screen and (max-width: 1680px)
+  body, input, select, textarea
+    font-size: 12pt
+
+@media screen and (max-width: 1280px)
+  body, input, select, textarea
+    font-size: 12pt
+
+@media screen and (max-width: 980px)
+  body, input, select, textarea
+    font-size: 12pt
+
+@media screen and (max-width: 736px)
+  body, input, select, textarea
+    font-size: 12pt
+
+@media screen and (max-width: 480px)
+  body, html
+    min-width: 320px
+  body, input, select, textarea
+    font-size: 12pt
+
+a
+  -moz-transition: color .2s ease,border-bottom-color .2s ease
+  -webkit-transition: color .2s ease,border-bottom-color .2s ease
+  -ms-transition: color .2s ease,border-bottom-color .2s ease
+  transition: color .2s ease,border-bottom-color .2s ease
+  border-bottom: dotted 1px rgba(160, 160, 160, 0.65)
+  color: inherit
+  text-decoration: none
+  &:before
+    -moz-transition: color .2s ease
+    -webkit-transition: color .2s ease
+    -ms-transition: color .2s ease
+    transition: color .2s ease
+  &:hover
+    border-bottom-color: transparent
+
+b, strong
+  color: #3c3b3b
+  font-weight: 700
+
+em, i
+  font-style: italic
+
+h1, h2, h3, h4, h5, h6
+  color: #3c3b3b
+  font-weight: 800
+  letter-spacing: .1em
+  line-height: 1.65
+  margin: 0 0 1em
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a
+  color: inherit
+  border-bottom: 0
+
+h2
+  font-size: 1.1em
+
+h3
+  font-size: .9em
+
+h4, h5, h6
+  font-size: .7em
+
+sub, sup
+  font-size: .8em
+  position: relative
+
+sub
+  top: .5em
+
+sup
+  top: -.5em
+
+code, pre
+  font-family: "Courier New",monospace
+  font-size: .9em
+
+blockquote
+  border-left: solid 4px #2ebaae
+  margin: 0 0 1em
+  padding: .2em 0 .2em 1em
+
+code
+  background: rgba(160, 160, 160, 0.075)
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 .25em
+  padding: .25em .65em
+
+pre
+  -webkit-overflow-scrolling: touch
+  code
+    display: block
+    line-height: 1.75em
+    padding: 1em 1.5em
+    overflow-x: auto
+
+hr
+  border: 0
+  border-bottom: solid 1px rgba(160, 160, 160, 0.3)
+  margin: 2em 0
+  &.major
+    margin: 3em 0
+
+.align-left
+  text-align: left
+
+.align-center
+  text-align: center
+
+.align-right
+  text-align: right
+
+#pages .jump-text, .f-copy, .pages, form.search:before
+  text-align: center
+
+.author
+  display: -moz-flex
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  -moz-flex-direction: row
+  -webkit-flex-direction: row
+  -ms-flex-direction: row
+  flex-direction: row
+  -moz-align-items: center
+  -webkit-align-items: center
+  -ms-align-items: center
+  align-items: center
+  -moz-justify-content: -moz-flex-end
+  -webkit-justify-content: -webkit-flex-end
+  -ms-justify-content: -ms-flex-end
+  justify-content: flex-end
+  border-bottom: 0
+  font-family: Ubuntu,Helvetica,sans-serif
+  font-size: .6em
+  font-weight: 400
+  letter-spacing: .25em
+  text-transform: uppercase
+
+.icon:before, .select-wrapper:before, form.search:before
+  font-family: FontAwesome
+  text-transform: none !important
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  font-style: normal
+
+ul
+  &.actions.pagination
+    .next:after, .previous:before
+      font-family: FontAwesome
+      text-transform: none !important
+      -moz-osx-font-smoothing: grayscale
+      -webkit-font-smoothing: antialiased
+      font-style: normal
+  &.icons li > :before
+    font-family: FontAwesome
+    text-transform: none !important
+    -moz-osx-font-smoothing: grayscale
+    -webkit-font-smoothing: antialiased
+    font-style: normal
+
+.author
+  .name
+    -moz-transition: border-bottom-color .2s ease
+    -webkit-transition: border-bottom-color .2s ease
+    -ms-transition: border-bottom-color .2s ease
+    transition: border-bottom-color .2s ease
+    border-bottom: dotted 1px rgba(160, 160, 160, 0.65)
+    display: block
+    margin: 0 1.5em 0 0
+  img
+    border-radius: 100%
+    display: block
+    width: 4em
+  &:hover .name
+    border-bottom-color: transparent
+
+.blurb
+  h2
+    font-size: .8em
+    margin: 0 0 1.5em
+  h3
+    font-size: .7em
+
+.box
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin-bottom: 2em
+  padding: 1.5em
+  > :last-child
+    margin-bottom: 0
+    > :last-child
+      margin-bottom: 0
+      > :last-child
+        margin-bottom: 0
+  &.alt
+    border: 0
+    border-radius: 0
+    padding: 0
+
+form
+  margin: 0 0 2em
+  &.search
+    text-decoration: none
+    position: relative
+    &:before
+      font-weight: 400
+      color: #aaa
+      content: '\f002'
+      display: block
+      height: 2.75em
+      left: 0
+      line-height: 2.75em
+      position: absolute
+      top: 0
+      width: 2.5em
+    > input:first-child
+      padding-left: 2.5em
+
+label
+  color: #3c3b3b
+  display: block
+  font-size: .9em
+  font-weight: 700
+  margin: 0 0 1em
+
+input
+  &[type=text], &[type=password], &[type=email], &[type=tel]
+    -moz-appearance: none
+    -webkit-appearance: none
+    -ms-appearance: none
+    appearance: none
+    background: rgba(160, 160, 160, 0.075)
+    border: none
+    border: 1px solid rgba(160, 160, 160, 0.3)
+    border-radius: 0
+    color: inherit
+    display: block
+    outline: 0
+    padding: 0 1em
+    text-decoration: none
+    width: 100%
+
+select, textarea
+  -moz-appearance: none
+  -webkit-appearance: none
+  -ms-appearance: none
+  appearance: none
+  background: rgba(160, 160, 160, 0.075)
+  border: none
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  border-radius: 0
+  color: inherit
+  display: block
+  outline: 0
+  padding: 0 1em
+  text-decoration: none
+  width: 100%
+
+input
+  &[type=text]:focus, &[type=password]:focus, &[type=email]:focus, &[type=tel]:focus
+    border-color: #2ebaae
+    box-shadow: inset 0 0 0 1px #2ebaae
+
+select:focus, textarea:focus
+  border-color: #2ebaae
+  box-shadow: inset 0 0 0 1px #2ebaae
+
+.select-wrapper
+  text-decoration: none
+  display: block
+  position: relative
+  &:before
+    font-weight: 400
+    color: rgba(160, 160, 160, 0.3)
+    content: '\f078'
+    display: block
+    height: 2.75em
+    line-height: 2.75em
+    pointer-events: none
+    position: absolute
+    right: 0
+    text-align: center
+    top: 0
+    width: 2.75em
+
+.article, .f-copy, .icon, .image, .pages
+  position: relative
+
+.post
+  position: relative
+  .meta .user-img img
+    position: relative
+
+.image
+  &.featured img
+    width: 100%
+  &.fit
+    width: 100%
+    img
+      width: 100%
+  &.left img
+    width: 100%
+  &.main
+    width: 100%
+    img
+      width: 100%
+  &.right img
+    width: 100%
+
+.select-wrapper select::-ms-expand
+  display: none
+
+input
+  &[type=text], &[type=password], &[type=email]
+    height: 2.75em
+
+select
+  height: 2.75em
+
+textarea
+  padding: .75em 1em
+
+\::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder, .formerize-placeholder
+  color: #aaa !important
+  opacity: 1
+
+.icon
+  text-decoration: none
+  border-bottom: none
+  &:before
+    font-weight: 400
+  > .label
+    display: none
+  &.suffix:before
+    float: right
+
+.image
+  border: 0
+  display: inline-block
+  img, &.fit, &.main
+    display: block
+  &.left, &.right
+    max-width: 40%
+  &.left
+    float: left
+    padding: 0 1.5em 1em 0
+    top: .25em
+  &.right
+    float: right
+    padding: 0 0 1em 1.5em
+    top: .25em
+  &.fit
+    margin: 0 0 2em
+  &.featured
+    display: block
+    margin: 0 0 3em
+    width: 100%
+  &.main
+    margin: 0 0 3em
+
+@media screen and (max-width: 736px)
+  .image.featured
+    margin: 0 0 1.5em
+
+ol, ul
+  margin: 0 0 2em
+
+ol
+  list-style: decimal
+  padding-left: 1.25em
+  li
+    padding-left: .25em
+
+ul
+  list-style: disc
+  padding-left: 1em
+
+#header ul, #menu .links
+  list-style: none
+
+ul
+  &.actions, &.alt, &.icons, &.posts
+    list-style: none
+  &.actions
+    &.fit li > *, &.vertical li > *
+      margin-bottom: 0
+  &.alt
+    padding-left: 0
+    li
+      border-top: solid 1px rgba(160, 160, 160, 0.3)
+      padding: .5em 0
+      &:first-child
+        border-top: 0
+        padding-top: 0
+  &.icons
+    cursor: default
+    padding-left: 0
+    li
+      display: inline-block
+      padding: 0 1em 0 0
+      &:last-child
+        padding-right: 0
+      >
+        *
+          text-decoration: none
+          border: 0
+        \:before
+          font-weight: 400
+        * .label
+          display: none
+  &.actions
+    cursor: default
+    padding-left: 0
+
+#sign .close, .article .laud, .cat, .lightbox-img, .tag
+  cursor: pointer
+
+ul.actions
+  li
+    display: inline-block
+    padding: 0 1.5em 0 0
+    vertical-align: middle
+    &:last-child
+      padding-right: 0
+  &.pagination
+    .next
+      text-decoration: none
+      &:after
+        font-weight: 400
+        content: '\f054'
+    .previous
+      text-decoration: none
+      &:before
+        font-weight: 400
+        content: '\f053'
+
+#header .links ul li a, header p
+  font-family: Ubuntu,Helvetica,sans-serif
+  letter-spacing: .25em
+  text-transform: uppercase
+
+ul
+  &.posts article header .published
+    font-family: Ubuntu,Helvetica,sans-serif
+    letter-spacing: .25em
+    text-transform: uppercase
+  &.actions
+    &.small li
+      padding: 0 1em 0 0
+    &.vertical
+      li
+        display: block
+        padding: 1.5em 0 0
+        &:first-child
+          padding-top: 0
+      &.small li
+        padding: 1em 0 0
+        &:first-child
+          padding-top: 0
+    &.fit
+      display: table
+      margin-left: -1em
+      padding: 0
+      table-layout: fixed
+      width: calc(100% + 1em)
+      li
+        display: table-cell
+        padding: 0 0 0 1em
+      &.small
+        margin-left: -.5em
+        width: calc(100% + .5em)
+        li
+          padding: 0 0 0 .5em
+  &.posts
+    padding: 0
+    li
+      border-top: dotted 1px rgba(160, 160, 160, 0.3)
+      margin: 1.5em 0 0
+      padding: 1.5em 0 0
+      &:first-child
+        border-top: 0
+        margin-top: 0
+        padding-top: 0
+
+@media screen and (max-width: 1280px)
+  ul.actions.pagination
+    text-align: center
+    .next, .previous
+      min-width: 20em
+
+@media screen and (max-width: 736px)
+  ul.actions.pagination
+    .next, .previous
+      min-width: 18em
+
+@media screen and (max-width: 480px)
+  ul.actions
+    margin: 0 0 2em
+    li
+      padding: 1em 0 0
+      display: block
+      text-align: center
+      width: 100%
+      &:first-child
+        padding-top: 0
+      > *
+        width: 100%
+        margin: 0 !important
+    &.small li
+      padding: .5em 0 0
+      &:first-child
+        padding-top: 0
+
+.f-copy, .mini-post .con
+  padding: 1em
+
+ul.posts article
+  display: -moz-flex
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  -moz-align-items: -moz-flex-start
+  -webkit-align-items: -webkit-flex-start
+  -ms-align-items: -ms-flex-start
+  align-items: flex-start
+  -moz-flex-direction: row-reverse
+  -webkit-flex-direction: row-reverse
+  -ms-flex-direction: row-reverse
+  flex-direction: row-reverse
+  .image
+    display: block
+    margin-right: 1.5em
+    min-width: 4em
+    width: 4em
+    img
+      width: 100%
+  header
+    -moz-flex-grow: 1
+    -webkit-flex-grow: 1
+    -ms-flex-grow: 1
+    flex-grow: 1
+    -ms-flex: 1
+    h3
+      font-size: .7em
+      margin-top: .125em
+    .published
+      display: block
+      font-size: .6em
+      font-weight: 400
+      margin: -.625em 0 1.7em
+    > :last-child
+      margin-bottom: 0
+
+dl
+  margin: 0 0 2em
+  dt
+    display: block
+    font-weight: 700
+    margin: 0 0 1em
+  dd
+    margin-left: 2em
+
+.mini-post
+  display: -moz-flex
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  -moz-flex-direction: column-reverse
+  -webkit-flex-direction: column-reverse
+  -ms-flex-direction: column-reverse
+  flex-direction: column-reverse
+  background: #fff
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 0 2em
+  font-size: 14px
+  a
+    border-bottom: 0
+  .image
+    overflow: hidden
+    width: 100%
+    float: left
+    img
+      -moz-transition: -moz-transform .2s ease-out
+      -webkit-transition: -webkit-transform .2s ease-out
+      -ms-transition: -ms-transform .2s ease-out
+      transition: transform .2s ease-out
+      width: 100%
+    &:hover img
+      -moz-transform: scale(1.05)
+      -webkit-transform: scale(1.05)
+      -ms-transform: scale(1.05)
+      transform: scale(1.05)
+  .con
+    p
+      margin-bottom: .5em
+    .fa
+      margin-right: 4px
+    .user-img img
+      width: 25px
+      height: 25px
+      border-radius: 100%
+      position: relative
+      top: 5px
+
+@media screen and (max-width: 480px)
+  .mini-posts
+    display: block
+    width: 100%
+    > *
+      margin: 0 0 2em
+      width: 100%
+
+.f-copy
+  background: #fff
+  border-top: solid 1px rgba(160, 160, 160, 0.3)
+  font-size: 14px
+  p
+    margin-bottom: 0
+
+.clearfix
+  &:after, &:before
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+.fl
+  float: left
+
+#pages
+  display: inline-block
+  margin-top: 2em
+  .first-page, .last-page
+    margin: 0
+  .pageWrap
+    height: 40px
+    float: left
+    overflow: hidden
+  .jump-text
+    width: 60px
+    height: 40px
+    margin: 0 5px
+    float: left
+  .jump-button
+    margin: 0
+    float: left
+  .total-count, .total-pages
+    margin-left: 10px
+    float: left
+    font-size: 14px
+
+.article
+  padding: 2em
+  background: #fff
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 0 2em
+
+.post
+  padding: 2em
+  background: #fff
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 0 2em
+  .title-img
+    float: left
+    width: 25%
+  .title-con
+    width: 70%
+    float: left
+    padding-left: 20px
+  .title-img img
+    max-width: 100%
+    height: 150px
+    float: left
+  .description p
+    margin-bottom: 5px
+    font-size: 14px
+  .meta
+    a
+      border-bottom: none
+      color: #2ebaae
+      font-size: 14px
+      &:hover
+        color: #2a6496 !important
+    .user-img img
+      border-radius: 100%
+      width: 30px
+      height: 30px
+      top: 8px
+
+#header, #menu, .shade
+  position: fixed
+
+.post .meta
+  .comments, .published, .views
+    margin-left: 10px
+    font-size: 14px
+  .comments .fa, .views .fa
+    margin-right: 5px
+
+@media screen and (max-width: 980px)
+  .post
+    border-left: 0
+    border-right: 0
+    left: -2em
+    width: calc(100% + (2em * 2))
+    > header
+      -moz-flex-direction: column
+      -webkit-flex-direction: column
+      -ms-flex-direction: column
+      flex-direction: column
+      padding: 3.75em 3em 1.25em
+      border-left: 0
+      .title
+        -ms-flex: 0 1 auto
+        margin: 0 0 2em
+        padding: 0
+        text-align: center
+      .meta
+        -moz-align-items: center
+        -webkit-align-items: center
+        -ms-align-items: center
+        align-items: center
+        display: -moz-flex
+        display: -webkit-flex
+        display: -ms-flex
+        display: flex
+        -moz-justify-content: center
+        -webkit-justify-content: center
+        -ms-justify-content: center
+        justify-content: center
+        border-left: 0
+        margin: 0 0 2em
+        padding: 0
+        text-align: left
+        width: 100%
+        >
+          *
+            border-left: solid 1px rgba(160, 160, 160, 0.3)
+            margin-left: 2em
+            padding-left: 2em
+          \:first-child
+            border-left: 0
+            margin-left: 0
+            padding-left: 0
+        .published
+          margin-bottom: 0
+          margin-top: 0
+        .author
+          -moz-flex-direction: row-reverse
+          -webkit-flex-direction: row-reverse
+          -ms-flex-direction: row-reverse
+          flex-direction: row-reverse
+          margin-bottom: 0
+          .name
+            margin: 0 0 0 1.5em
+          img
+            width: 3.5em
+
+article.special, section.special
+  text-align: center
+
+header p
+  font-size: .7em
+  font-weight: 400
+  line-height: 2.5
+  margin-top: -1em
+
+.table-wrapper
+  -webkit-overflow-scrolling: touch
+  overflow-x: auto
+
+table
+  margin: 0 0 2em
+  width: 100%
+  tbody tr
+    border: 1px solid rgba(160, 160, 160, 0.3)
+    border-left: 0
+    border-right: 0
+    &:nth-child(2n+1)
+      background-color: rgba(160, 160, 160, 0.075)
+  td
+    padding: .75em
+  th
+    color: #3c3b3b
+    font-size: .9em
+    font-weight: 700
+    padding: 0 .75em .75em
+    text-align: left
+  thead
+    border-bottom: solid 2px rgba(160, 160, 160, 0.3)
+  tfoot
+    border-top: solid 2px rgba(160, 160, 160, 0.3)
+  &.alt
+    border-collapse: separate
+    tbody tr td
+      border: 1px solid rgba(160, 160, 160, 0.3)
+      border-left-width: 0
+      border-top-width: 0
+      &:first-child
+        border-left-width: 1px
+
+#header .links
+  border-left: solid 1px rgba(160, 160, 160, 0.3)
+  ul li
+    border-left: solid 1px rgba(160, 160, 160, 0.3)
+
+table.alt
+  tbody tr:first-child td
+    border-top-width: 1px
+  thead
+    border-bottom: 0
+  tfoot
+    border-top: 0
+
+body
+  padding-top: 3.5em
+
+#header
+  display: -moz-flex
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  -moz-justify-content: space-between
+  -webkit-justify-content: space-between
+  -ms-justify-content: space-between
+  justify-content: space-between
+  background-color: #fff
+  border-bottom: solid 1px rgba(160, 160, 160, 0.3)
+  height: 3.5em
+  left: 0
+  line-height: 3.5em
+  top: 0
+  width: 100%
+  z-index: 10000
+  .links, h1
+    height: inherit
+    line-height: inherit
+  a
+    color: inherit
+    text-decoration: none
+  ul
+    margin: 0
+    padding-left: 0
+    li
+      display: inline-block
+      padding-left: 0
+  h1
+    padding: 0 0 0 1.5em
+    a
+      font-size: .7em
+  .links
+    -moz-flex: 1
+    -webkit-flex: 1
+    -ms-flex: 1
+    flex: 1
+    margin-left: 1.5em
+    overflow: hidden
+    padding-left: 1.5em
+    ul li
+      line-height: 1
+      margin-left: 1em
+      padding-left: 1em
+  .main
+    height: inherit
+    line-height: inherit
+    ul
+      height: inherit
+      line-height: inherit
+      li
+        height: inherit
+        line-height: inherit
+        > a:before
+          height: inherit
+          line-height: inherit
+  .links ul li:first-child
+    border-left: 0
+    margin-left: 0
+    padding-left: 0
+  .main ul li
+    border-left: solid 1px rgba(160, 160, 160, 0.3)
+
+#menu
+  border-left: solid 1px rgba(160, 160, 160, 0.3)
+
+#header
+  .links ul li a
+    border-bottom: 0
+    font-size: .7em
+    font-weight: 400
+  .main
+    text-align: right
+    ul li >
+      *
+        display: block
+        float: left
+      a
+        text-decoration: none
+        border-bottom: 0
+        color: #aaa
+        overflow: hidden
+        position: relative
+        text-indent: 4em
+        width: 4em
+        &:before
+          -moz-osx-font-smoothing: grayscale
+          -webkit-font-smoothing: antialiased
+          font-family: FontAwesome
+          font-style: normal
+          font-weight: 400
+          text-transform: none !important
+          display: block
+          left: 0
+          position: absolute
+          text-align: center
+          text-indent: 0
+          top: 0
+          width: inherit
+  form
+    margin: 0
+    input
+      display: inline-block
+      height: 2.5em
+      position: relative
+      top: -2px
+      vertical-align: middle
+  #search
+    -moz-transition: all .5s ease
+    -webkit-transition: all .5s ease
+    -ms-transition: all .5s ease
+    transition: all .5s ease
+    max-width: 0
+    opacity: 0
+    overflow: hidden
+    padding: 0
+    input
+      width: 12em
+    &.visible
+      max-width: 12.5em
+      opacity: 1
+      padding: 0 .5em 0 0
+
+@media screen and (max-width: 980px)
+  #header .links
+    display: none
+
+@media screen and (max-width: 736px)
+  #header
+    height: 2.75em
+    line-height: 2.75em
+    h1
+      padding: 0 0 0 1em
+    .main
+      .login, .search
+        display: none
+
+@media screen and (max-width: 1680px)
+  #wrapper
+    padding: 2em
+
+@media screen and (max-width: 1280px)
+  #wrapper
+    display: block
+
+@media screen and (max-width: 736px)
+  #wrapper
+    padding: 1em
+
+body.single #wrapper
+  display: block
+
+#sidebar >
+  *
+    border-top: solid 1px rgba(160, 160, 160, 0.3)
+    margin: 2em 0 0
+    padding: 2em 0 0
+  \:first-child
+    border-top: 0
+    margin-top: 0
+    padding-top: 0
+
+#intro
+  .logo
+    border-bottom: 0
+    display: inline-block
+    margin: 0 0 1em
+    overflow: hidden
+    position: relative
+    width: 4em
+    &:before
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' viewBox='0 0 100 100' preserveAspectRatio='none' zoomAndPan='disable'%3E%3Cpolygon points='0,0 100,0 100,25 50,0 0,25' style='fill:%23f4f4f4' /%3E%3Cpolygon points='0,100 100,100 100,75 50,100 0,75' style='fill:%23f4f4f4' /%3E%3C/svg%3E")
+      background-position: top left
+      background-repeat: no-repeat
+      background-size: 100% 100%
+      content: ''
+      display: block
+      height: 100%
+      left: 0
+      position: absolute
+      top: 0
+      width: 100%
+    img
+      display: block
+      margin-left: -.25em
+      width: 4.5em
+  header h2
+    font-size: 2em
+    font-weight: 900
+
+#footer .copyright, #menu .links > li a p
+  font-family: Ubuntu,Helvetica,sans-serif
+  font-weight: 400
+  letter-spacing: .25em
+  text-transform: uppercase
+
+#intro header p
+  font-size: .8em
+
+@media screen and (max-width: 1280px)
+  #intro
+    margin: 0 0 3em
+    text-align: center
+    header
+      h2
+        font-size: 2em
+      p
+        font-size: .7em
+
+@media screen and (max-width: 736px)
+  #intro
+    margin: 0 0 1.5em
+    padding: 1.25em 0
+    > :last-child
+      margin-bottom: 0
+    .logo
+      margin: 0 0 .5em
+    header
+      h2
+        font-size: 1.25em
+      > :last-child
+        margin-bottom: 0
+
+#footer
+  .icons
+    color: #aaa
+  .copyright
+    color: #aaa
+    font-size: .5em
+
+#menu .links > li a:hover h3
+  color: #2ebaae
+
+#sign
+  .login .switch .fa, .register .switch .fa
+    color: #2ebaae
+
+body.single #footer
+  text-align: center
+
+#menu
+  -moz-transform: translateX(25em)
+  -webkit-transform: translateX(25em)
+  -ms-transform: translateX(25em)
+  transform: translateX(25em)
+  -moz-transition: -moz-transform .5s ease,visibility .5s
+  -webkit-transition: -webkit-transform .5s ease,visibility .5s
+  -ms-transition: -ms-transform .5s ease,visibility .5s
+  transition: transform .5s ease,visibility .5s
+  -webkit-overflow-scrolling: touch
+  background: #fff
+  height: 100%
+  max-width: 80%
+  overflow-y: auto
+  visibility: hidden
+  width: 25em
+  z-index: 10002
+  >
+    *
+      border-top: solid 1px rgba(160, 160, 160, 0.3)
+      padding: 3em
+      > :last-child
+        margin-bottom: 0
+    \:first-child
+      border-top: 0
+  .links
+    padding: 0
+    > li
+      border: 0
+      border-top: dotted 1px rgba(160, 160, 160, 0.3)
+      margin: 1.5em 0 0
+      padding: 1.5em 0 0
+      a
+        display: block
+        border-bottom: 0
+        h3
+          -moz-transition: color .2s ease
+          -webkit-transition: color .2s ease
+          -ms-transition: color .2s ease
+          transition: color .2s ease
+          font-size: .7em
+        p
+          font-size: .6em
+          margin-bottom: 0
+          text-decoration: none
+
+#header
+  .login .log-btn, .main ul .user > a
+    line-height: 56px
+    width: auto
+    font-size: 14px
+    text-indent: 0
+
+#menu .links > li:first-child
+  border-top: 0
+  margin-top: 0
+  padding-top: 0
+
+body.is-menu-visible #menu
+  -moz-transform: translateX(0)
+  -webkit-transform: translateX(0)
+  -ms-transform: translateX(0)
+  transform: translateX(0)
+  visibility: visible
+
+@media screen and (max-width: 736px)
+  #menu > *
+    padding: 1.5em
+
+input:-webkit-autofill
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important
+  border: 1px solid rgba(160, 160, 160, 0.3) !important
+
+.shade
+  left: 0
+  bottom: 0
+  background: rgba(0, 0, 0, 0.5)
+  display: none
+  z-index: 10001
+
+body
+  &.is-login-visible .shade, &.is-menu-visible .shade
+    display: block
+
+#header
+  .login .log-btn
+    padding: 0 20px
+    .fa
+      margin-right: 4px
+  .main ul .user
+    position: relative
+    > a
+      padding: 0 5px 0 8px
+      img
+        width: 50px
+        height: 50px
+        border-radius: 100%
+        margin-top: 3px
+    .userInfoBox
+      display: none
+      position: absolute
+      top: 100%
+      right: -5px
+      background: #fff
+      padding: 10px 0
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5)
+    &:hover .userInfoBox
+      display: block
+    .userInfoBox li
+      display: block
+      border: none
+      a
+        overflow: inherit
+        text-indent: 0
+        width: 10em
+        line-height: 40px
+        text-align: left
+        padding: 0 10px
+        font-size: 16px
+
+#sign .close
+  text-align: center
+
+.article
+  .article-meta, .article-title, .laud
+    text-align: center
+
+#header .main ul .user .userInfoBox li a
+  .fa
+    margin-right: 5px
+  &:hover
+    background: #eee
+
+#sign
+  display: none
+  width: 400px
+  height: 400px
+  background: #fff
+  position: fixed
+  left: 50%
+  top: 50%
+  margin-left: -200px
+  margin-top: -200px
+  z-index: 10002
+  -webkit-perspective: 800px
+  -moz-perspective: 800px
+  perspective: 800px
+  -webkit-transform-style: preserve-3d
+  transform-style: preserve-3d
+  .login, .register
+    width: 100%
+    background: #fff
+    position: absolute
+    left: 0
+    top: 0
+    padding: 50px 50px 40px
+    -webkit-backface-visibility: hidden
+    -moz-backface-visibility: hidden
+    backface-visibility: hidden
+  .login
+    z-index: 0
+  .register
+    -webkit-transform: rotateY(-180deg)
+    -moz-transform: rotateY(-180deg)
+    -ms-transform: rotateY(-180deg)
+    -o-transform: rotateY(-180deg)
+    transform: rotateY(-180deg)
+    z-index: 1
+  .login .switch, .register .switch
+    cursor: pointer
+    display: inline-block
+    font-size: 13px
+  .close
+    width: 50px
+    height: 50px
+    background: #444
+    line-height: 50px
+    border-radius: 0 0 50px 50px
+    position: absolute
+    top: 0
+    right: 25px
+    span
+      color: #fff
+      font-size: 14px
+    &:hover span
+      animation: myfirst 1s
+      -moz-animation: myfirst 1s
+      -webkit-animation: myfirst 1s
+      -o-animation: myfirst 1s
+      animation-iteration-count: infinite
+      -webkit-animation-iteration-count: infinite
+      animation-timing-function: linear
+      -webkit-animation-timing-function: linear
+  h3
+    font-size: 16px
+    font-weight: inherit
+    margin-bottom: 0
+  p
+    width: 300px
+    height: 40px
+    margin: 10px auto
+    position: relative
+  input
+    padding: 10px
+    height: 40px
+    width: 100%
+    background: #fff
+  .safe
+    height: 20px
+    line-height: 20px
+    .remembermetext
+      display: inline-block
+      margin-bottom: 0
+      font-size: 12px
+    .lost
+      float: right
+      font-size: 12px
+      text-decoration: none
+      border-bottom: none
+      position: relative
+      top: 2px
+    input
+      width: 15px
+      height: 15px
+      padding: 0
+      margin: 0 5px 0 0
+      position: relative
+      top: 2px
+  .icon
+    position: absolute
+    right: 10px
+    top: 10px
+    color: rgba(0, 0, 0, 0.3)
+    font-size: 20px
+  .other-sign
+    border-top: 1px solid rgba(0, 0, 0, 0.1)
+    margin: 20px -50px auto
+    padding: 0 50px
+    p
+      height: 20px
+      line-height: 20px
+      font-size: 14px
+    div
+      width: 50%
+      text-align: center
+      float: left
+      a
+        font-size: 14px
+        padding: 7px
+        border: none
+        border-radius: 5px
+        .fa
+          margin-right: 4px
+        &:hover
+          color: #fff !important
+    .qqlogin
+      background-color: #4a9cf8
+      color: #FFF
+    .githublogin
+      background-color: #24292e
+      color: #FFF
+
+@keyframes myfirst
+  from
+    -webkit-transform: rotateZ(0)
+    -moz-transform: rotateZ(0)
+    -ms-transform: rotateZ(0)
+    -o-transform: rotateZ(0)
+    transform: rotateZ(0)
+
+  to
+    -webkit-transform: rotateZ(360deg)
+    -moz-transform: rotateZ(360deg)
+    -ms-transform: rotateZ(360deg)
+    -o-transform: rotateZ(360deg)
+    transform: rotateZ(360deg)
+
+
+@-moz-keyframes myfirst
+  from
+    -webkit-transform: rotateZ(0)
+    -moz-transform: rotateZ(0)
+    -ms-transform: rotateZ(0)
+    -o-transform: rotateZ(0)
+    transform: rotateZ(0)
+
+  to
+    -webkit-transform: rotateZ(360deg)
+    -moz-transform: rotateZ(360deg)
+    -ms-transform: rotateZ(360deg)
+    -o-transform: rotateZ(360deg)
+    transform: rotateZ(360deg)
+
+
+@-webkit-keyframes myfirst
+  from
+    -webkit-transform: rotateZ(0)
+    -moz-transform: rotateZ(0)
+    -ms-transform: rotateZ(0)
+    -o-transform: rotateZ(0)
+    transform: rotateZ(0)
+
+  to
+    -webkit-transform: rotateZ(360deg)
+    -moz-transform: rotateZ(360deg)
+    -ms-transform: rotateZ(360deg)
+    -o-transform: rotateZ(360deg)
+    transform: rotateZ(360deg)
+
+
+@-o-keyframes myfirst
+  from
+    -webkit-transform: rotateZ(0)
+    -moz-transform: rotateZ(0)
+    -ms-transform: rotateZ(0)
+    -o-transform: rotateZ(0)
+    transform: rotateZ(0)
+
+  to
+    -webkit-transform: rotateZ(360deg)
+    -moz-transform: rotateZ(360deg)
+    -ms-transform: rotateZ(360deg)
+    -o-transform: rotateZ(360deg)
+    transform: rotateZ(360deg)
+
+
+.article .article-meta span
+  margin: 0 5px
+  font-size: 14px
+
+.article-description
+  border-top: solid 1px rgba(160, 160, 160, 0.3)
+  margin: 2em 0 0
+  padding: 2em 0 0
+
+.article
+  .article-content p
+    margin-bottom: .5em
+  .laud
+    display: block
+    width: 100px
+    height: 70px
+    background: #2ebaae
+    border-radius: 30px
+    margin: 0 auto
+    color: #fff
+
+#message .actions, .comment-form .actions
+  text-align: right
+
+.article .laud
+  .fa
+    font-size: 24px
+    margin-top: 8px
+  &.ban
+    background: #ddd
+    color: #666
+    pointer-events: none
+
+.post .image
+  overflow: hidden
+  width: 100%
+
+#comment, .comment-form
+  background: #fff
+  padding: 2em
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 0 2em
+  position: relative
+
+#comment
+  .comment
+    .comment-img
+      width: 7%
+    .comment-content
+      width: 93%
+  .userRad
+    border-radius: 4px
+    width: 48px
+    height: 48px
+
+.comment-form
+  .userRad
+    border-radius: 4px
+    width: 48px
+    height: 48px
+  .userBox .box
+    float: left
+    margin: 0 10px 0 0
+    padding: 0
+    border: none
+  p
+    margin-bottom: 0
+
+.post .image
+  img
+    -moz-transition: -moz-transform .2s ease-out
+    -webkit-transition: -webkit-transform .2s ease-out
+    -ms-transition: -ms-transform .2s ease-out
+    transition: transform .2s ease-out
+    width: 100%
+  &:hover img
+    -moz-transform: scale(1.05)
+    -webkit-transform: scale(1.05)
+    -ms-transform: scale(1.05)
+    transform: scale(1.05)
+
+#about, #message
+  width: 100%
+  position: relative
+
+#about
+  background: #fff
+  padding: 2em
+  border: 1px solid rgba(160, 160, 160, 0.3)
+  margin: 0 0 2em
+  position: relative
+
+#message
+  header, section
+    background: #fff
+    padding: 2em
+    border: 1px solid rgba(160, 160, 160, 0.3)
+    margin: 0 0 2em
+    position: relative
+
+#about
+  margin-bottom: 0
+  letter-spacing: .1em
+  line-height: 3
+  text-transform: inherit
+
+#message
+  header p
+    margin-bottom: 0
+    letter-spacing: .1em
+    line-height: 3
+    text-transform: inherit
+  .userRad
+    border-radius: 4px
+    width: 48px
+    height: 48px
+  .userBox .box
+    float: left
+    margin: 0 10px 0 0
+    padding: 0
+    border: none
+    p
+      margin: 0
+      padding: 0
+      font-size: 14px
+      .fa
+        margin-right: 5px
+    a
+      border-bottom: 0
+  .alert
+    background: #eee
+    color: #333
+    padding: 1em
+    border-radius: .5em
+    font-size: 14px
+
+.comment-form .alert
+  background: #eee
+  color: #333
+  padding: 1em
+  border-radius: .5em
+  font-size: 14px
+
+#message .alert strong, .comment-form .alert
+  color: #333
+
+.warning
+  font-size: 12px
+  color: red
+  margin: 10px 0
+  padding: 0
+
+.comment
+  position: relative
+  font-size: 14px
+  margin-top: 2em
+  .comment-content .date, .comment-name .right .ip
+    color: #999
+    font-size: 12px
+  .comment-img
+    position: absolute
+    min-width: 50px
+  .comment-content
+    width: 100%
+    padding-left: 55px
+    .comment-mes
+      border-bottom: 1px solid #eee
+      margin-top: 5px
+    p, pre
+      margin-bottom: 0
+  .comment-name
+    .left
+      float: left
+    .right
+      float: right
+
+#message .reply
+  .userRad
+    width: 30px
+    height: 30px
+  font-size: 14px
+  margin-top: 1em
+  .reply-img span
+    position: relative
+    top: -10px
+
+.reply-content
+  padding-left: 35px
+
+.posts .comment
+  margin-top: 0
+  .comment-img
+    min-width: 40px
+    position: absolute
+    float: none
+    width: auto
+
+#footer .icons, .m-userInfo img
+  position: relative
+
+.posts
+  .comment .comment-content
+    padding-left: 48px
+    float: none
+    width: 100%
+    .comment-mes
+      border-bottom: none
+      margin-top: 0
+  .userRad
+    border-radius: 4px
+    width: 40px
+    height: 40px
+
+.blurb
+  p
+    font-size: 14px
+    margin-bottom: 1em
+  a
+    font-size: 14px
+    border-bottom: none
+  button
+    font-weight: 300
+    height: 3em
+    line-height: 3em
+
+.m-userInfo
+  img
+    width: 50px !important
+    height: 50px
+    border-radius: 100%
+    top: 20px
+    margin-right: 10px
+    text-align: center
+  .userName
+    margin: 10px 0 !important
+  .logout
+    background: #c9302c
+    border-radius: 5px
+    color: #fff
+    padding: 5px 20px
+    &:hover
+      color: #fff
+
+#footer .icons li
+  .qrCode
+    position: absolute
+    left: 0
+    top: 30px
+    display: none
+    z-index: 10
+  &:hover .qrCode
+    display: block
+  .qrCode .img
+    width: 200px
+    img
+      width: 100%
+      height: 100%
+
+#sign .warning
+  font-size: 12px
+  float: left
+  position: relative
+  top: -8px
+  margin: 0
+
+@media screen and (max-width: 736px)
+  #header .main ul .user, #pages .pageWrap
+    display: none
+  .post
+    .published
+      display: none
+    left: -1em
+    width: calc(100% + (1em * 2))
+    .title-con
+      width: 65%
+      float: left
+      padding-left: 10px
+    .title-img
+      float: left
+      width: 35%
+  #message
+    section
+      padding: 1em
+    .actions .btn
+      width: 100%
+  form
+    margin: 0 0 1em
+  #comment, .article, .comment-form, .post
+    padding: 1em
+    margin: 0 0 1em
+  #header .main ul .user > a img
+    width: 40px
+    height: 40px
+    margin-top: 1px
+
+@media screen and (max-width: 480px)
+  .post
+    .title-con
+      width: 100%
+      float: left
+      padding-left: 0
+    .title-img
+      float: left
+      width: 60%
+
+.avatar-img
+  max-height: 120px
+
+.cat, .tag
+  display: inline-block
+  background: grey
+  color: #fff
+  padding: 2px 4px
+  border-radius: 2px
+  margin: 4px 2px
+
+#overlay, .img-overlay
+  background: rgba(0, 0, 0, 0.7)
+  width: 100%
+  height: 100%
+  top: 0
+  display: flex
+  left: 0
+
+.onlineList
+  max-height: 600px
+
+.mt40
+  margin-top: 40px
+
+.mb40
+  margin-bottom: 40px
+
+#gallery
+  padding-top: 40px
+
+@media screen and (min-width: 991px)
+  #gallery
+    padding: 60px 30px 0
+
+.img-wrapper
+  position: relative
+  margin-top: 15px
+  img
+    width: 100%
+
+.img-overlay
+  position: absolute
+  justify-content: center
+  align-items: center
+  opacity: 0
+  i
+    color: #fff
+    font-size: 3em
+
+#overlay
+  position: fixed
+  justify-content: center
+  align-items: center
+  z-index: 99999
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  img
+    margin: 0
+    width: 80%
+    height: auto
+    -o-object-fit: contain
+    object-fit: contain
+    padding: 5%
+
+@media screen and (min-width: 768px)
+  #overlay img
+    width: 60%
+
+@media screen and (min-width: 1200px)
+  #overlay img
+    width: 50%
+
+#nextButton, #prevButton
+  color: #fff
+  font-size: 2em
+  transition: opacity .8s
+
+#exitButton:hover, #nextButton:hover, #prevButton:hover
+  opacity: .7
+
+@media screen and (min-width: 768px)
+  #nextButton, #prevButton
+    font-size: 3em
+
+#exitButton
+  color: #fff
+  font-size: 2em
+  transition: opacity .8s
+  position: absolute
+  top: 15px
+  right: 15px
+
+@media screen and (min-width: 768px)
+  #exitButton
+    font-size: 3em
+
+.lightbox
+  display: none
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.7)
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 999999
+  padding-top: 30px
+  img
+    display: block
+    margin: auto
+  .caption
+    margin: 15px auto
+    width: 50%
+    text-align: center
+    font-size: 1em
+    line-height: 1.5
+    font-weight: 700
+    color: #eee
+
+.page-link
+  position: relative
+  display: block
+  padding: .5rem .75rem
+  line-height: 1.25
+  color: #007bff
+  background-color: #fff
+  border: 1px solid #dee2e6
+  border-radius: 4px
+  margin-left: 4px
+  margin-right: 4px
