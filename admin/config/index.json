@@ -98,9 +98,7 @@
   "scripts": [
     "lodash.min",
     "jquery.min",
-    "pagination",
-    "skel.min",
-    "util"
+    "pagination"
   ],
   "aStyles": [
     "bootstrap.min",
@@ -111,7 +109,6 @@
     "jquery.min",
     "pagination",
     "bootstrap.min",
-    "modal",
     "admin"
   ],
   "mStyles": [
