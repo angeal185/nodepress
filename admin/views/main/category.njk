@@ -1,22 +1,19 @@
 {% extends './layout.njk' %}
 {% block main %}
 <div class="row">
-  {% include "./includes/sidebar.njk" %}
+  {{macro.sideBar(a=data)}}
   <div id="main" class="col-md-8">
     <h3>{{title|capitalize}}: {{category}}</h3>
-  {% include "./includes/post.njk" %}
+  {{macro.post(a=data)}}
   </div>
 </div>
-
 {% endblock %}
 {% block script %}
 <script>
-
 var catlist = {{data.catList|dump|safe}};
 var taglist = {{data.tagList|dump|safe}};
 tagCat(catlist,'cat')
 tagCat(taglist,'tag')
 tagCatEnable();
 </script>
-
 {% endblock %}

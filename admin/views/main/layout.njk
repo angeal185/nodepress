@@ -1,4 +1,5 @@
 {% import "../admin/macros/macros.njk" as macro %}
+{% import "./macros/addons.njk" as addon %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -14,7 +15,6 @@
 <body>
   {{macro.head(nav=nav,data=data)}}
   <div id="wrapper">
-
       {% block main %}{% endblock %}
   </div>
   {{macro.footer()}}

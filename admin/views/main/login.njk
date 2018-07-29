@@ -2,59 +2,30 @@
 {% block main %}
 <div id="signFrm">
     <div class="login">
-        <h3 class="text-center">Login</h3>
-        <div class="row">
+      <h3 class="text-center">{{title|capitalize}}</h3>
+      <div class="row">
 
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>username</label>
-            <input name="username" class="form-control" type="text" placeholder="username" >
-          </div>
+        {% for i in items.login %}
+          {{macro.regForm(i=i)}}
+        {% endfor %}
+
+
+        {% if config.app.loadKeyfile %}
+        {{addon.keyfile()}}
+        {{addon.keyfileBtn()}}
+        {% endif %}
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <a class="lost" href="/findpass">Forgot password?</a>
+          <a class="lost" href="/register">Register</a>
         </div>
-
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>password</label>
-            <input name="password" class="form-control" type="password" placeholder="Enter a password of 6 digits or more">
-          </div>
-        </div>
-
-
-          <div class="col-md-6">
-            <label>load keyfile</label>
-            <div class="input-group">
-              <input id="myFile" class="form-control" type="file" aria-describedby="loadText"/>
-              <div class="input-group-append">
-                <button id="loadText" class="btn btn-outline-secondary" type="button">load</button>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="remembermetext" for="rememberme">
-                  <input name="rememberme" type="checkbox" checked="checked" id="rememberme" class="rememberme" value="forever">Remember
-              </label>
-            </div>
-          </div>
-
-
-        <div class="col-md-6">
-          <div class="form-group">
-            <a class="lost" href="/findpass">Forgot password?</a>
-            <a class="lost" href="/register">Register</a>
-          </div>
-        </div>
-
-
       </div>
 
 
-        <button class="login-btn btn btn-outline-primary" type="button" class="btn btn-outline-primary">Login</button>
-
-        <span class="warning"></span>
+    </div>
+    {{macro.warningBtn(i="Login",x="login-btn")}}
     </div>
 </div>
 {% endblock %}

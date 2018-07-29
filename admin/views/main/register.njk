@@ -1,67 +1,15 @@
 {% extends './layout.njk' %}
 {% block main %}
 <section id="signFrm">
-
     <div class="register">
-        <h3>Register</h3>
-
+        <h3>{{title}}</h3>
         <div class="row">
-
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>username</label>
-            <input name="username" class="form-control" type="text" placeholder="username" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>useremail</label>
-            <input name="useremail" class="form-control" type="email" placeholder="useremail" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>firstName</label>
-            <input name="firstName" class="form-control" type="text" placeholder="First name" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>lastName</label>
-            <input name="lastName" class="form-control" type="text" placeholder="Last name" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>city</label>
-            <input name="city" class="form-control" type="text" placeholder="city" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>country</label>
-            <input name="country" class="form-control" type="text" placeholder="country" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>password</label>
-            <input name="password" class="form-control" type="password" placeholder="Enter a password of 6 digits or more" >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>confirm password</label>
-            <input name="repassword" class="form-control" type="password" placeholder="re-enter password">
-          </div>
-        </div>
-
+          {% for i in items.register %}
+            {{macro.regForm(i=i)}}
+          {% endfor %}
       </div>
-        <input name="ip" type="text" hidden disabled>
-        <p>
-            <button class="btn btn-outline-primary register-btn" type="button">Register</button>
-        </p>
-        <span style="color: red;" class="warning"></span>
+      {{macro.hideInput(i="ip")}}
+      {{macro.warningBtn(i="Register",x="register-btn")}}
     </div>
 </section>
 {% endblock %}

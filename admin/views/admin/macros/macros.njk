@@ -65,9 +65,9 @@
   {% endfor %}
 {%- endmacro -%}
 
-{%- macro warningBtn(a,b,i) -%}
+{%- macro warningBtn(a,b,i,x) -%}
 <div class="form-group mt40">
-  <button type="button" {% if a %}id="{{a}}"{% endif %} class="btn btn-outline-secondary">{{i}}</button>
+  <button type="button" {% if a %}id="{{a}}"{% endif %} class="btn btn-outline-secondary{% if x %} {{x}}{% endif %}">{{i}}</button>
   <p {% if b %}id="{{b}}"{% endif %} class="warning"></p>
 </div>
 {%- endmacro -%}
@@ -252,6 +252,13 @@
 </div>
 {%- endmacro -%}
 
+{%- macro comment() -%}
+<section id="comment">
+  <div id="message-conent"></div>
+  {{pagination()}}
+</section>
+{%- endmacro -%}
+
 {%- macro pagination() -%}
 <div class="pages">
 	<div id="pages" class="clearfix"></div>
@@ -341,7 +348,9 @@
 </nav>
 {%- endmacro -%}
 
-
+{%- macro span(a,b) -%}
+<span class="{{a}}">{{b}}</span>
+{%- endmacro -%}
 
 {%- macro iSpan(a,b,c) -%}
 <span class="{{a}}">
@@ -349,9 +358,9 @@
 </span>
 {%- endmacro -%}
 
-{%- macro imgSpan(a,b) -%}
+{%- macro imgSpan(a,b,c) -%}
 <span class="{{a}}">
-  <img src="{{b}}">
+  <img {% if c %}class="{{c}}" {% endif %}src="{{b}}">
 </span>
 {%- endmacro -%}
 
@@ -394,7 +403,7 @@
       {{desc(a="description",b=laud.description|truncate(30,false,'...', 0))}}
       <div class="meta">
         {{imgSpan(a="user-img",b=laud.userImg)}}
-        <span class="user">{{laud.user}}</span>
+        {{span(a="user",b=laud.user)}}
         {{iSpan(a="views",b="eye",c=laud.views)}}
         {{iSpan(a="comments",b="comments-o",c=laud.comments.length)}}
         {{CT(a="category",b="cat",c=laud.category)}}
@@ -408,6 +417,31 @@
 </div>
 {%- endmacro -%}
 
+{%- macro post(a) -%}
+{% for content in a.contents %}
+<article class="post clearfix">
+  {% if content.titleImg %}
+  {{titleImg(a=content._id,b=content.titleImg)}}
+  <div class="title-con">
+  {% else %}
+  <div>
+  {% endif %}
+    {{postTitle(a=content._id,b=content.title)}}
+    {{desc(a="description",b=content.description|truncate(80,false,'...', 0))}}
+    <div class="meta">
+      {{imgSpan(a="user-img",b=content.userImg)}}
+      {{span(a="user",b=content.user)}}
+      {{iSpan(a="published",b="calendar",c=content.addTime.toString()|date)}}
+      {{iSpan(a="views",b="eye",c=content.views)}}
+      {{iSpan(a="comments",b="comments-o",c=content.comments.length)}}
+      {{CT(a="category",b="cat",c=content.category)}}
+      {{CT(a="tags",b="tag",x=content.tags)}}
+    </div>
+  </div>
+</article>
+{% endfor %}
+{%- endmacro -%}
+
 {%- macro sideBar(a) -%}
 <div id="sidebar" class="col-md-3">
   {{intro()}}
@@ -417,4 +451,53 @@
   {{blurb()}}
   {{footerIcn()}}
 </div>
+{%- endmacro -%}
+
+{%- macro commentBox(a,b,c) -%}
+<div class="userBox clearfix">
+  {{imgSpan(a="box",b=a,c="userRad")}}
+  <div class="box">
+    <p>{{b}} {{c}}</p>
+    <p><i class="fa fa-hand-o-right"></i> <span class="count">0 comments</span></p>
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro editor() -%}
+<div class="row uniform">
+  <div class="col-md-12">
+    <div id="editor"></div>
+    <p class="warning"></p>
+    <div class="actions">
+      <button type="button" class="btn btn-outline-primary">Comment</button>
+    </div>
+  </div>
+</div>
+{%- endmacro -%}
+
+
+{%- macro commentForm(a) -%}
+<section class="comment-form">
+  <form class="form-box" method="post">
+    {% if a.userInfo._id %}
+    {{commentBox(a=a.userInfo.userImg,b="User:",c=a.userInfo.userName)}}
+    {{editor()}}
+    {% else %}
+    {{macro.commentBox(a="/public/images/userImg/none.png",b="Welcome. please log in to comment")}}
+    {% endif %}
+  </form>
+</section>
+{%- endmacro -%}
+
+{%- macro regForm(i) -%}
+<div class="col-md-6">
+  <div class="form-group">
+    <label>{{i.name|startCase}}</label>
+    <input name="{{i.name}}" class="form-control" type="{{i.type}}">
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro hideInput(i) -%}
+<input name="{{i}}" type="text" hidden disabled>
 {%- endmacro -%}

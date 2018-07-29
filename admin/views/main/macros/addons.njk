@@ -1,0 +1,39 @@
+{%- macro keyfile() -%}
+<div class="col-md-6">
+  <label>load keyfile</label>
+  <div class="input-group">
+    <input id="myFile" class="form-control" type="file" aria-describedby="loadText"/>
+    <div class="input-group-append">
+      <button id="loadText" class="btn btn-outline-secondary" type="button">load</button>
+    </div>
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro keyfileBtn() -%}
+<div class="col-md-6">
+  <div class="form-group">
+    <label class="remembermetext" for="rememberme">
+        <input name="rememberme" type="checkbox" checked="checked" id="rememberme" class="rememberme" value="forever">Remember
+    </label>
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro chat() -%}
+<div class="chatDiv mt40 mb40">
+  <div class="row">
+    <div class="col-md-10">
+      <textarea id="chatBox" rows="8" cols="80" disabled></textarea>
+      <input id="chatData" type="text" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <div class="onlineList">
+        <h4>online</h4>
+        <div id="onlineUsers"></div>
+      </div>
+    </div>
+  </div>
+  <button id="chatSubmit" type="button" class="btn btn-outline-primary mt40">talk</button>
+</div>
+{%- endmacro -%}

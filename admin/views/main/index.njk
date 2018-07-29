@@ -3,18 +3,15 @@
 <div class="row">
 	{{macro.sideBar(a=data)}}
 	<div id="main" class="col-md-9">
-		{% include "./includes/post.njk" %}
+		{{macro.post(a=data)}}
 		{{macro.pagination()}}
 		{{macro.subscribe()}}
-
 		{% if data.userInfo._id %}
-		{% include "./includes/chat.njk" %}
+		{{addon.chat()}}
 		{% endif %}
 	</div>
 </div>
-
 {% endblock %}
-
 {% block script %}
 <script>
 var catlist = {{data.catList|dump|safe}};
@@ -26,9 +23,6 @@ tagCat(taglist,'tag');
 tagCatEnable();
 pagina(pg,pgs);
 subscribeInit();
-
-
-
 </script>
 {% if data.userInfo._id %}
 	<script src="/socket.io/socket.io.js"></script>

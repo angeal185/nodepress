@@ -151,6 +151,7 @@ if (config.maintenance.enabled){
   //message
   router.get('/message',function(req,res,next){
       res.render(theme +'/message',{
+        title:"contact",
         nav:nav,
         data:data,
         config:config
@@ -159,6 +160,8 @@ if (config.maintenance.enabled){
 
   router.get('/login',function(req,res,next){
       res.render(theme +'/login',{
+        title:"login",
+        items:Items,
         nav:nav,
         data:data,
         config:config
@@ -167,6 +170,8 @@ if (config.maintenance.enabled){
 
   router.get('/register',function(req,res,next){
       res.render(theme +'/register',{
+        title:"register",
+        items:Items,
         nav:nav,
         data:data,
         config:config
@@ -177,6 +182,7 @@ if (config.maintenance.enabled){
   //about
   router.get('/about',function(req,res,next){
       res.render(theme +'/about',{
+        title:"about",
         nav:nav,
         data:data,
         config:config

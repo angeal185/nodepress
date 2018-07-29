@@ -457,6 +457,7 @@ dl dd {
 	font-size: 14px;
 }
 .post .meta .comments .fa,
+.post .meta .published .fa,
 .post .meta .views .fa{
 	margin-right: 5px;
 }
@@ -1070,13 +1071,14 @@ body.single #footer {
 }
 
 .tag,.cat{
-    display: inline-block;
-    background: grey;
-    color: white;
-    padding: 2px 4px;
-    border-radius: 2px;
-    margin: 4px 2px;
-		cursor:pointer;
+  display: inline-block;
+      background: grey;
+      color: white;
+      padding: 0 2px;
+      border-radius: 2px;
+      font-size: 12px;
+      margin: 4px 2px;
+      cursor: pointer;
 }
 
 .onlineList{
@@ -1252,4 +1254,8 @@ body.single #footer {
     border-radius: 4px;
     margin-left: 4px;
     margin-right: 4px;
+}
+
+.category{
+  margin-top:10px;
 }

@@ -40,6 +40,7 @@
     "theme": false,
     "themeTitle": "",
     "debugToolbar": true,
+    "loadKeyfile":true,
     "watch": true,
     "compiler": "stylus",
     "compilerExt": "styl",

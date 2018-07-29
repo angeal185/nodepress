@@ -175,13 +175,13 @@ function login(){
 
 function register(){
     let userName = $('#signFrm .register').find('[name = username]').val(),
-    userEmail = $('#signFrm .register').find('[name = useremail]').val(),
+    userEmail = $('#signFrm .register').find('[name = userEmail]').val(),
 		firstName = $('#signFrm .register').find('[name = firstName]').val(),
 		lastName = $('#signFrm .register').find('[name = lastName]').val(),
 		city = $('#signFrm .register').find('[name = city]').val(),
 		country = $('#signFrm .register').find('[name = country]').val(),
     password = $('#signFrm .register').find('[name = password]').val(),
-    repassword = $('#signFrm .register').find('[name = repassword]').val();
+    confirmPassword = $('#signFrm .register').find('[name = confirmPassword]').val();
 
 		var validateIt = {
 			userName:"username",
@@ -214,7 +214,7 @@ function register(){
         $('#signFrm .register .warning').html('password must be at least 6 characters');
         return;
     }
-    if( password != repassword ){
+    if( password != confirmPassword ){
         $('#signFrm .register .warning').html('passwords do not match!');
         return;
     }
@@ -414,7 +414,7 @@ function postComment(){
 }
 
 function renderComment(comments) {
-	$('.form-box .userBox .count').html(`There is already ${comments.length} comment from you`)
+	$('.form-box .userBox .count').html(`There is ${comments.length} comment`)
 	$('.article .comments').html(`Comments（${comments.length}）`)
 
 		pages = Math.max(Math.ceil(comments.length / prepage),1);

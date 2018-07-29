@@ -1,11 +1,11 @@
 {% extends './layout.njk' %}
 {% block main %}
 <div class="row">
-	{% include "./includes/sidebar.njk" %}
+	{{macro.sideBar(a=data)}}
 	<div id="main" class="col-md-9">
 		{{macro.article(content=content)}}
-		{% include "./includes/commentForm.njk" %}
-		{% include "./includes/comment.njk" %}
+		{{macro.commentForm(a=data)}}
+		{{macro.comment()}}
 	</div>
 </div>
 

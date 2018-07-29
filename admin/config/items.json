@@ -53,5 +53,37 @@
   },
   "maintenance":{
     "count":["days","hours","minutes","seconds"]
-  }
+  },
+  "register":[{
+    "name":"username",
+    "type":"text"
+    },{
+    "name":"useremail",
+    "type":"text"
+    },{
+    "name":"firstName",
+    "type":"text"
+    },{
+    "name":"lastName",
+    "type":"text"
+    },{
+    "name":"city",
+    "type":"text"
+    },{
+    "name":"country",
+    "type":"text"
+    },{
+    "name":"password",
+    "type":"text"
+    },{
+    "name":"confirmPassword",
+    "type":"text"
+    }],
+    "login":[{
+      "name":"username",
+      "type":"text"
+      },{
+      "name":"password",
+      "type":"text"
+      }]
 }
