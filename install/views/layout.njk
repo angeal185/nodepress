@@ -1,0 +1,60 @@
+{% import "./macros/macros.njk" as macro %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="keywords" content="">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/public/images/favicon.ico" />
+      {{macro.css(s='bootstrap.min')}}
+      {{macro.cssT(s='install')}}
+</head>
+<body>
+  <div class="mask">
+    <h2 class="words"></h2>
+  </div>
+
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand">Installation</span>
+  </nav>
+  <div class="sideBar">
+    <div>
+        <span class="iSpan">help:</span>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-primary active helpBtn" aria-pressed="true" data-toggle="button">on</button>
+        <button type="button" class="btn btn-outline-primary helpBtn" data-toggle="button">off</button>
+      </div>
+    </div>
+    <br>
+    <div>
+      <span class="iSpan">status:</span>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-primary active infoBarBtn" aria-pressed="true" data-toggle="button">on</button>
+        <button type="button" class="btn btn-outline-primary infoBarBtn" data-toggle="button">off</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="helpDiv"><h5>Help</h5><div class="helpContent"></div></div>
+      {% block main %}{% endblock %}
+  <div class="infoDiv udDiv"></div>
+  <div class="infoDiv dbDiv"></div>
+  <div class="infoBar">
+        <div class="ftext vCheck blink">version: <span class="V"></span></div>
+        <div class="ip blink"></div>
+        <div class="typeText blink"></div>
+        <div class="udGlobe globe oGlobe blink"></div>
+        <div class="dbGlobe globe rGlobe blink"></div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  {% block script %}{% endblock %}
+  {% for i in ['jquery.min','lodash.min','bootstrap.min','src-min-noconflict/ace'] %}
+    {{macro.js(s=i)}}
+  {% endfor %}
+  {{macro.jsT(s='install')}}
+</body>
+</html>

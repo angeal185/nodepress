@@ -1,0 +1,39 @@
+<!-- Mini Posts -->
+<div class="mini-posts">
+  {% for laud in data.lauds %}
+  <article class="mini-post">
+    <div class="con">
+      <h3 class="title">
+        <a href="/v/{{laud._id}}" target="_blank">{{ laud.title }}</a>
+      </h3>
+      <div class="description">
+        <p>{{ laud.description | truncate(30,false,'...', 0) }}</p>
+      </div>
+      <div class="meta">
+        <span class="user-img">
+          <img src="{{laud.userImg}}" alt="">
+        </span>
+        <span class="user">{{laud.user}}</span>
+        <span class="views">
+          <i class="fa fa-eye"></i>{{ laud.views }}
+        </span>
+        <span class="comments">
+          <i class="fa fa-comments-o"></i>{{ laud.comments.length }}
+        </span>
+        <div class="category">
+          category: <div class="cat">{{ laud.category }}</div>
+        </div>
+      </div>
+    </div>
+
+    {% if laud.titleImg %}
+    <div class="title-img">
+      <a href="/v/{{laud._id}}" target="_blank" class="image">
+        <img src="{{laud.titleImg}}" alt="">
+      </a>
+    </div>
+    {% endif %}
+  </article>
+
+  {% endfor %}
+</div>

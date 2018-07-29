@@ -1,0 +1,13 @@
+{% extends './layout.njk' %}
+{% block main %}
+  {{macro.breadcrumb(i="Users")}}
+  {{macro.td(i="user")}}
+  {{macro.paginate(c=count,l=limit,pgs=pages,pg=page,a=admin,pgM=page-1,pgP=page+1)}}
+{% endblock %}
+{% block script %}
+<script>
+var Users = {{users|dump|safe}};
+deleteUser('#user .del','/admin/user/del')
+userList();
+</script>
+{% endblock %}

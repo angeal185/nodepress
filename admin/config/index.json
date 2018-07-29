@@ -1,0 +1,130 @@
+{
+  "https": true,
+  "port": 8000,
+  "env": "development",
+  "dbUrlSet": true,
+  "timed": {
+    "dailyTask": false,
+    "dailyTaskInterval": 24
+  },
+  "maintenance": {
+    "enabled": false,
+    "start": 1532089200000,
+    "end": 1532780400000
+  },
+  "mongo": {
+    "url": "mongodb://localhost:27017/nodepress99",
+    "port": 27017,
+    "options": {
+      "dbName": "nodepress99",
+      "reconnectInterval": 500,
+      "poolSize": 10,
+      "bufferMaxEntries": 0,
+      "connectTimeoutMS": 10000,
+      "socketTimeoutMS": 45000,
+      "useNewUrlParser": true
+    }
+  },
+  "token":{
+    "maxAge": 10800000,
+    "length":64,
+    "overwrite":true
+  },
+  "app": {
+    "name": "nodepress",
+    "version": "1.0.0",
+    "installMode": true,
+    "installExists": true,
+    "updateUrl": "/data/test.json",
+    "uploads": "./admin/public/uploads",
+    "theme": false,
+    "themeTitle": "",
+    "debugToolbar": true,
+    "watch": true,
+    "compiler": "stylus",
+    "compilerExt": "styl",
+    "logging": {
+      "enabled": false,
+      "file": {
+        "enabled": true,
+        "replace": false,
+        "timeType": "hour",
+        "fileLimit": 80
+      }
+    },
+    "minifyOutput": false,
+    "favicon": "./img/favicon.ico",
+    "lang": "en",
+    "node": {
+      "npm": "5.6.0",
+      "nodemon": "1.11.0"
+    },
+    "gallery": {
+      "enabled": true
+    },
+    "contact": {
+      "enabled": true
+    },
+    "socialLinks": {
+      "enabled": true
+    }
+  },
+  "socketIO": {
+    "debug": true,
+    "reconnectionAttempts": 3,
+    "chat": {
+      "enabled": true
+    },
+    "msgs": {
+      "online": "socketIO online",
+      "dissconnect": "Connection error",
+      "reconnectA": "Attempting to reconnect...",
+      "reconnectF": "socketIO reconnect error"
+    }
+  },
+  "backup": {
+    "enabled": false
+  },
+  "chat": {
+    "enabled": true,
+    "logs": false,
+    "encryptedMessages": false,
+    "userPersonalEncryptedMessages": true
+  },
+  "styles": [
+    "bootstrap.min",
+    "main"
+  ],
+  "scripts": [
+    "lodash.min",
+    "jquery.min",
+    "pagination",
+    "skel.min",
+    "util"
+  ],
+  "aStyles": [
+    "bootstrap.min",
+    "admin"
+  ],
+  "aScripts": [
+    "lodash.min",
+    "jquery.min",
+    "pagination",
+    "bootstrap.min",
+    "modal",
+    "admin"
+  ],
+  "mStyles": [
+    "bootstrap.min",
+    "maintenance"
+  ],
+  "mScripts": [
+    "lodash.min",
+    "jquery.min",
+    "maintenance"
+  ],
+  "installation": [
+    "./install.js",
+    "./install"
+  ]
+}

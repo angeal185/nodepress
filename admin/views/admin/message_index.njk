@@ -1,0 +1,31 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+{{macro.heading(i="Message List")}}
+<table class="table table-hover table-striped">
+    <tr>
+      {% for e in items.admin.msg.th %}
+        {{macro.th(i=e)}}
+      {% endfor %}
+    </tr>
+    {% for i in messages %}
+    <tr>
+        <td><img src="{{ i.userImg }}" alt=""></td>
+        <td>{{i.user}}</td>
+        <td>{{i.email}} </td>
+        <td>{{i.message|safe}}</td>
+        <td>{{i.addTime.toString()|date}}</td>
+        <td>{{i.reply.content|safe}}</td>
+        {{macro.optBtns(x="reply",a="message",b=i._id.toString())}}
+    </tr>
+    {% else %}
+    <tr>No data currently</tr>
+    {% endfor %}
+</table>
+{{macro.paginate(c=count,l=limit,pgs=pages,pg=page,a=admin,pgM=page-1,pgP=page+1)}}
+{% endblock %}
+{% block script %}
+<script>
+deleteIndex('message')
+</script>
+{% endblock %}

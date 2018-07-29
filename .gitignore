@@ -1,0 +1,14 @@
+# Dependency directory
+node_modules
+bower_components
+development
+
+# Editors
+.idea
+*.iml
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+npm-debug.log

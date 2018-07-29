@@ -1,0 +1,109 @@
+{
+  "https":false,
+  "port": 8000,
+  "env": "development",
+  "dbUrlSet":false,
+  "timed": {
+    "dailyTask": false,
+    "dailyTaskInterval": 24
+  },
+  "maintenance": {
+    "enabled": false,
+    "start": 1532089200000,
+    "end": 1532780400000
+  },
+  "mongo": {
+    "url": "mongodb://localhost:27017/nodeBlog",
+    "port": "27017",
+    "options": {
+      "dbName":"nodeBlog",
+      "reconnectInterval": 500,
+      "poolSize": 10,
+      "bufferMaxEntries": 0,
+      "connectTimeoutMS": 10000,
+      "socketTimeoutMS": 45000,
+      "useNewUrlParser": true
+    }
+  },
+  "app": {
+    "port": 3000,
+    "name": "CMS",
+    "version": "1.0.0",
+    "installMode":true,
+    "installExists":true,
+    "updateUrl": "/data/test.json",
+    "uploads": "./admin/public/uploads",
+    "theme": false,
+    "themeTitle": "",
+    "debugToolbar": false,
+    "watch": true,
+    "compiler": "stylus",
+    "compilerExt": "styl",
+    "logging": {
+      "console": true,
+      "consoleLimit": 30,
+      "file": {
+        "enabled": true,
+        "replace": false,
+        "timeType": "hour",
+        "fileLimit": 80
+      }
+    },
+    "minifyOutput": false,
+    "preview": "/front",
+    "mobile": "/mobile",
+    "favicon": "/admin/public/img/icon.png",
+    "lang": "en",
+    "node": {
+      "npm": "5.6.0",
+      "nodemon": "1.11.0"
+    }
+  },
+  "socketIO": {
+    "debug": true,
+    "reconnectionAttempts": 3,
+    "msgs": {
+      "online": "socketIO online",
+      "dissconnect": "Connection error",
+      "reconnectA": "Attempting to reconnect...",
+      "reconnectF": "socketIO reconnect error"
+    }
+  },
+  "styles": [
+    "bootstrap.min",
+    "main"
+  ],
+  "scripts": [
+    "lodash.min",
+    "jquery.min",
+    "pagination",
+    "skel.min",
+    "util"
+  ],
+  "aStyles": [
+    "bootstrap.min",
+    "admin"
+  ],
+  "aScripts": [
+    "lodash.min",
+    "jquery.min",
+    "pagination",
+    "bootstrap.min",
+    "modal",
+    "admin"
+  ],
+  "mStyles": [
+    "bootstrap.min",
+    "maintenance"
+  ],
+  "mScripts": [
+    "lodash.min",
+    "jquery.min",
+    "maintenance"
+  ],
+  "installation": [
+    "./admin/public/assets/css/install.css",
+    "./admin/public/assets/js/install.js",
+    "./install.js"
+  ]
+}

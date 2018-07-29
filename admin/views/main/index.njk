@@ -1,0 +1,63 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div class="row">
+	{% include "./includes/sidebar.njk" %}
+	<div id="main" class="col-md-9">
+		{% include "./includes/post.njk" %}
+		{{macro.pagination()}}
+		{{macro.subscribe()}}
+
+		{% if data.userInfo._id %}
+		{% include "./includes/chat.njk" %}
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+var catlist = {{data.catList|dump|safe}};
+var taglist = {{data.tagList|dump|safe}};
+var pg = {{data.page}};
+var pgs = {{data.pages}};
+tagCat(catlist,'cat');
+tagCat(taglist,'tag');
+tagCatEnable();
+pagina(pg,pgs);
+subscribeInit();
+
+
+
+</script>
+{% if data.userInfo._id %}
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	var socket = io();
+
+	socket.on("chat", function (i) {
+			$('#chatBox').append(i.user + ' wrote ' + i.message);
+	});
+
+	$('#chatSubmit').click(function() {
+		socket.emit('chat',{"user":{{data.userInfo.userName|dump|safe}},"message":$('#chatData').val()+'\n'})
+		$('#chatData').val('')
+	});
+
+	$('#chatData').keyup(function (event) {
+	    if (event.which == 13 || event.keyCode == 13) {
+	        $('#chatSubmit').click();
+	        return false;
+	    }
+	    return true;
+	});
+
+
+	socket.emit('getUser',{{data.userInfo.userName|dump|safe}})
+
+	socket.on("getUser", function (i) {
+			console.log(i)
+	});
+</script>
+{% endif %}
+{% endblock %}

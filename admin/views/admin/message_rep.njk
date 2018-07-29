@@ -1,0 +1,17 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div class="container">
+  {{macro.breadcrumb(i=title)}}
+  {{macro.heading(i="Message Reply")}}
+  {{macro.msg(message=message)}}
+</div>
+{% endblock %}
+{% block script %}
+{{macro.js(s="ckeditor")}}
+<script>
+var message = {{message|dump|safe}}
+initEditor();
+msgReply();
+
+</script>
+{% endblock %}

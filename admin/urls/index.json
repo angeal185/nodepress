@@ -1,0 +1,11 @@
+{
+  "statistics":"./admin/logs/statistics.json",
+  "config":"./admin/config/index.json",
+  "versions":"./admin/utils/versions.json",
+  "socketio":"./admin/bin/socketio.js",
+  "install":"./admin/views/install",
+  "ace":"./admin/config/aceConf.json",
+  "bw":"./admin/config/bootswatch.json",
+  "css":"./admin/public/assets/css/",
+  "js":"./admin/public/assets/js/"
+}

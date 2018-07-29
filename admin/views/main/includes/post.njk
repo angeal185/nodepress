@@ -1,0 +1,63 @@
+<!-- Post -->
+{% for content in data.contents %}
+<article class="post clearfix">
+  {% if content.titleImg %}
+  <div class="title-img">
+    <a class="image" href="/v/{{ content._id }}" target="_blank"><img src="{{ content.titleImg }}" alt="{{content.title }}"></a>
+  </div>
+  <div class="title-con">
+    <div class="title">
+      <h3><a href="/v/{{ content._id }}" target="_blank">{{ content.title }}</a></h3>
+    </div>
+    <div class="description">
+      <p>{{ content.description | truncate(80,false,'...', 0) }}</p>
+    </div>
+    <div class="meta">
+      <span class="user-img">
+        <img src="{{content.userImg}}" alt="">
+      </span>
+      <span class="user">{{content.user}}</span>
+      <time class="published">{{ content.addTime.toString() | date }}</time>
+      <span class="views">
+        <i class="fa fa-eye"></i>{{ content.views }}
+      </span>
+      <span class="comments">
+        <i class="fa fa-comments-o"></i>{{ content.comments.length }}
+      </span>
+      <div class="category">
+        Category: <div class="cat">{{ content.category }}</div>
+      </div>
+      <div class="tags">
+        Tags: {%- for i in content.tags -%}<div class="tag">{{ i }}</div>{%- endfor -%}
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="title">
+    <h3><a href="/v/{{ content._id }} " target="_blank">{{ content.title }}</a></h3>
+  </div>
+  <div class="description">
+    <p>{{ content.description | truncate(50,false,'...', 0) }}</p>
+  </div>
+  <div class="meta">
+    <span class="user-img">
+      <img src="{{content.userImg}}" alt="">
+    </span>
+    <span class="user">{{content.user}}</span>
+    <time class="published">{{ content.addTime.toString() | date }}</time>
+    <span class="views">
+      <i class="fa fa-eye"></i>{{ content.views }}
+    </span>
+    <span class="comments">
+      <i class="fa fa-comments-o"></i>{{ content.comments.length }}
+    </span>
+    <div class="category">
+      Category: <div class="cat">{{ content.category }}</div>
+    </div>
+    <div class="tags">
+      Tags: {%- for i in content.tags -%}<div class="tag">{{ i }}</div>{%- endfor -%}
+    </div>
+  </div>
+  {% endif %}
+</article>
+{% endfor %}

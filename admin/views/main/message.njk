@@ -1,0 +1,75 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div id="message">
+	<section>
+		<form class="form-box" method="post">
+			{% if data.userInfo._id %}
+			<div class="userBox clearfix">
+				<div class="box">
+					<img class="userRad" src="{{ data.userInfo.userImg }}">
+				</div>
+				<div class="box">
+					<p>Already logged in: {{ data.userInfo.userName }}， <a href="javascript:;" class="logout">Logout</a>?</p>
+					<p><i class="fa fa-hand-o-right"></i><span class="count">0 prior messages.</span></p>
+				</div>
+			</div>
+			{% else %}
+			<div class="userBox clearfix">
+				<div class="box">
+					<img class="userRad" src="/public/images/userImg/none.png" alt="">
+				</div>
+				<div class="box">
+					<p>Welcome</p>
+					<p><i class="fa fa-hand-o-right"></i><span class="count">0 prior messages.</span></p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group">
+					<div class="col-md-6">
+						<label>name</label>
+						<input type="text" name="userName" id="demo-name" class="form-control" placeholder="enter a user name">
+					</div>
+					<div class="col-md-6">
+						<label>email</label>
+						<input type="email" name="userEmail" id="demo-email" class="form-control" placeholder="enter your email">
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<div class="row">
+				<div class="form-group">
+					<div class="col-md-12">
+						<div id="editor"></div>
+						<p class="warning"></p>
+					</div>
+					<div class="col-md-12">
+						<div class="actions">
+							<button type="button" class="btn btn-outline-secondary">Message</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="alert" >
+			<strong>Dear Friends:</strong> Please do not fill in the above information box, respect the blogger is equal to respect for your own, I wish you a good mood every day!
+		</div>
+	</section>
+	<section>
+		<div id="message-conent"></div>
+	</section>
+</div>
+{% endblock %}
+{% block script %}
+{{macro.js(s="ckeditor")}}
+<script>
+var myEditor;
+startEditor();
+sendMsg();
+
+
+
+
+
+</script>
+{% endblock %}

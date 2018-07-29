@@ -1,0 +1,9 @@
+<nav>
+    <ul class="pager justify-content-center">
+        {{macro.pagLink(a="previous",b=admin,c=page-1)}}
+        {{macro.pagLink(x="float-right ",a="next",b=admin,c=page+1)}}
+    </ul>
+    <p class="text-center">
+        A total of {{ count }} Piece of data, per page display  {{limit}}  Piece of data, altogether  {{pages}}  page, current article on Page {{page}}
+    </p>
+</nav>

@@ -1,0 +1,20 @@
+{% import "../admin/macros/macros.njk" as macro %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="keywords" content="">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/public/images/favicon.ico" />
+    {% for i in mStyles %}
+      {{macro.css(s=i)}}
+    {% endfor %}
+</head>
+<body>
+  {% block main %}{% endblock %}
+  {% block script %}{% endblock %}
+  {% for i in mScripts %}
+    {{macro.js(s=i)}}
+  {% endfor %}
+</body>
+</html>

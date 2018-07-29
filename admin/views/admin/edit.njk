@@ -1,0 +1,25 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.edit(title=title,type="edit",items=items)}}
+{% endblock %}
+{% block script %}
+{% if title === "gallery" %}
+  <script>
+    var galleries = {{galleries|dump|safe}};
+    editVal(["title","sub","url"],galleries)
+    galleryEdit();
+  </script>
+{% elif title === "content" %}
+  {{macro.js(s="ckeditor")}}
+  <script>
+    var content = {{content|dump|safe}},
+    cid = content._id;
+    tagGen();
+    editVal(["title","category","tags","description","editor","titleImg"],content);
+    $('#editor').val(content.content)
+    initEditor();
+    contentEdit(cid)
+
+  </script>
+{% endif %}
+{% endblock %}

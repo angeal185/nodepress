@@ -1,0 +1,57 @@
+{
+  "admin":{
+    "content":{
+      "add":{
+        "input":{
+          "title":"enter title",
+          "category":"enter category",
+          "tags":"enter tags seperated by comma or space",
+          "titleImg":"enter img url"
+        },
+        "textarea":{
+          "description":"enter description",
+          "editor":""
+        },
+        "th":[
+          "Title",
+          "Description",
+          "Avatar",
+          "Author",
+          "Add Time",
+          "Reading count",
+          "Action"
+        ]
+      }
+    },
+    "gallery":{
+      "add":{
+        "input":{
+          "title":"enter img title",
+          "sub":"enter img subtitle",
+          "url":"enter img url"
+        },
+        "th":[
+          "Title",
+          "Description",
+          "url",
+          "Add Time",
+          "Action"
+        ]
+      }
+    },
+    "msg":{
+      "th":[
+        "Avatar",
+        "User name",
+        "Email",
+        "Content",
+        "Date",
+        "Reply",
+        "action"
+      ]
+    }
+  },
+  "maintenance":{
+    "count":["days","hours","minutes","seconds"]
+  }
+}

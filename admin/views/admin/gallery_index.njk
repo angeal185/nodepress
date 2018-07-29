@@ -1,0 +1,30 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+{{macro.heading(i="Gallery List")}}
+{%include './page.njk'%}
+<table class="table table-hover table-striped">
+    <tr>
+      {% for e in items.admin.gallery.add.th %}
+        {{macro.th(i=e)}}
+      {% endfor %}
+    </tr>
+    {% for i in galleries %}
+      <tr>
+          <td>{{i.title}}</td>
+          <td>{{i.sub| truncate(20,false,'...', 0)}}</td>
+          <td>{{i.url| truncate(20,false,'...', 0)}}</td>
+          <td>{{i.addTime.toString()|date}}</td>
+          {{macro.optBtns(x="edit",a="gallery",b=i._id.toString())}}
+      </tr>
+    {% else %}
+      <tr>currently no data</tr>
+    {% endfor %}
+</table>
+{%include './page.njk'%}
+{% endblock %}
+{% block script %}
+<script>
+  deleteIndex("gallery")
+</script>
+{% endblock %}

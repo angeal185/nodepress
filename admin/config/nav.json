@@ -1,0 +1,33 @@
+{
+  "admin":{
+    "index":"admin",
+    "ddSingle":["user","message","status"],
+    "dd":["content","gallery","pages"],
+    "right":[{
+          "title":"home",
+          "href":"/",
+          "class":""
+      },{
+          "title":"maintenance",
+          "href":"/admin/maintenance",
+          "class":""
+      },{
+          "title":"config",
+          "href":"/admin/config",
+          "class":""
+      },{
+          "title":"logout",
+          "href":"javascript:;",
+          "class":"logout"
+      }
+    ]
+  },
+  "main":{
+    "default":{
+      "home":"",
+      "contact":"message",
+      "gallery":"gallery"
+    },
+    "pages":["about"]
+  }
+}

@@ -1,0 +1,40 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div class="row">
+	{% include "./includes/sidebar.njk" %}
+	<div id="main" class="col-md-9">
+		{{macro.article(content=content)}}
+		{% include "./includes/commentForm.njk" %}
+		{% include "./includes/comment.njk" %}
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+	{{macro.js(s="ckeditor")}}
+	<script>
+	var content = {{content|dump|safe}};
+	</script>
+{% endblock %}
+{% block script %}
+	<script>
+	var myEditor;
+	startEditor()
+
+	prepage = 1,
+	page = 1,
+	pages = 0,
+	comments = [],
+	catlist = {{catList|dump|safe}},
+	taglist = {{tagList|dump|safe}};
+
+	tagCat(catlist,'cat');
+	tagCat(taglist,'tag');
+	getContent()
+	postMsg();
+	postComment();
+	getComment();
+	tagCatEnable()
+	lightBoxInit()
+	</script>
+{% endblock %}

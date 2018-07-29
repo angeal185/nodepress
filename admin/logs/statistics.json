@@ -1,0 +1,8 @@
+{
+  "mongo": {
+    "users": 2,
+    "messages": 12,
+    "content": 6,
+    "gallery": 3
+  }
+}

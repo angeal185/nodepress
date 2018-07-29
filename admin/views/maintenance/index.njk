@@ -1,0 +1,14 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div class="continer centerIt">
+  <div class="counter glow">
+    <p>site under maintenance</p>
+    {{macro.maintCounter(items=items)}}
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  var maintTimes = {{config|dump|safe}}
+</script>
+{% endblock %}

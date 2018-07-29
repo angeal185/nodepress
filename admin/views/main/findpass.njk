@@ -1,0 +1,56 @@
+{% extends './layout.njk' %}
+{% block seo %}
+<title>账号恢复-前端博客</title>
+{% endblock %}
+{% block style %}
+<style>
+	#header{
+		display: none;
+	}
+	.f-copy{
+		display: none;
+	}
+</style>
+{% endblock %}
+{% block main %}
+	<div class="findpass" style="margin: auto;">
+		<h2>Forget password？</h2>
+		<p>Please enter your username.</p>
+		<p><input type="text" name="username" placeholder="enter user name"></p>
+		<p><button class="btn">Next</button></p>
+		<span class="warning"></span>
+		<p><a href="/">Back to Home</a></p>
+	</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+	$('.findpass .btn').on('click', function(){
+		let userName = $('.findpass').find('[name = username]').val();
+        if(userName == '' ){
+            $('.findpass .warning').html('User name cannot be empty！');
+            return;
+        }
+        let reg = /[a-zA-Z]/;
+        if( !reg.test(userName )){
+            $('.findpass .warning').html('enter user name！');
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: '/api/user/findpass',
+            data: {
+                userName: userName
+            },
+            dataType: 'json',
+            success: function (result) {
+                $('.findpass .warning').html( result.message );
+                if( !result.code ){
+                    console.log(1)
+                }
+            }
+        });
+	})
+</script>
+{% endblock %}

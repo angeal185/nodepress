@@ -1,0 +1,64 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+{{macro.heading(i="maintenance")}}
+
+<div class="row">
+  <div class="col-md-6">
+    <h5>Status: <span class="maintStatus green FR"></span> </h5>
+    <small class="udMaintVal"></small>
+    <br>
+    <h6>current start: <span class="green FR">{{config.maintenance.start|dateTime}}</span></h6>
+    <h6>current end: <span class="green FR">{{config.maintenance.end|dateTime}}</span></h6>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-group btn-group-toggle FR" data-toggle="buttons">
+      {% for i,e in {'Enabled':true,'Disabled':false} %}
+        <label class="btn btn-secondary changeOpt">
+          <input type="radio" id="stat{{i}}" autocomplete="off" value="{{e}}"> {{i}}
+        </label>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+<br>
+<h5>schedule</h5>
+<div class="row">
+
+  <div class="form-group col-md-6 col-sm-12">
+    <input id="datetimepicker1" type="text" >
+  </div>
+
+  <div class="form-group col-md-6 col-sm-12">
+    <input id="datetimepicker2" type="text" >
+  </div>
+
+  <div class="form-group col-md-6 col-sm-12">
+    <label for="output1">From</label>
+    <input type="text" id="output1" class="form-control" disabled>
+    <label for="timestamp1">timestamp</label>
+    <input type="text" id="timestamp1" class="form-control" disabled>
+  </div>
+
+  <div class="form-group col-md-6 col-sm-12">
+    <label for="output2">Till</label>
+    <input type="text" id="output2" class="form-control" disabled>
+    <label for="timestamp2">timestamp</label>
+    <input type="text" id="timestamp2" class="form-control" disabled>
+  </div>
+
+</div>
+{{macro.warningBtn(a="udTimes",i="update")}}
+
+{% endblock %}
+{% block script %}
+{{macro.js(s="datetimepicker")}}
+<script>
+var maint = {{config.maintenance|dump|safe}}
+
+initMaintenanec()
+udMaintTime()
+
+</script>
+{% endblock %}

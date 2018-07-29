@@ -1,0 +1,30 @@
+{
+  "url": "http://stackpath.bootstrapcdn.com/bootswatch",
+  "bootstrap": "http://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+  "version": "4.1.2",
+  "selected": "slate",
+  "ext": "bootstrap.min.css",
+  "options": [
+    "cerulean",
+    "cosmo",
+    "cyborg",
+    "darkly",
+    "flatly",
+    "journal",
+    "litera",
+    "lumen",
+    "lux",
+    "materia",
+    "minty",
+    "pulse",
+    "sandstone",
+    "simplex",
+    "sketchy",
+    "slate",
+    "solar",
+    "spacelab",
+    "superhero",
+    "united",
+    "yeti"
+  ]
+}

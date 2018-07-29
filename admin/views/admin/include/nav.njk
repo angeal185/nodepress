@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/{{nav.admin.index}}">{{nav.admin.index|capitalize}}</a>
+        </div>
+        <div class=" navbar-collapse" >
+            <ul class="nav navbar-nav  mr-auto">
+              {% for i in nav.admin.ddSingle %}
+                <li class="nav-item"><a class="nav-link" href="/admin/{{i}}">{{i|capitalize}}</a></li>
+              {% endfor %}
+              {% for i in nav.admin.dd %}
+                <li class="nav-item dropdown">
+                    <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown">{{i}}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/admin/{{i}}">{{i}}</a>
+                        <a class="dropdown-item" href="/admin/{{i}}/add">add</a>
+                    </div>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="nav-item dropdown">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">{{ userInfo.userName }}</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      {% for i in nav.admin.right %}
+                        <a class="dropdown-item {{i.class}}" href="{{i.href}}">{{i.title|capitalize}}</a>
+                      {% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,114 @@
+{
+  "db":[
+    "Host",
+    "Port",
+    "Name",
+    "Username",
+    "Password",
+    "Extention",
+    "Output"
+  ],
+  "inputs":[
+    "userName",
+    "userEmail",
+    "password",
+    "country",
+    "city",
+    "firstName",
+    "lastName"
+  ],
+  "settings":{
+    "inputs":[{
+      "label":"title",
+      "val":"nodepress",
+      "description":"Global website title"
+    },{
+      "label":"port",
+      "val":"8000",
+      "description":"Server port"
+    },{
+      "label":"uploads",
+      "val":"./admin/public/uploads",
+      "description":"file upload directory"
+    },{
+      "label":"favicon",
+      "val":"./img/favicon.ico",
+      "description":"cms favicon url"
+    }],
+    "select":[{
+      "label":"https",
+      "op1":false,
+      "op2":true,
+      "description":"https mode enabled"
+    },{
+      "label":"gallery",
+      "op1":true,
+      "op2":false,
+      "description":"Enable cms gallery"
+    },{
+      "label":"contact",
+      "op1":true,
+      "op2":false,
+      "description":"Enable cms admin contacts"
+    },{
+      "label":"socialLinks",
+      "op1":true,
+      "op2":false,
+      "description":"Enable cms social bar"
+    },{
+      "label":"debugToolbar",
+      "op1":true,
+      "op2":false,
+      "description":"Enable admin debug toolbar"
+    },{
+      "label":"maintenanceMode",
+      "op1":false,
+      "op2":true,
+      "description":"Enable maintenance mode"
+    },{
+      "label":"encryptedBackup",
+      "op1":false,
+      "op2":true,
+      "description":"Enable encrypted backups"
+    },{
+      "label":"logs",
+      "op1":false,
+      "op2":true,
+      "description":"Enable logging mode"
+    },{
+      "label":"timedTasks",
+      "op1":false,
+      "op2":true,
+      "description":"Enable daily timed tasks"
+    },{
+      "label":"minifyOutput",
+      "op1":false,
+      "op2":true,
+      "description":"Enable minification of html output"
+    },{
+      "label":"chat",
+      "op1":true,
+      "op2":false,
+      "description":"Enable socketio chatroom output"
+    },{
+      "label":"chatLogs",
+      "op1":false,
+      "op2":true,
+      "description":"Enable socketio chatroom Logs"
+    },{
+      "label":"chatEncryptedMessages",
+      "op1":true,
+      "op2":false,
+      "description":"Enable encrypted chatroom personal messages"
+    },{
+      "label":"userPersonalEncryptedMessages",
+      "op1":true,
+      "op2":false,
+      "description":"Enable encrypted personal messages between users"
+    }],
+    "msg":{
+      "themeDescription":"choose default theme!",
+      "aceDescription":"choose default Ace editor theme!"
+    }
+  }
+}
