@@ -12,8 +12,9 @@
     {% block style %}{% endblock %}
 </head>
 <body>
+  {{macro.head(nav=nav,data=data)}}
   <div id="wrapper">
-      {{macro.head(nav=nav,data=data)}}
+
       {% block main %}{% endblock %}
   </div>
   {{macro.footer()}}

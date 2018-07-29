@@ -47,21 +47,8 @@ function initEvents(){
 		}, 100);
 	});
 
-// Fix: Placeholder polyfill.
-	$('form').placeholder();
 
-	$('#menu')
-		.appendTo($('body'))
-		.panel({
-			delay: 500,
-			hideOnClick: true,
-			hideOnSwipe: true,
-			resetScroll: true,
-			resetForms: true,
-			side: 'right',
-			target: $('body'),
-			visibleClass: 'is-menu-visible'
-		});
+
 
 	$('body').on('click', '[href="#search"]', function(event) {
 			event.preventDefault();
@@ -83,20 +70,6 @@ function initEvents(){
 		}, 100);
 	});
 
-
-	$('#menu .log-btn')
-		.on('click',function(){
-        $('body').removeClass('is-menu-visible');
-				$('body').addClass('is-login-visible');
-        $('#sign').show();
-	});
-
-  $('#header .login .log-btn')
-		.on('click',function(){
-        $('body').removeClass('is-menu-visible');
-        $('body').addClass('is-login-visible');
-        $('#sign').show();
-  });
 
 
 	$('#signFrm .login .login-btn').on('click',login);
@@ -194,7 +167,7 @@ function login(){
                 }else{
                     localStorage.setItem("npRemember",'');
                 }
-                window.location.reload();
+                window.location = './';
             }
         }
     });

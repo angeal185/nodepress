@@ -259,48 +259,50 @@
 {%- endmacro -%}
 
 {%- macro navLinks(nav) -%}
-<nav class="links">
-    <ul>
+    <ul class="navbar-nav mr-auto">
       {% for i,e in nav.main.default %}
-        <li><a href="/{{e}}">{{i|capitalize}}</a></li>
+        <li class="nav-item"><a class="nav-link" href="/{{e}}">{{i|capitalize}}</a></li>
       {% endfor %}
       {% for i in nav.main.pages %}
-        <li><a href="/{{i}}">{{i|capitalize}}</a></li>
+        <li class="nav-item"><a class="nav-link" href="/{{i}}">{{i|capitalize}}</a></li>
       {% endfor %}
     </ul>
-</nav>
 {%- endmacro -%}
 
 {%- macro navMain(data) -%}
-<nav class="main">
-    <ul>
+
+    <ul class="navbar-nav mr-right">
         {% if data.userInfo._id %}
-        <li class="user">
-            <a href="javascript:;" class="userInfo"><img src="{{ data.userInfo.userImg }}"></a>
-            <div class="userInfoBox">
-                <ul>
-                  {% if ((data.userInfo.isAdmin) === ('admin')) %}
-                    {{icoLink(a="/admin",c="cog",d="Admin")}}
-                  {% else %}
-                    {{icoLink(a="/profile",c="cog",d="Profile")}}
-                  {% endif %}
-                    {{icoLink(a="/javascript:;",b="logout",c="sign-out",d="Logout")}}
-                </ul>
-            </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Admin
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            {% if ((data.userInfo.isAdmin) === ('admin')) %}
+              {{ddLink(a="/admin",d="Admin")}}
+            {% else %}
+              {{ddLink(a="/profile",d="Profile")}}
+            {% endif %}
+              {{ddLink(a="/javascript:;",b="logout",d="Logout")}}
+          </div>
         </li>
         {% else %}
           {{icoLink(x="login",a="/login",b="log-btn",c="user ",d="Login")}}
         {% endif %}
-        {{icoLink(x="search",a="#search",c="search",d="Profile")}}
     </ul>
-</nav>
+
+{%- endmacro -%}
+
+{%- macro ddLink(a,b,c,d) -%}
+    <a href="{{a}}" class="dropdown-item {{b}}">{{d}}</a>
 {%- endmacro -%}
 
 {%- macro head(nav,data) -%}
-<header id="header">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">title</a>
   {{navLinks(nav)}}
   {{navMain(data)}}
-</header>
+</nav>
 {%- endmacro -%}
 
 {%- macro maintCounter(items) -%}
@@ -337,4 +339,82 @@
         A total of {{c}} Piece of data, per page display  {{l}}  Piece of data, altogether  {{pgs}}  page, current article on Page {{pg}}
     </p>
 </nav>
+{%- endmacro -%}
+
+
+
+{%- macro iSpan(a,b,c) -%}
+<span class="{{a}}">
+  <i class="fa fa-{{b}}"></i>{{c}}
+</span>
+{%- endmacro -%}
+
+{%- macro imgSpan(a,b) -%}
+<span class="{{a}}">
+  <img src="{{b}}">
+</span>
+{%- endmacro -%}
+
+{%- macro desc(a,b) -%}
+<div class="{{a}}">
+  <p>{{b}}</p>
+</div>
+{%- endmacro -%}
+
+{%- macro CT(a,b,c,x) -%}
+<div class="{{a}}">
+  {% if x %}
+    {{a|capitalize}}: {%- for i in x -%}<div class="{{b}}">{{i}}</div>{%- endfor -%}
+  {% else %}
+    {{a|capitalize}}: <div class="{{b}}">{{c}}</div>
+  {% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro titleImg(a,b) -%}
+<div class="title-img">
+  <a href="/v/{{a}}" class="image">
+    <img src="{{b}}">
+  </a>
+</div>
+{%- endmacro -%}
+
+{%- macro postTitle(a,b) -%}
+<h3 class="title">
+  <a href="/v/{{a}}">{{b}}</a>
+</h3>
+{%- endmacro -%}
+
+{%- macro miniPost(a) -%}
+<div class="mini-posts">
+  {% for laud in a %}
+  <article class="mini-post">
+    <div class="con">
+      {{postTitle(a=laud._id,b=laud.title)}}
+      {{desc(a="description",b=laud.description|truncate(30,false,'...', 0))}}
+      <div class="meta">
+        {{imgSpan(a="user-img",b=laud.userImg)}}
+        <span class="user">{{laud.user}}</span>
+        {{iSpan(a="views",b="eye",c=laud.views)}}
+        {{iSpan(a="comments",b="comments-o",c=laud.comments.length)}}
+        {{CT(a="category",b="cat",c=laud.category)}}
+      </div>
+    </div>
+    {% if laud.titleImg %}
+    {{titleImg(a=laud._id,b=laud.titleImg)}}
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{%- endmacro -%}
+
+{%- macro sideBar(a) -%}
+<div id="sidebar" class="col-md-3">
+  {{intro()}}
+  {{miniPost(a=a.lauds)}}
+  {{postList(data=a)}}
+  {{catTag()}}
+  {{blurb()}}
+  {{footerIcn()}}
+</div>
 {%- endmacro -%}
