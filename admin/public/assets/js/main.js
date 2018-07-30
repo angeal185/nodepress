@@ -234,7 +234,7 @@ function register(){
         success: function (result) {
             $('#signFrm .register .warning').html( result.message );
             if( !result.code ){
-                window.location.reload();
+                window.location = './';
             }
         }
     });

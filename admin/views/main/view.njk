@@ -11,7 +11,7 @@
 
 {% endblock %}
 {% block scripts %}
-	{{macro.js(s="ckeditor")}}
+	{{share.js(s="ckeditor")}}
 	<script>
 	var content = {{content|dump|safe}};
 	</script>

@@ -119,7 +119,9 @@ router.route("/newsletter/unsubscribe/:id")
 router.post('/user/register',function(req,res,next){
 
     let user = req.body;
+    var newToken = utils.passwordGen(config.token.length);
     user.password = bcrypt.hashSync(user.password);
+
 
     User.findOne({
         userName: user.userName
@@ -140,12 +142,16 @@ router.post('/user/register',function(req,res,next){
             lastName: user.lastName,
             addTime: new Date(),
             userImg: userImgSrc[Math.floor(Math.random()*userImgSrc.length)],
-            token: utils.passwordGen(config.token.length)
+            token: newToken
         }).save();
 
     }).then(function( newUserInfo ){
         //token
-        req.cookies.set('token', newUserInfo.token, {maxAge:config.token.maxAge});
+        req.cookies.set('token', newToken , {
+          maxAge:config.token.maxAge,
+          overwrite:config.token.overwrite,
+          secure: config.https
+        });
         responseData.message = 'Registration successful!';
         res.json( responseData );
         return;
@@ -180,7 +186,7 @@ router.post('/user/login',function(req,res,next){
               req.cookies.set('token', newToken , {
                 maxAge:config.token.maxAge,
                 overwrite:config.token.overwrite,
-                secure: true
+                secure: config.https
               });
               responseData.message = 'Login successful';
               res.json( responseData );
@@ -218,6 +224,53 @@ router.post('/laud',function(req,res){
         return;
     });
 });
+
+router.post('/friendRequest',function(req,res){
+  var userName =  req.body.userName,
+  userRequest = req.body.userRequest;
+    User.findOne({
+        userName: userName
+    }).then(function (name) {
+        name.friendRequests.push( userRequest );
+        return name.save();
+    }).then(function(msg){
+      User.findOne({
+          userName: userRequest
+      }).then(function (name2) {
+          name2.friendRequesting.push( userName );
+          return name2.save();
+      })
+    }).then(function(msg){
+        responseData.message = 'request successfully sent!';
+        res.json(responseData);
+        return;
+    });
+});
+
+router.post('/acceptFriend',function(req,res){
+  var userName =  req.body.userName,
+  userRequest = req.body.userRequest;
+    User.findOne({
+        userName: userName
+    }).then(function ( name ) {
+        name.friendRequests.pull( userRequest );
+        name.friends.push( userRequest );
+        return name.save();
+    }).then(function(msg){
+      User.findOne({
+          userName: userRequest
+      }).then(function ( name ) {
+          name.friendRequesting.pull( userName );
+          name.friends.push( userName );
+          return name.save();
+      })
+    }).then(function(msg){
+        responseData.message = 'request successfully sent!';
+        res.json(responseData);
+        return;
+    });
+});
+
 
 router.post('/view',function(req,res){
     Content.findOne({

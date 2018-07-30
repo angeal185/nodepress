@@ -61,15 +61,10 @@
 </div>
 {% endblock %}
 {% block script %}
-{{macro.js(s="ckeditor")}}
+{{share.js(s="ckeditor")}}
 <script>
 var myEditor;
 startEditor();
 sendMsg();
-
-
-
-
-
 </script>
 {% endblock %}

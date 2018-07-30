@@ -1259,3 +1259,27 @@ body.single #footer {
 .category{
   margin-top:10px;
 }
+
+.w100p{
+  width:100px;
+}
+
+.smlBtn{
+    padding: 2px;
+    font-size: 12px;
+}
+
+.sLink{
+    float: right;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.danger{
+  color: red;
+}
+
+
+.success{
+  color:green
+}

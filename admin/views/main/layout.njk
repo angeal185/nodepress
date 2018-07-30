@@ -1,4 +1,5 @@
-{% import "../admin/macros/macros.njk" as macro %}
+{% import "./macros/macros.njk" as macro %}
+{% import "./macros/shared.njk" as share %}
 {% import "./macros/addons.njk" as addon %}
 <!DOCTYPE HTML>
 <html>
@@ -8,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/public/images/favicon.ico" />
     {% for i in config.styles %}
-      {{macro.css(s=i)}}
+      {{share.css(s=i)}}
     {% endfor %}
     {% block style %}{% endblock %}
 </head>
@@ -20,10 +21,10 @@
   {{macro.footer()}}
   <div class="shade"></div>
   {% for i in config.scripts %}
-    {{macro.js(s=i)}}
+    {{share.js(s=i)}}
   {% endfor %}
   {% block scripts %}{% endblock %}
-  {{macro.js(s="main")}}
+  {{share.js(s="main")}}
   {% block script %}{% endblock %}
 </body>
 </html>

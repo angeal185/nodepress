@@ -1,0 +1,91 @@
+{% extends './layout.njk' %}
+{% block main %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="pSideBar">
+
+      <div class="fRequests">
+        <h3>friend requests</h3>
+        {% if user.friendRequests %}
+        <p class="slice">You have {{user.friendRequests.length}} new friend request{{share.slice(a=user.friendRequests,b="s")}}</p>
+        {% for item in user.friendRequests %}
+        <div class="fList">
+          <a class="fLink" href="/profiles/{{item}}" target="_blank">{{item}}</a>
+          <span id="acceptFriend" class="success sLink">accept</span>
+          <span id="rejectFriend" class="danger sLink">reject</span>
+        </div>
+        {% endfor %}
+        {% else %}
+          You have no new friend requests.
+        {% endif %}
+      </div>
+
+      <div class="fRequests">
+        <h3>friend requesting</h3>
+        {% if user.friendRequests %}
+        <p>You have made {{user.friendRequesting.length}} friend request{{share.slice(a=user.friendRequesting,b="s")}}</p>
+        {% for item in user.friendRequesting %}
+        <div class="fList">
+          <a class="fLink" href="/profiles/{{item}}" target="_blank">{{item}}</a>
+          <span id="rejectFriend" class="danger sLink">revoke</span>
+        </div>
+        {% endfor %}
+        {% else %}
+          You have made no new friend requests.
+        {% endif %}
+      </div>
+
+      <div class="fRequests">
+        <h3>friends</h3>
+        {% if user.friends %}
+        <p>You have {{user.friends.length}} friend{{share.slice(a=user.friends,b="s")}}</p>
+        {% for item in user.friends %}
+          <a href="/profiles/{{item}}" target="_blank">{{item}}</a>
+          <span id="button" class="success sLink">message</span>
+          <span id="button" class="danger sLink">unfriend</span>
+        {% endfor %}
+        {% else %}
+          You have no friends yet.
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-9">
+    {{macro.profileHead(a=user)}}
+  </div>
+</div>
+
+
+
+{% endblock %}
+{% block script %}
+<script>
+
+
+
+var uName = {{user.userName|dump|safe}};
+_.forEach(['userName','addTime','country','city','accountType'],function(i){
+  $('#usr'+i).attr('disabled',true)
+})
+
+  $('#acceptFriend').click(function(event) {
+      var newFriend = $(this).siblings('a.fLink').html();
+    $.ajax({
+        type: 'post',
+        url: '/api/acceptFriend',
+        data: {
+          userName: uName,
+          userRequest: newFriend
+        },
+        dataType: 'json',
+        success: function (result) {
+          console.log(result.message)
+          //  $('#signFrm .register .warning').html( result.message );
+
+        }
+    });
+  });
+
+</script>
+{% endblock %}

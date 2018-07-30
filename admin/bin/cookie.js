@@ -1,5 +1,6 @@
 const express = require('express'),
 Cookies = require('cookies'),
+config = require('../config'),
 _ = require('lodash'),
 User = require('../models/User'),
 Keygrip = require("keygrip"),
@@ -13,7 +14,7 @@ exports.cookie = function(req, res, next) {
     if (req.cookies.get('token')) {
       try {
         User.findOne({
-            token: req.cookies.get('token',{secure: true})
+            token: req.cookies.get('token',{secure: config.https})
         }).then(function(userInfo) {
             req.userInfo = userInfo;
             next();

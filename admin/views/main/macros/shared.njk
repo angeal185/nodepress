@@ -1,0 +1,32 @@
+{%- macro css(s) -%}
+  <link rel="stylesheet" href="/public/assets/css/{{s}}.css">
+{%- endmacro -%}
+
+{%- macro js(s) -%}
+  <script src="/public/assets/js/{{s}}.js"></script>
+{%- endmacro -%}
+
+{%- macro node(s) -%}
+  <script src="{{s}}.js"></script>
+{%- endmacro -%}
+
+{%- macro label(a) -%}
+  <label>{{a}}</label>
+{%- endmacro -%}
+
+{%- macro icoLink(x,a,b,c,d) -%}
+  <li{% if x %} class="{{x}}"{% endif %}>
+    <a href="{{a}}" {% if b %}class="{{b}}"{% endif %}><i class="fa fa-{{c}}"></i>{{d}}</a>
+  </li>
+{%- endmacro -%}
+
+{%- macro warningBtn(a,b,i,x) -%}
+<div class="form-group mt40">
+  <button type="button" {% if a %}id="{{a}}"{% endif %} class="btn btn-outline-secondary{% if x %} {{x}}{% endif %}">{{i}}</button>
+  <p {% if b %}id="{{b}}"{% endif %} class="warning"></p>
+</div>
+{%- endmacro -%}
+
+{%- macro slice(a,b) -%}
+{% if a.length != 1 %}{{b}}{% endif %}
+{%- endmacro -%}

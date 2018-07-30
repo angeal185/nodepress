@@ -1,5 +1,5 @@
 {
-  "https": true,
+  "https": false,
   "port": 8000,
   "env": "development",
   "dbUrlSet": true,
@@ -68,7 +68,8 @@
     },
     "socialLinks": {
       "enabled": true
-    }
+    },
+    "catTagCloud":true
   },
   "socketIO": {
     "debug": true,
@@ -86,8 +87,11 @@
   "backup": {
     "enabled": false
   },
+  "subscription": {
+    "enabled": true
+  },
   "chat": {
-    "enabled": true,
+    "enabled": false,
     "logs": false,
     "encryptedMessages": false,
     "userPersonalEncryptedMessages": true

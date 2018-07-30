@@ -113,6 +113,68 @@ if (config.maintenance.enabled){
       })
 
 
+    router.route("/profile")
+        .get(function(req, res, next){
+          User.findOne({
+            token:req.userInfo.token
+          }).then(function(i){
+
+            if(typeof(req.userInfo.token) == 'undefined'){
+                res.redirect('./login')
+                return;
+            } else if( req.userInfo.isAdmin === 'admin' ){
+                res.redirect('./admin')
+                return;
+            } else {
+              var usr = _.pick(i,['userImg','addTime','userName','userEmail','firstName','lastName','country','city','facebook','twitter','linkedin','_v','friendRequesting','friendRequests','friends']);
+              usr.accountType = i.isAdmin
+              console.log(usr)
+              res.render(theme +'/profile',{
+                nav:nav,
+                title:"profile",
+                data:data,
+                config:config,
+                user:usr
+              });
+            }
+
+
+          });
+        })
+
+  router.route("/profiles/:id")
+      .get(function(req, res, next){
+
+        User.findOne({
+          token:req.userInfo.token
+        }).then(function(i){
+
+          if(typeof(req.userInfo.token) == 'undefined'){
+              res.redirect('./login')
+              return;
+          } else {
+            User.find({
+              userName:req.params.id
+              }).then(function(i){
+
+                //console.log(i)
+                var usr = _.pick(i[0],['userImg','addTime','userName','country','city','facebook','twitter','linkedin','_v']);
+                console.log(usr)
+                res.render(theme +'/profiles',{
+                  nav:nav,
+                  title:"profiles",
+                  data:data,
+                  config:config,
+                  user:usr
+                });
+
+            });
+          }
+
+        });
+
+      })
+
   router.route("/category/:id")
       .get(function(req, res, next){
         Content.find({

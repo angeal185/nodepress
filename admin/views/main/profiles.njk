@@ -1,0 +1,37 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.profileHead(a=user,dis=true)}}
+<div class="friendReq">
+  <p>send freind request</p>
+  <button type="button" id="friendReq" class="btn btn-outline-primary">Send</button>
+</div>
+
+
+<p></p>
+{% endblock %}
+{% block script %}
+<script>
+
+var fRequest = {
+  from: {{data.userInfo.userName|dump|safe}},
+  to:{{user.userName|dump|safe}}
+}{{data.userName|dump|safe}}
+$('#friendReq').click(function(event) {
+  $.ajax({
+      type: 'post',
+      url: '/api/friendRequest',
+      data: {
+          userName: fRequest.to,
+          userRequest: fRequest.from
+      },
+      dataType: 'json',
+      success: function (result) {
+        console.log(result.message)
+        //  $('#signFrm .register .warning').html( result.message );
+
+      }
+  });
+});
+
+</script>
+{% endblock %}

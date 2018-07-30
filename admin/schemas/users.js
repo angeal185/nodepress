@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 module.exports = new mongoose.Schema({
     userName: String,
     firstName: String,
-    lastNameName: String,
+    lastName: String,
     password: String,
     userEmail: String,
     isAdmin: {
@@ -37,5 +37,17 @@ module.exports = new mongoose.Schema({
     token: {
         type: String,
         default: ''
+    },
+    friends: {
+        type: Array,
+        default: []
+    },
+    friendRequests: {
+        type: Array,
+        default: []
+    },
+    friendRequesting: {
+        type: Array,
+        default: []
     }
 });

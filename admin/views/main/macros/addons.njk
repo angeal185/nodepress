@@ -1,3 +1,6 @@
+{% import "./macros.njk" as macro %}
+{% import "./shared.njk" as share %}
+
 {%- macro keyfile() -%}
 <div class="col-md-6">
   <label>load keyfile</label>
@@ -35,5 +38,14 @@
     </div>
   </div>
   <button id="chatSubmit" type="button" class="btn btn-outline-primary mt40">talk</button>
+</div>
+{%- endmacro -%}
+
+{%- macro subscribe() -%}
+<div class="newsletterDiv">
+  {{share.label(a="subscribe"|startCase)}}
+  <input type="text" id="subscribe" class="" placeholder="enter email">
+  <p class="newsInfo"></p>
+  <button type="button" id="subscribeBtn" class="btn btn-outline-primary">submit</button>
 </div>
 {%- endmacro -%}

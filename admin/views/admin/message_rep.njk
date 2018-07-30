@@ -7,7 +7,7 @@
 </div>
 {% endblock %}
 {% block script %}
-{{macro.js(s="ckeditor")}}
+{{share.js(s="ckeditor")}}
 <script>
 var message = {{message|dump|safe}}
 initEditor();

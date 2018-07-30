@@ -58,7 +58,7 @@
     "name":"username",
     "type":"text"
     },{
-    "name":"useremail",
+    "name":"userEmail",
     "type":"text"
     },{
     "name":"firstName",

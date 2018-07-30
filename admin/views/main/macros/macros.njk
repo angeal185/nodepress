@@ -1,0 +1,380 @@
+{% import "./shared.njk" as share %}
+
+
+{%- macro blurb() -%}
+<section class="blurb">
+  <h3>ABOUT</h3>
+  <p>about msg</p>
+  <a href="/message">contact</a>
+</section>
+{%- endmacro -%}
+
+{%- macro intro() -%}
+<div id="intro">
+  <a href="#" class="logo"><img src="/public/images/logo.png"></a>
+  <header>
+    <h2>Title</h2>
+    <p>subTitle</p>
+  </header>
+</div>
+{%- endmacro -%}
+
+{%- macro footerIcn() -%}
+<section id="footer">
+  <ul class="icons">
+    <li><a href="https://angeal185.github.io"  target="_blank" class="fa-github"><span class="label">github</span></a></li>
+    <li><a href="https://www.facebook.com/"  target="_blank" class="fa-facebook"><span class="label">facebook</span></a></li>
+    <li><a href="https://twitter.com/"  target="_blank" class="fa-twitter"><span class="label">twitter</span></a></li>
+  </ul>
+</section>
+{%- endmacro -%}
+
+{%- macro dH3(a,b) -%}
+<div class="{{a}}Cloud">
+  <h3>{{b|capitalize}}</h3>
+</div>
+{%- endmacro -%}
+
+{%- macro catTag() -%}
+  {% for i,e in {"cat":"categories","tag":"tags"} %}
+    {{dH3(a=i,b=e)}}
+  {% endfor %}
+{%- endmacro -%}
+
+{%- macro postList(data) -%}
+<div>
+  <ul class="posts">
+    {% for i in data.messageNews %}
+    <li>
+      <div class="comment clearfix">
+        <div class="comment-img">
+          <img class="userRad" src="{{i.userImg}}" alt="">
+        </div>
+        <div class="comment-content">
+          <div class="comment-name">
+            <span>{{ i.user }}</span>
+          </div>
+          <div class="comment-mes">{{ i.message|safe }}</div>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{%- endmacro -%}
+
+{%- macro footer() -%}
+<footer class="f-copy">
+    <p>2018 ben eaves</p>
+</footer>
+{%- endmacro -%}
+
+{%- macro comment() -%}
+<section id="comment">
+  <div id="message-conent"></div>
+  {{pagination()}}
+</section>
+{%- endmacro -%}
+
+{%- macro pagination() -%}
+<div class="pages">
+	<div id="pages" class="clearfix"></div>
+</div>
+{%- endmacro -%}
+
+{%- macro navLinks(nav) -%}
+    <ul class="navbar-nav mr-auto">
+      {% for i,e in nav.main.default %}
+        <li class="nav-item"><a class="nav-link" href="/{{e}}">{{i|capitalize}}</a></li>
+      {% endfor %}
+      {% for i in nav.main.pages %}
+        <li class="nav-item"><a class="nav-link" href="/{{i}}">{{i|capitalize}}</a></li>
+      {% endfor %}
+    </ul>
+{%- endmacro -%}
+
+{%- macro navMain(data) -%}
+
+    <ul class="navbar-nav mr-right">
+        {% if data.userInfo._id %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Admin
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            {% if ((data.userInfo.isAdmin) === ('admin')) %}
+              {{ddLink(a="/admin",d="Admin")}}
+            {% else %}
+              {{ddLink(a="/profile",d="Profile")}}
+            {% endif %}
+              {{ddLink(a="/javascript:;",b="logout",d="Logout")}}
+          </div>
+        </li>
+        {% else %}
+          {{share.icoLink(x="login",a="/login",b="log-btn",c="user ",d="Login")}}
+        {% endif %}
+    </ul>
+
+{%- endmacro -%}
+
+{%- macro ddLink(a,b,c,d) -%}
+    <a href="{{a}}" class="dropdown-item {{b}}">{{d}}</a>
+{%- endmacro -%}
+
+{%- macro head(nav,data) -%}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">title</a>
+  {{navLinks(nav)}}
+  {{navMain(data)}}
+</nav>
+{%- endmacro -%}
+
+{%- macro maintCounter(items) -%}
+{% for i in items.maintenance.count %}
+<div class="{{i}}">
+  <div class="value">00</div>
+  <span>{{i|capitalize}}</span>
+</div>
+{% endfor %}
+{%- endmacro -%}
+
+{%- macro msg(message) -%}
+<div class="form-box card">
+    <div class="form-group card-body">
+        <div class="info">
+            <p>Name: {{message.user}}</p>
+            <p>Email: {{message.email}}</p>
+            <p>Date: {{ message.addTime | date }}</p>
+        </div>
+        <div>{{message.message | safe}}</div>
+    </div>
+    <div id="editor"></div>
+    {{share.warningBtn(i="Send")}}
+</div>
+{%- endmacro -%}
+
+
+
+{%- macro span(a,b) -%}
+<span class="{{a}}">{{b}}</span>
+{%- endmacro -%}
+
+{%- macro iSpan(a,b,c) -%}
+<span class="{{a}}">
+  <i class="fa fa-{{b}}"></i>{{c}}
+</span>
+{%- endmacro -%}
+
+{%- macro imgSpan(a,b,c) -%}
+<span class="{{a}}">
+  <img {% if c %}class="{{c}}" {% endif %}src="{{b}}">
+</span>
+{%- endmacro -%}
+
+{%- macro imgDiv(a,b,c,d) -%}
+<div class="{{a}}">
+  <img {% if c %}class="{{c}}" {% endif %}src="{{b}}">
+  {% if d %}<h3>{{d}}</h3>{% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro desc(a,b) -%}
+<div class="{{a}}">
+  <p>{{b}}</p>
+</div>
+{%- endmacro -%}
+
+{%- macro CT(a,b,c,x) -%}
+<div class="{{a}}">
+  {% if x %}
+    {{a|capitalize}}: {%- for i in x -%}<div class="{{b}}">{{i}}</div>{%- endfor -%}
+  {% else %}
+    {{a|capitalize}}: <div class="{{b}}">{{c}}</div>
+  {% endif %}
+</div>
+{%- endmacro -%}
+
+{%- macro titleImg(a,b) -%}
+<div class="title-img">
+  <a href="/v/{{a}}" class="image">
+    <img src="{{b}}">
+  </a>
+</div>
+{%- endmacro -%}
+
+{%- macro postTitle(a,b) -%}
+<h3 class="title">
+  <a href="/v/{{a}}">{{b}}</a>
+</h3>
+{%- endmacro -%}
+
+{%- macro miniPost(a) -%}
+<div class="mini-posts">
+  {% for laud in a %}
+  <article class="mini-post">
+    <div class="con">
+      {{postTitle(a=laud._id,b=laud.title)}}
+      {{desc(a="description",b=laud.description|truncate(30,false,'...', 0))}}
+      <div class="meta">
+        {{imgSpan(a="user-img",b=laud.userImg)}}
+        {{span(a="user",b=laud.user)}}
+        {{iSpan(a="views",b="eye",c=laud.views)}}
+        {{iSpan(a="comments",b="comments-o",c=laud.comments.length)}}
+        {{CT(a="category",b="cat",c=laud.category)}}
+      </div>
+    </div>
+    {% if laud.titleImg %}
+    {{titleImg(a=laud._id,b=laud.titleImg)}}
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{%- endmacro -%}
+
+{%- macro post(a) -%}
+{% for content in a.contents %}
+<article class="post clearfix">
+  {% if content.titleImg %}
+  {{titleImg(a=content._id,b=content.titleImg)}}
+  <div class="title-con">
+  {% else %}
+  <div>
+  {% endif %}
+    {{postTitle(a=content._id,b=content.title)}}
+    {{desc(a="description",b=content.description|truncate(80,false,'...', 0))}}
+    <div class="meta">
+      {{imgSpan(a="user-img",b=content.userImg)}}
+      {{span(a="user",b=content.user)}}
+      {{iSpan(a="published",b="calendar",c=content.addTime.toString()|date)}}
+      {{iSpan(a="views",b="eye",c=content.views)}}
+      {{iSpan(a="comments",b="comments-o",c=content.comments.length)}}
+      {{CT(a="category",b="cat",c=content.category)}}
+      {{CT(a="tags",b="tag",x=content.tags)}}
+    </div>
+  </div>
+</article>
+{% endfor %}
+{%- endmacro -%}
+
+{%- macro sideBar(a) -%}
+<div id="sidebar" class="col-md-3">
+  {{intro()}}
+  {{miniPost(a=a.lauds)}}
+  {{postList(data=a)}}
+  {% if config.app.catTagCloud %}
+    {{catTag()}}
+  {% endif %}
+  {{catTag()}}
+  {{blurb()}}
+  {{footerIcn()}}
+</div>
+{%- endmacro -%}
+
+{%- macro commentBox(a,b,c) -%}
+<div class="userBox clearfix">
+  {{imgSpan(a="box",b=a,c="userRad")}}
+  <div class="box">
+    <p>{{b}} {{c}}</p>
+    <p><i class="fa fa-hand-o-right"></i> <span class="count">0 comments</span></p>
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro editor() -%}
+<div class="row uniform">
+  <div class="col-md-12">
+    <div id="editor"></div>
+    <p class="warning"></p>
+    <div class="actions">
+      <button type="button" class="btn btn-outline-primary">Comment</button>
+    </div>
+  </div>
+</div>
+{%- endmacro -%}
+
+
+{%- macro commentForm(a) -%}
+<section class="comment-form">
+  <form class="form-box" method="post">
+    {% if a.userInfo._id %}
+    {{commentBox(a=a.userInfo.userImg,b="User:",c=a.userInfo.userName)}}
+    {{editor()}}
+    {% else %}
+    {{macro.commentBox(a="/public/images/userImg/none.png",b="Welcome. please log in to comment")}}
+    {% endif %}
+  </form>
+</section>
+{%- endmacro -%}
+
+{%- macro regForm(i) -%}
+<div class="col-md-6">
+  <div class="form-group">
+    <label>{{i.name|startCase}}</label>
+    <input name="{{i.name}}" class="form-control" type="{{i.type}}">
+  </div>
+</div>
+{%- endmacro -%}
+
+{%- macro hideInput(i) -%}
+<input name="{{i}}" type="text" hidden disabled>
+{%- endmacro -%}
+
+{%- macro articleFooter(a,b) -%}
+<div class="article-footer">
+  <h5>category: <span class="cat">{{a}}</span></h5>
+  <h5>tags: {% for i in b %}<span class="tag">{{i}}</span>{% endfor %}</h5>
+</div>
+{%- endmacro -%}
+
+{%- macro article(content) -%}
+<section class="article">
+  <header>
+    {{articleHead(a=content.titleImg,b=content.title)}}
+    <div class="article-meta">
+      {{articleMeta(a="calendar",b="date",c=content.addTime.toString()|date)}}
+      {{articleMeta(a="user",b="user",c=content.user)}}
+      {{articleMeta(a="eye",b="views",c=content.views)}}
+      {{articleMeta(a="comment",b="comments",c=content.comments.length)}}
+    </div>
+  </header>
+    <div class="article-description">
+      <p>{{ content.description }}</p>
+    </div>
+    <div class="article-content">
+      {{ content.content | safe }}
+    </div>
+    {{articleFooter(a=content.category,b=content.tags)}}
+    {{articleLike(a=content.laud)}}
+</section>
+{%- endmacro -%}
+
+{%- macro articleHead(a,b) -%}
+  <div class="article-title">
+    <img class="lightbox-img" src="{{a}}" data-caption="{{b}}">
+    <h2>{{b}}</h2>
+  </div>
+{%- endmacro -%}
+
+{%- macro articleMeta(a,b,c) -%}
+<span><i class="fa fa-{{a}}"></i> {{b}} ({{c}})</span>
+{%- endmacro -%}
+
+{%- macro articleLike(a) -%}
+<div class="laud">
+  <i class="fa fa-thumbs-up"></i><br><span>{{a}}</span>
+</div>
+{%- endmacro -%}
+
+{%- macro profileHead(a,dis) -%}
+{{imgDiv(a="text-center",b=a.userImg,c="img-thumbnail w100p",d=a.userName)}}
+<div class="row">
+  {% for i,e in a %}
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>{{i|startCase}}</label>
+      <input id="usr{{i}}" class="form-control" type="text" value="{{e}}" {% if dis %}disabled{% endif %}>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{%- endmacro -%}
