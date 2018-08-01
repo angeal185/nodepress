@@ -160,6 +160,7 @@ function login(){
         },
         dataType: 'json',
         success: function (result) {
+          console.log(result)
             $('#sign .login .warning').html( result.message );
             if( !result.code ){
                 if($('#rememberme').is(':checked')){
@@ -167,6 +168,10 @@ function login(){
                 } else {
                     localStorage.setItem("npRemember",'');
                 }
+                if (result.npToken){
+                  localStorage.setItem("npToken",result.npToken);
+                }
+
                 /*
                 var friends = {
                   friendRequests:,
@@ -262,6 +267,7 @@ function logout(){
 			dataType: 'json',
 			success: function (result) {
 				if( !result.code ){
+          localStorage.removeItem("npToken");
 					window.location.reload();
 				}
 			}

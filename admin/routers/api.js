@@ -17,6 +17,7 @@ let responseData,
 userImg;
 
 
+
 if(config.theme){
   theme = 'theme';
 } else {
@@ -118,7 +119,9 @@ router.post('/user/register',function(req,res,next){
             userImg: userImgSrc[Math.floor(Math.random()*userImgSrc.length)],
             token: newToken
         }).save();
-        
+
+
+
 
     }).then(function( newUserInfo ){
         //token
@@ -156,21 +159,36 @@ router.post('/user/login',function(req,res,next){
             User.update({
                 userName: user.userName
             },{
-                $set: { token: newToken }
-            }).then(function ( userInfo ) {
+                $set: {
+                  token: newToken
+                }
+            }).then(function () {
+
+              setTimeout(function(){
+                User.update({
+                    userName: user.userName
+                },{
+                    $set: {
+                      token: utils.passwordGen(config.token.length) + utils.passwordGen(16)
+                    }
+                }).then(function(){
+                  console.log('done')
+                })
+              },config.token.maxAge)
+
+
               req.cookies.set('token', newToken , {
                 maxAge:config.token.maxAge,
                 overwrite:config.token.overwrite,
                 secure: config.https
               });
+              if (userInfo.isAdmin === 'admin'){
+              }
               responseData.message = 'Login successful';
               res.json( responseData );
               return;
             })
-
-
           })
-
         }
     })
 });
