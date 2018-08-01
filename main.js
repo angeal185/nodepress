@@ -39,6 +39,8 @@ env.addFilter('dateTime', function(str, style) {
   return p(date.getDate() + '-' + p((date.getMonth() + 1)) + '-' + date.getFullYear());
 }).addFilter('startCase', function(i) {
   return _.startCase(i)
+}).addFilter('omit', function(i,e) {
+  return _.omit(i, e)
 });
 
 app.set('view engine', 'njk');

@@ -237,10 +237,10 @@ exports.passwordGen = passwordGen = function(length) {
     j = getRandomNum(str.length);
     res = res + str.charAt(j);
   }
-  console.log(res)
+//  console.log(res)
   return res;
 }
-passwordGen(64)
+//passwordGen(64)
 
 
 

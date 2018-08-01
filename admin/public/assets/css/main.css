@@ -1283,3 +1283,16 @@ body.single #footer {
 .success{
   color:green
 }
+
+.fRequests{
+    border: 1px solid grey;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.friendImg {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

@@ -49,5 +49,9 @@ module.exports = new mongoose.Schema({
     friendRequesting: {
         type: Array,
         default: []
+    },
+    pm: {
+        type: Array,
+        default: []
     }
 });

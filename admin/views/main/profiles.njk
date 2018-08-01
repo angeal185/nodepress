@@ -3,8 +3,9 @@
 {{macro.profileHead(a=user,dis=true)}}
 <div class="friendReq">
   <p>send freind request</p>
-  <button type="button" id="friendReq" class="btn btn-outline-primary">Send</button>
+  {{share.warningBtn(a="friendReq",i="Send",b="response")}}
 </div>
+
 
 
 <p></p>
@@ -14,24 +15,30 @@
 
 var fRequest = {
   from: {{data.userInfo.userName|dump|safe}},
-  to:{{user.userName|dump|safe}}
-}{{data.userName|dump|safe}}
+  to:{{user.userName|dump|safe}},
+  fImg:{{data.userInfo.userImg|dump|safe}},
+  tImg:{{user.userImg|dump|safe}}
+}
 $('#friendReq').click(function(event) {
   $.ajax({
       type: 'post',
       url: '/api/friendRequest',
       data: {
           userName: fRequest.to,
-          userRequest: fRequest.from
+          userImg: fRequest.tImg,
+          userRequest: fRequest.from,
+          userRequestImg: fRequest.fImg
       },
       dataType: 'json',
       success: function (result) {
         console.log(result.message)
-        //  $('#signFrm .register .warning').html( result.message );
+         $('#response').css('color', 'lime').html( result.message );
 
       }
   });
 });
+console.log({{data|dump|safe}})
 
+//friendRequests,friendRequesting,friends
 </script>
 {% endblock %}

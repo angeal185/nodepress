@@ -101,7 +101,6 @@ if (config.maintenance.enabled){
   router.route("/gallery")
       .get(function(req, res, next){
         Gallery.find().then(function(i){
-            console.log(i)
             data.gallery = i;
             res.render(theme +'/gallery',{
               nav:nav,
@@ -126,9 +125,8 @@ if (config.maintenance.enabled){
                 res.redirect('./admin')
                 return;
             } else {
-              var usr = _.pick(i,['userImg','addTime','userName','userEmail','firstName','lastName','country','city','facebook','twitter','linkedin','_v','friendRequesting','friendRequests','friends']);
+              var usr = _.pick(i,['pm','userImg','addTime','userName','userEmail','firstName','lastName','country','city','facebook','twitter','linkedin','_v','friendRequesting','friendRequests','friends']);
               usr.accountType = i.isAdmin
-              console.log(usr)
               res.render(theme +'/profile',{
                 nav:nav,
                 title:"profile",
@@ -156,10 +154,7 @@ if (config.maintenance.enabled){
             User.find({
               userName:req.params.id
               }).then(function(i){
-
-                //console.log(i)
                 var usr = _.pick(i[0],['userImg','addTime','userName','country','city','facebook','twitter','linkedin','_v']);
-                console.log(usr)
                 res.render(theme +'/profiles',{
                   nav:nav,
                   title:"profiles",
@@ -180,7 +175,6 @@ if (config.maintenance.enabled){
         Content.find({
           category:req.params.id
         }).then(function(i){
-            //console.log(i)
             data.contents = i;
             res.render(theme +'/category',{
               nav:nav,
@@ -197,7 +191,6 @@ if (config.maintenance.enabled){
         Content.find({
           tags:req.params.id
         }).then(function(i){
-            //console.log(i)
             data.contents = i;
             res.render(theme +'/category',{
               nav:nav,

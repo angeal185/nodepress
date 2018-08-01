@@ -4,6 +4,7 @@ router = express.Router(),
 _ = require('lodash'),
 path = require('path'),
 fs = require('fs'),
+crypto = require('crypto'),
 config = require('../config'),
 bcrypt = require('bcrypt-nodejs'),
 User = require('../models/User'),
@@ -14,6 +15,7 @@ utils = require('../utils/utils'),
 nodemailer = require('nodemailer');
 let responseData,
 userImg;
+
 
 if(config.theme){
   theme = 'theme';
@@ -31,31 +33,7 @@ router.use( function(req, res, next){
         message: ''
     };
     userImgSrc = [
-        '/public/images/userImg/1.jpg',
-        '/public/images/userImg/2.jpg',
-        '/public/images/userImg/3.jpg',
-        '/public/images/userImg/4.jpg',
-        '/public/images/userImg/5.jpg',
-        '/public/images/userImg/6.jpg',
-        '/public/images/userImg/7.jpg',
-        '/public/images/userImg/8.jpg',
-        '/public/images/userImg/9.jpg',
-        '/public/images/userImg/10.jpg',
-        '/public/images/userImg/11.jpg',
-        '/public/images/userImg/12.jpg',
-        '/public/images/userImg/13.jpg',
-        '/public/images/userImg/14.jpg',
-        '/public/images/userImg/15.jpg',
-        '/public/images/userImg/16.jpg',
-        '/public/images/userImg/17.jpg',
-        '/public/images/userImg/18.jpg',
-        '/public/images/userImg/19.jpg',
-        '/public/images/userImg/20.jpg',
-        '/public/images/userImg/21.jpg',
-        '/public/images/userImg/22.jpg',
-        '/public/images/userImg/23.jpg',
-        '/public/images/userImg/24.jpg',
-        '/public/images/userImg/25.jpg'
+        '/public/images/userImg/img.jpg'
     ];
     next();
 });
@@ -65,7 +43,6 @@ router.post('/newsletter',function (req, res) {
     Newsletter.findOne({
         title: 'newsletter'
     }).then(function(item){
-
       if(item){
         if (_.indexOf(item.subscribers, subscribe) != -1){
           responseData.message = 'email already registered!';
@@ -98,13 +75,10 @@ router.post('/newsletter',function (req, res) {
     });
 });
 
-//console.log(encodeURIComponent('dsasda@dsgfsdfs.com'))
-
 router.route("/newsletter/unsubscribe/:id")
     .get(function(req, res, next){
       var toDelete = req.params.id
 
-        console.log('ok')
         Newsletter.update({
             title: 'newsletter'
         },{
@@ -140,10 +114,11 @@ router.post('/user/register',function(req,res,next){
             city: user.city,
             firstName: user.firstName,
             lastName: user.lastName,
-            addTime: new Date(),
+            addTime: Date.now(),
             userImg: userImgSrc[Math.floor(Math.random()*userImgSrc.length)],
             token: newToken
         }).save();
+        
 
     }).then(function( newUserInfo ){
         //token
@@ -157,7 +132,7 @@ router.post('/user/register',function(req,res,next){
         return;
     });
 });
-//console.log(_.now() + config.cookie.maxAge)
+
 router.post('/user/login',function(req,res,next){
     let user = req.body;
     var newToken = utils.passwordGen(config.token.length);
@@ -208,6 +183,7 @@ router.post('/user/findpass',function (req, res) {
 router.post('/user/logout',function (req, res) {
   var username = req.body.userName;
     req.cookies.set('token', null);
+    req.cookies.set('token.sig', null);
     res.json( responseData );
     return;
 });
@@ -227,18 +203,44 @@ router.post('/laud',function(req,res){
 
 router.post('/friendRequest',function(req,res){
   var userName =  req.body.userName,
-  userRequest = req.body.userRequest;
+  userRequest = req.body.userRequest,
+  userImg = req.body.userImg,
+  userRequestImg = req.body.userRequestImg;
+
     User.findOne({
         userName: userName
     }).then(function (name) {
-        name.friendRequests.push( userRequest );
+      if (_.find(name.friendRequests, {name:userRequest})){
+        responseData.message = 'request already sent!';
+        res.json(responseData);
+        return;
+      } else if (_.find(name.friends, {name:userRequest})){
+        responseData.message = 'you are friends!';
+        res.json(responseData);
+        return;
+      } else {
+        name.friendRequests.push({
+          name:userRequest,
+          img:userRequestImg
+        });
         return name.save();
+      }
+
     }).then(function(msg){
       User.findOne({
           userName: userRequest
       }).then(function (name2) {
-          name2.friendRequesting.push( userName );
+        if (_.find(name2.friendRequesting, {name:userName})){
+          return;
+        } else if (_.find(name2.friends, {name:userName})){
+          return;
+        } else{
+          name2.friendRequesting.push({
+            name:userName,
+            img:userImg
+          });
           return name2.save();
+        }
       })
     }).then(function(msg){
         responseData.message = 'request successfully sent!';
@@ -249,28 +251,141 @@ router.post('/friendRequest',function(req,res){
 
 router.post('/acceptFriend',function(req,res){
   var userName =  req.body.userName,
-  userRequest = req.body.userRequest;
+  userRequest = req.body.userRequest,
+  pmKey = passwordGen(32);
     User.findOne({
         userName: userName
     }).then(function ( name ) {
-        name.friendRequests.pull( userRequest );
-        name.friends.push( userRequest );
+        name.friends.push(_.filter(name.friendRequests,{name:userRequest})[0]);
+        name.friendRequests = _.reject(name.friendRequests,{name:userRequest});
         return name.save();
-    }).then(function(msg){
+    }).then(function(name2){
       User.findOne({
           userName: userRequest
-      }).then(function ( name ) {
-          name.friendRequesting.pull( userName );
-          name.friends.push( userName );
-          return name.save();
+      }).then(function ( name2 ) {
+        name2.friends.push(_.filter(name2.friendRequesting,{name:userName})[0]);
+        name2.friendRequesting = _.reject(name2.friendRequesting,{name:userName});
+        return name2.save();
       })
     }).then(function(msg){
-        responseData.message = 'request successfully sent!';
+        responseData.message = 'Friend request accepted!';
         res.json(responseData);
         return;
     });
 });
 
+router.post('/revokeFriend',function(req,res){
+  var userName =  req.body.userName,
+  userRequest = req.body.userRequest;
+    User.findOne({
+        userName: userName
+    }).then(function ( name ) {
+        name.friends = _.reject(name.friends,{name:userRequest});
+        return name.save();
+    }).then(function(msg){
+      User.findOne({
+          userName: userRequest
+      }).then(function ( name2 ) {
+          name2.friends = _.reject(name2.friends,{name:userName});
+          return name2.save();
+      })
+    }).then(function(msg){
+        responseData.message = 'friendship revoked!';
+        res.json(responseData);
+        return;
+    });
+});
+
+router.post('/revokeOffer',function(req,res){
+  var userName =  req.body.userName,
+  userRequest = req.body.userRequest;
+    User.findOne({
+        userName: userName
+    }).then(function (name) {
+        name.friendRequesting = _.reject(name.friendRequesting,{name:userRequest});
+        return name.save();
+    }).then(function(msg){
+      User.findOne({
+          userName: userRequest
+      }).then(function (name2) {
+          name2.friendRequests = _.reject(name2.friendRequests,{name:userName});
+          return name2.save();
+      })
+    }).then(function(msg){
+        responseData.message = 'friendship offer revoked!';
+        res.json(responseData);
+        return;
+    });
+});
+
+router.post('/refuseOffer',function(req,res){
+  var userName =  req.body.userName,
+  userRequest = req.body.userRequest;
+    User.findOne({
+        userName: userName
+    }).then(function (name) {
+        name.friendRequests = _.reject(name.friendRequests,{name:userRequest});
+        return name.save();
+    }).then(function(msg){
+      User.findOne({
+          userName: userRequest
+      }).then(function (name2) {
+          name2.friendRequesting = _.reject(name2.friendRequesting,{name:userName});
+          return name2.save();
+      })
+    }).then(function(msg){
+        responseData.message = 'friendship offer refused!';
+        res.json(responseData);
+        return;
+    });
+});
+
+router.post('/sendPM',function(req,res){
+  var from =  req.body.from,
+  to = req.body.to,
+  msg = req.body.msg;
+    User.findOne({
+        userName: to
+    }).then(function (message) {
+        message.pm.push({
+          from:from,
+          msg:msg,
+          date: Date.now()
+        });
+        return message.save();
+    }).then(function(msg){
+        responseData.message = 'pm sent!';
+        res.json(responseData);
+        return;
+    });
+});
+
+router.post('/readPM',function(req,res){
+  var from =  req.body.from,
+  to = req.body.to;
+    User.findOne({
+        userName: to
+    }).then(function(msg){
+        msg.message = _.filter(msg.pm,{from:from})[0];
+        res.json(msg.message);
+        return;
+    });
+});
+
+router.post('/deletePM',function(req,res){
+  var from =  req.body.from,
+  user = req.body.user,
+  dt = req.body.dt;
+    User.findOne({
+        userName: user
+    }).then(function(msg){
+        msg.pm = _.reject(msg.pm,{from:from,date:parseInt(dt)});
+        return msg.save();
+    }).then(function(response){
+        res.json(response);
+        return;
+    });
+});
 
 router.post('/view',function(req,res){
     Content.findOne({
@@ -308,7 +423,7 @@ router.post('/message',function(req,res){
     }
 
     new Message({
-        addTime: new Date(),
+        addTime: Date.now(),
         message: req.body.msgContent,
         userImg: userImg,
         user: userName,
@@ -345,13 +460,12 @@ router.post('/comment',function(req, res){
     }
 
     let postData = {
-        addTime: new Date(),
+        addTime: Date.now(),
         message: req.body.msgContent,
         userImg: userImg,
         user: userName,
         email: userEmail
     };
-    console.log(postData)
     Content.findOne({
         _id: contentId
     }).then(function (content) {

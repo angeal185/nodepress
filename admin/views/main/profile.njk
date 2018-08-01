@@ -10,9 +10,9 @@
         <p class="slice">You have {{user.friendRequests.length}} new friend request{{share.slice(a=user.friendRequests,b="s")}}</p>
         {% for item in user.friendRequests %}
         <div class="fList">
-          <a class="fLink" href="/profiles/{{item}}" target="_blank">{{item}}</a>
-          <span id="acceptFriend" class="success sLink">accept</span>
-          <span id="rejectFriend" class="danger sLink">reject</span>
+          <a class="fLink" href="/profiles/{{item.name}}" target="_blank">{{item.name}}</a>
+          <span class="success sLink acceptFriend">accept</span>
+          <span class="danger sLink refuseOffer">refuse</span>
         </div>
         {% endfor %}
         {% else %}
@@ -26,8 +26,8 @@
         <p>You have made {{user.friendRequesting.length}} friend request{{share.slice(a=user.friendRequesting,b="s")}}</p>
         {% for item in user.friendRequesting %}
         <div class="fList">
-          <a class="fLink" href="/profiles/{{item}}" target="_blank">{{item}}</a>
-          <span id="rejectFriend" class="danger sLink">revoke</span>
+          <a class="fLink" href="/profiles/{{item.name}}" target="_blank">{{item.name}}</a>
+          <span class="danger sLink revokeOffer">revoke</span>
         </div>
         {% endfor %}
         {% else %}
@@ -40,40 +40,116 @@
         {% if user.friends %}
         <p>You have {{user.friends.length}} friend{{share.slice(a=user.friends,b="s")}}</p>
         {% for item in user.friends %}
-          <a href="/profiles/{{item}}" target="_blank">{{item}}</a>
-          <span id="button" class="success sLink">message</span>
-          <span id="button" class="danger sLink">unfriend</span>
+        <div class="frCont">
+          <img class="friendImg" src="{{item.img}}" alt="">
+          <a class="fLink" href="/profiles/{{item.name}}" target="_blank">{{item.name}}</a>
+          <span class="success sLink msgInit" data-toggle="modal" data-target="#msgModal">message</span>
+          <span class="danger sLink revokeFriend">unfriend</span>
+        </div>
         {% endfor %}
         {% else %}
           You have no friends yet.
         {% endif %}
       </div>
 
+      <div class="msgs">
+        <h3>messages</h3>
+        {% if user.pm %}
+        <p>You have {{user.pm.length}} message{{share.slice(a=user.pm,b="s")}}</p>
+        {% for item in user.pm %}
+        <div class="pMsg">
+          <p>{{item.date|dateTime}}</p>
+          <a class="fLink" href="/profiles/{{item.from}}" target="_blank">{{item.from}}</a>
+          <span class="success sLink readMsg" data-toggle="modal" data-target="#msgModal">read</span>
+          <span class="danger sLink deleteMsg" data-stamp="{{item.date}}">delete</span>
+        </div>
+        {% endfor %}
+        {% else %}
+          You have no messages.
+        {% endif %}
+      </div>
+
     </div>
   </div>
   <div class="col-md-9">
-    {{macro.profileHead(a=user)}}
+    {{macro.profileHead(a=user|omit(['pm','accountType','friends','friendRequests','friendRequesting']))}}
   </div>
 </div>
 
 
 
+<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="msgModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name" disabled>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="encBtn" class="btn btn-primary">Close</button>
+        <button type="button" id="sendMsg" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{user|dump|safe}}
 {% endblock %}
 {% block script %}
+{{share.js(s="aes")}}
 <script>
 
 
+$('#encBtn').click(function(event) {
+  $('#encrypted-text').val(CryptoJS.AES.encrypt($('#message-text').val(), "Secret").toString())
+});
 
-var uName = {{user.userName|dump|safe}};
+$('#message-text').keyup(function() {
+  $('#encrypted-text').val(CryptoJS.AES.encrypt($('#message-text').val(), "Secret").toString())
+});
+//var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret").toString(CryptoJS.enc.Utf8);
+
+
+$('span.msgInit').click(function() {
+  var msgTo = $(this).siblings('a.fLink').html();
+  $('#recipient-name').val(msgTo)
+});
+
+$('message-text').keyup(function() {
+  var msgTo = $(this).siblings('a.fLink').html();
+  $('#recipient-name').val(msgTo)
+});
+
+var uName = {{user.userName|dump|safe}},
+friendCalls = ['acceptFriend','revokeFriend','revokeOffer','refuseOffer'];
 _.forEach(['userName','addTime','country','city','accountType'],function(i){
   $('#usr'+i).attr('disabled',true)
 })
 
-  $('#acceptFriend').click(function(event) {
-      var newFriend = $(this).siblings('a.fLink').html();
+_.forEach(friendCalls,function(i){
+  fCall(i)
+})
+
+function fCall(i){
+  $('.'+i).click(function() {
+    let newFriend = $(this).siblings('a.fLink').html();
     $.ajax({
         type: 'post',
-        url: '/api/acceptFriend',
+        url: '/api/'+i,
         data: {
           userName: uName,
           userRequest: newFriend
@@ -81,11 +157,103 @@ _.forEach(['userName','addTime','country','city','accountType'],function(i){
         dataType: 'json',
         success: function (result) {
           console.log(result.message)
+          window.location.reload()
           //  $('#signFrm .register .warning').html( result.message );
-
         }
     });
   });
+}
+
+$('#sendMsg').click(function() {
+  $.ajax({
+      type: 'post',
+      url: '/api/sendPM',
+      data: {
+        to: $('#recipient-name').val(),
+        from: uName,
+        msg:$('#message-text').val()
+      },
+      dataType: 'json',
+      success: function (result) {
+        console.log(result.message)
+        window.location.reload()
+        //  $('#signFrm .register .warning').html( result.message );
+      }
+  });
+});
+
+$('.deleteMsg').click(function() {
+  console.log($(this).attr('data-stamp'))
+  $.ajax({
+      type: 'post',
+      url: '/api/deletePM',
+      data: {
+        from: $(this).siblings('a.fLink').html(),
+        user: uName,
+        dt:$(this).attr('data-stamp')
+      },
+      dataType: 'json',
+      success: function (result) {
+        console.log(result.message)
+        window.location.reload()
+        //  $('#signFrm .register .warning').html( result.message );
+      }
+  });
+});
+
+$('.readMsg').click(function() {
+  var obj = {};
+  $.ajax({
+      type: 'post',
+      url: '/api/readPM',
+      data: {
+        to: uName,
+        from: $(this).siblings('a.fLink').html()
+      },
+      dataType: 'json',
+      success: function (res) {
+        //console.log(res)
+        $('#recipient-name').val(res.from),
+        $('#message-text').val(res.msg)
+
+/*
+        if (res.from != 'admin'){
+          $('#recipient-name').val(res.from),
+          $('#message-text').val(CryptoJS.AES.decrypt(res.msg, "Secret").toString(CryptoJS.enc.Utf8))
+        } else {
+
+        }
+
+/*
+        if (res.key){
+          obj.user = res.key.user;
+          obj.key = res.key.key;
+          if(!localStorage.getItem("npKey") || localStorage.getItem("npKey")  === ''){
+            var arr = [obj];
+            localStorage.setItem("npKey",JSON.stringify(arr));
+          } else {
+            var keys = JSON.parse(localStorage.getItem("npKey"));
+
+            if (_.find(keys,obj)){
+
+              console.log('exists')
+
+            } else {
+
+              console.log('doesnt exist')
+              //keys.push(obj)
+              //localStorage.setItem("npKey",JSON.stringify(keys));
+
+            }
+          }
+        }
+*/
+
+        //window.location.reload()
+        //  $('#signFrm .register .warning').html( result.message );
+      }
+  });
+});
 
 </script>
 {% endblock %}

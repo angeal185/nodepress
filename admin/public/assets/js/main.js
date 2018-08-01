@@ -164,9 +164,21 @@ function login(){
             if( !result.code ){
                 if($('#rememberme').is(':checked')){
                     localStorage.setItem("npRemember",'{"userName":"'+ userName +'","password":"'+password+'"}');
-                }else{
+                } else {
                     localStorage.setItem("npRemember",'');
                 }
+                /*
+                var friends = {
+                  friendRequests:,
+                  friendRequesting:,
+                  friends
+                }
+                if(!localStorage.getItem("npFriends") || localStorage.getItem("npFriends")  === ''){
+
+                } else {
+
+                }
+                */
                 window.location = './';
             }
         }
