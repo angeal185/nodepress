@@ -2,7 +2,7 @@
   "admin":{
     "index":"admin",
     "ddSingle":["user","message","status"],
-    "dd":["content","gallery","pages"],
+    "dd":["content","gallery","page"],
     "right":[{
           "title":"home",
           "href":"/",
@@ -17,7 +17,7 @@
           "class":""
       },{
           "title":"logout",
-          "href":"javascript:;",
+          "href":"javascript:",
           "class":"logout"
       }
     ]
@@ -25,6 +25,7 @@
   "main":{
     "default":{
       "home":"",
+      "blog":"blog",
       "contact":"message",
       "gallery":"gallery"
     },

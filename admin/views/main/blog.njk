@@ -1,9 +1,10 @@
 {% extends './layout.njk' %}
 {% block main %}
 <div class="row">
-
+	{{macro.sideBar(a=data)}}
 	<div id="main" class="col-md-9">
-
+		{{macro.post(a=data)}}
+		{{macro.pagination()}}
 		{% if config.subscription.enabled %}
 			{{addon.subscribe()}}
 		{% endif %}
@@ -15,7 +16,14 @@
 {% endblock %}
 {% block script %}
 <script>
-
+var catlist = {{data.catList|dump|safe}};
+var taglist = {{data.tagList|dump|safe}};
+var pg = {{data.page}};
+var pgs = {{data.pages}};
+tagCat(catlist,'cat');
+tagCat(taglist,'tag');
+tagCatEnable();
+pagina(pg,pgs);
 {% if config.subscription.enabled %}
 subscribeInit();
 {% endif %}

@@ -6,6 +6,14 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
+    CSS: {
+      type: Array,
+      default: []
+    },
+    JS: {
+      type: Array,
+      default: []
+    },
     addTime: {
         type: Date,
         default: ''

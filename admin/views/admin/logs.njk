@@ -1,0 +1,129 @@
+{% extends './layout.njk' %}
+{% block main %}
+<br>
+
+<div class="container">
+
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		{% for i,e in {'db':'Database setup','user':'Create user','config':'Settings','theme':'Themes options','build':'Build options'} %}
+		<li class="nav-item">
+			<a class="nav-link {% if (i === 'db') %}active{% endif %}" id="{{i}}-tab" {% if (i === 'db') %}data-toggle="tab"{% endif %} href="#{{i}}" role="tab" aria-controls="{{i}}" aria-selected="true">{{e}}</a>
+		</li>
+		{% endfor %}
+	</ul>
+
+	<div class="tab-content" id="myTabContent">
+
+		<div class="tab-pane fade show active" id="db" role="tabpanel" aria-labelledby="db-tab"><br>
+			<span id="dbAdvShow" class="badge badge-primary sBtn">Advanced</span>
+			<div class="row">
+				{% if config.dbUrlSet %}
+				<div class="form-group">
+					<label>Database set url:</label>
+					<input type="text" class="form-control" id="dbOutput" value="Enter {{config.mongo.url}}">
+				</div>
+				{% else %}
+					{% for i in db %}
+					<div class="form-group col-md-4">
+						<label>{{i}}</label>
+						<input type="email" class="form-control" id="db{{i}}" placeholder="Database {{i|lower}}">
+						<small class="form-text"></small>
+					</div>
+					{{macro.fg(i=i,e="col-md-4",x="Database")}}
+					{% endfor %}
+				{% endif %}
+			</div>
+			{{macro.btn(i="dflt",e="default")}}
+			{{macro.btn(i="dbCreate",e="Create")}}
+		</div>
+
+	  <div class="tab-pane fade" id="user" role="tabpane2" aria-labelledby="user-tab">
+			{% for i in inputs %}
+				{{macro.fg(i=i,x="Enter")}}
+			{% endfor %}
+			{{macro.btn(i="userCreate",e="confirm")}}
+		</div>
+
+	 <div class="tab-pane fade" id="config" role="tabpane3" aria-labelledby="config-tab">
+		<div class="row">
+			{% for i in settings.inputs %}
+				{{macro.input(i=i.label,e=i.val,x=i.description)}}
+			{% endfor %}
+
+			{% for i in settings.select %}
+				{{macro.select(a=i.label,b=i.op1,c=i.op2,d=i.description)}}
+			{% endfor %}
+
+	</div>
+	{{macro.btn(i="configBtn",e="confirm")}}
+</div>
+
+
+<div class="tab-pane fade" id="theme" role="tabpane4" aria-labelledby="theme-tab">
+ <div class="row">
+	 {{macro.select(a="nodepressTheme",d=settings.msg.themeDescription,e=bw.options)}}
+	 <div class="col-md-6 mb40 mt40">
+			 <img id="themeImg" src="" class="img-thumbnail">
+	 </div>
+	 {{macro.select(a="AceTheme",d=settings.msg.aceDescription,e=aceConf.themes)}}
+	 <div class="col-md-6">
+			 <textarea id="editor" rows="8" cols="80"></textarea>
+	 </div>
+</div>
+{{macro.btn(i="confirmTheme",e="confirm")}}
+{{macro.btn(i="skipTheme",e="skip")}}
+</div>
+
+<div class="tab-pane fade" id="build" role="tabpane5" aria-labelledby="build-tab">
+
+
+ <div class="row">
+
+	 <div class="col-md-6">
+		 <div class="form-group">
+		 <label>environment</label>
+		 <select class="custom-select">
+			 <option value="development" selected>development</option>
+			 <option value="production">production</option>
+		 </select>
+		 <small class="form-text">Nodepress environment</small>
+		 </div>
+	 </div>
+
+	 <div class="col-md-6">
+
+	</div>
+
+	 <div class="col-md-6">
+		 <div class="form-group">
+			 <label>compiler</label>
+			 <select class="custom-select">
+				 <option value="none" selected>none</option>
+				 <option value="stylus">Stylus</option>
+				 <option value="scss">SCSS</option>
+				 <option value="sass">SASS</option>
+				 <option value="less">LESS</option>
+			 </select>
+			 <small class="form-text">CSS compiler</small>
+		 </div>
+	 </div>
+
+</div>
+{{macro.btn(i="changeTheme",e="change")}}
+</div>
+
+	</div>
+
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+	var db = {{db|dump|safe}}
+	var dbSet = {{config.dbUrlSet|dump|safe}}
+	var settings = {{settings|dump|safe}}
+	var bw = {{bw|dump|safe}};
+	var version = {{config.app.version|dump|safe}}
+</script>
+
+{% endblock %}

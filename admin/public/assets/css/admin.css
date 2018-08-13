@@ -49,7 +49,7 @@ nav .navbar{
 }
 
 
-.tag{
+.tag,.CSS,.JS{
     display: inline-block;
     background: grey;
     color: white;
@@ -736,4 +736,22 @@ nav .navbar{
 
 .FR{
   float:right
+}
+
+.ck .ck-content{
+  min-height: 300px;
+}
+
+.ace_editor{
+  min-height: 300px;
+}
+
+.editorSwitch{
+  float: right;
+  cursor: pointer;
+  font-size: 12px;
+  background: grey;
+  color: #fff;
+  padding: 4px;
+  border-radius: 4px;
 }

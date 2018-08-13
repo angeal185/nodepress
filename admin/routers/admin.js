@@ -2,7 +2,9 @@ const express = require('express'),
 router = express.Router(),
 Items = require('../config/items'),
 Content = require('../models/Content'),
+Page = require('../models/Page'),
 Gallery = require('../models/Gallery'),
+jwt = require('jsonwebtoken'),
 config = require('../config'),
 Message = require('../models/Message'),
 User = require('../models/User'),
@@ -12,7 +14,39 @@ nav = require('../config/nav');
 let data;
 let responseData;
 
+function setJWT(req,res,next){
+  var npToken =  req.body.npToken || req.query.npToken || req.headers['x-access-token'];
+
+  // decode token
+  if (npToken) {
+
+    // verifies secret and checks exp
+    jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        console.log(decoded);
+        next();
+      }
+    });
+
+  } else {
+
+    // if there is no token
+    // return an error
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+    });
+
+  }
+}
+
 router.use(function(req,res,next){
+
+//cookie
     if(typeof(req.userInfo.token) == 'undefined'){
         res.render('main/prevent',{
           config:config,
@@ -92,33 +126,53 @@ router.get('/user/edit',function (req, res) {
 });
 
 router.post('/user/edit',function (req, res) {
-    let id = req.body._id || '';
-    User.update({
-        _id: id
-    },{
-        userImg:req.body.userImg,
-        userName:req.body.userName,
-        userEmail:req.body.userEmail,
-        isAdmin: req.body.isAdmin,
-        city: req.body.city,
-        country: req.body.country,
-        facebook: req.body.facebook,
-        twitter: req.body.twitter,
-        linkedin: req.body.linkedin
-    }).then(function () {
-        res.json(responseData);
-        return;
+    let id = req.body._id || '',
+    npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        User.update({
+            _id: id
+        },{
+            userImg:req.body.userImg,
+            userName:req.body.userName,
+            userEmail:req.body.userEmail,
+            isAdmin: req.body.isAdmin,
+            city: req.body.city,
+            country: req.body.country,
+            facebook: req.body.facebook,
+            twitter: req.body.twitter,
+            linkedin: req.body.linkedin
+        })
+        .then(function (response) {
+            res.json({ success: true, message: 'User updated!' });
+            return;
+        });
+      }
     });
+
 });
 
-router.get('/user/del',function(req, res){
-    let id = req.query.id || '';
-    User.remove({
-        _id: id
-    }).then(function(){
-        res.json(responseData);
-        return;
+router.post('/user/del',function(req, res){
+    let id = req.body.id,
+    npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        User.remove({
+            _id: id
+        })
+        .then(function (response) {
+            res.json({ success: true, message: 'User deleted!' });
+            return;
+        });
+      }
     });
+
 });
 
 router.get('/user',function(req, res){
@@ -180,9 +234,6 @@ router.get('/content',function(req, res){
     })
 });
 
-
-
-
 router.get('/content/add',function(req, res){
     res.render('admin/add',{
       config:config,
@@ -194,20 +245,32 @@ router.get('/content/add',function(req, res){
 });
 
 router.post('/content/add',function (req, res) {
-    new Content({
-        userImg: req.userInfo.userImg,
-        user: req.userInfo.userName,
-        title: req.body.title,
-        category: req.body.category,
-        tags: req.body.tags,
-        titleImg: req.body.titleImg,
-        description: req.body.description,
-        content: req.body.content,
-        addTime: new Date()
-    }).save().then(function (rs) {
-        res.json(responseData);
-        return;
-    });
+
+  let npToken =  req.body.npToken;
+   jwt.verify(npToken, 'secret', function(err, decoded) {
+    if (err) {
+      return res.json({ success: false, message: 'Failed to authenticate token.' });
+    } else {
+      req.decoded = decoded;
+      new Content({
+          userImg: req.userInfo.userImg,
+          user: req.userInfo.userName,
+          title: req.body.title,
+          category: req.body.category,
+          tags: req.body.tags,
+          titleImg: req.body.titleImg,
+          description: req.body.description,
+          content: req.body.content,
+          addTime: new Date()
+      })
+      .save()
+      .then(function (response) {
+          res.json({ success: true, message: 'User updated!' });
+          return;
+      });
+    }
+  });
+
 });
 
 router.get('/content/edit',function (req, res) {
@@ -228,22 +291,32 @@ router.get('/content/edit',function (req, res) {
 });
 
 router.post('/content/edit',function (req, res) {
-    let id = req.body._id || '';
-    Content.update({
-        _id: id
-    },{
-        userImg: req.userInfo.userImg,
-        user: req.userInfo.userName,
-        title: req.body.title,
-        description: req.body.description,
-        titleImg: req.body.titleImg,
-        content: req.body.content,
-        category: req.body.category,
-        tags: req.body.tags
-    }).then(function () {
-        res.json(responseData);
-        return;
+    let id = req.body._id || '',
+    npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        Content.update({
+            _id: id
+        },{
+            userImg: req.userInfo.userImg,
+            user: req.userInfo.userName,
+            title: req.body.title,
+            description: req.body.description,
+            titleImg: req.body.titleImg,
+            content: req.body.content,
+            category: req.body.category,
+            tags: req.body.tags
+        })
+        .then(function (response) {
+            res.json({ success: true, message: 'User updated!' });
+            return;
+        });
+      }
     });
+
 });
 
 router.get('/content/del',function(req, res){
@@ -256,95 +329,235 @@ router.get('/content/del',function(req, res){
     });
 });
 
-router.get('/gallery',function(req, res){
+router.get('/page',function(req, res){
 
     let page = Number( req.query.page || 1 );
     let limit = 10;
     let pages = 0;
 
-    Gallery.countDocuments().then(function (count) {
+    Page.countDocuments().then(function (count) {
         pages = Math.ceil( count/limit );
         page = Math.min( page, pages );
         page = Math.max( page, 1 );
         let skip = (page - 1)*limit;
-        Gallery.find().sort({ title: -1 }).limit(limit).skip(skip).then( function( galleries ){
-            res.render('admin/gallery_index',{
+        Page.find().sort({ addTime: -1 }).limit(limit).skip(skip).then( function( contents ){
+            res.render('admin/page_index',{
                 config:config,
                 nav:nav,
-                galleries: galleries,
+                contents: contents,
                 count: count,
                 limit: limit,
                 pages: pages,
                 page: page,
                 userInfo: req.userInfo,
-                admin: 'gallery',
-                title: 'gallery',
+                admin: 'page',
+                title: 'page',
                 items: Items
             })
         });
     })
 });
-router.get('/gallery/add',function(req, res){
-    res.render('admin/add',{
+
+router.get('/page/add',function(req, res,next){
+    res.render('admin/page_add',{
       config:config,
       nav:nav,
       data:data,
-      title: 'gallery',
+      title: 'page',
       items: Items
     })
 });
-router.post('/gallery/add',function (req, res) {
-    new Gallery({
-        title: req.body.title,
-        sub: req.body.sub,
-        url: req.body.url,
-        addTime: new Date()
-    }).save().then(function (rs) {
-        res.json(responseData);
-        return;
+
+router.post('/page/add',function (req, res, next) {
+    let npToken =  req.body.npToken;
+    jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        new Page({
+            title: req.body.title,
+            CSS: req.body.CSS,
+            JS: req.body.JS,
+            content: req.body.content,
+            addTime: Date.now()
+        })
+        .save()
+        .then(function (response) {
+            res.json({ success: true, message: 'New page created!' });
+            return;
+        });
+      }
     });
 });
-router.get('/gallery/edit',function (req, res) {
+
+router.get('/page/edit',function (req, res) {
     let id = req.query.id || '';
 
-    Gallery.findOne({
+    Page.findOne({
         _id: id
-    }).then(function (galleries) {
+    }).then(function (content) {
         res.render('admin/edit',{
-          config:config,
-          nav:nav,
-          userInfo: req.userInfo,
-          galleries: galleries,
-          title: 'gallery',
-          items: Items
+            config:config,
+            nav:nav,
+            userInfo: req.userInfo,
+            content: content,
+            title: 'page',
+            items: Items
         });
     });
 });
 
-router.post('/gallery/edit',function (req, res) {
-    let id = req.body._id || '';
-    Gallery.update({
-        _id: id
-    },{
-        userImg: req.userInfo.userImg,
-        user: req.userInfo.userName,
-        title: req.body.title,
-        sub: req.body.sub,
-        url: req.body.url
-    }).then(function () {
-        res.json(responseData);
-        return;
+
+
+router.post('/page/edit',function (req, res) {
+    let id = req.body._id || '',
+    npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        Page.update({
+            _id: id
+        },{
+          title: req.body.title,
+          CSS: req.body.CSS,
+          JS: req.body.JS,
+          content: req.body.content
+        })
+        .then(function (response) {
+            res.json({ success: true, message: 'Page updated!' });
+            return;
+        });
+      }
     });
+
 });
-router.get('/gallery/del',function(req, res){
+
+router.get('/page/del',function(req, res){
     let id = req.query.id || '';
-    Gallery.remove({
+    Page.remove({
         _id: id
     }).then(function(){
         res.json(responseData);
         return;
     });
 });
+
+if (config.app.gallery){
+  router.get('/gallery',function(req, res){
+
+      let page = Number( req.query.page || 1 );
+      let limit = 10;
+      let pages = 0;
+
+      Gallery.countDocuments().then(function (count) {
+          pages = Math.ceil( count/limit );
+          page = Math.min( page, pages );
+          page = Math.max( page, 1 );
+          let skip = (page - 1)*limit;
+          Gallery.find().sort({ title: -1 }).limit(limit).skip(skip).then( function( galleries ){
+              res.render('admin/gallery_index',{
+                  config:config,
+                  nav:nav,
+                  galleries: galleries,
+                  count: count,
+                  limit: limit,
+                  pages: pages,
+                  page: page,
+                  userInfo: req.userInfo,
+                  admin: 'gallery',
+                  title: 'gallery',
+                  items: Items
+              })
+          });
+      })
+  });
+  router.get('/gallery/add',function(req, res){
+      res.render('admin/add',{
+        config:config,
+        nav:nav,
+        data:data,
+        title: 'gallery',
+        items: Items
+      })
+  });
+  router.post('/gallery/add',function (req, res) {
+    let npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        new Gallery({
+            title: req.body.title,
+            sub: req.body.sub,
+            url: req.body.url,
+            addTime: new Date()
+        })
+        .save()
+        .then(function (response) {
+            res.json({ success: true, message: 'New gallery item created!' });
+            return;
+        });
+      }
+    });
+
+  });
+  router.get('/gallery/edit',function (req, res) {
+      let id = req.query.id || '';
+
+      Gallery.findOne({
+          _id: id
+      }).then(function (galleries) {
+          res.render('admin/edit',{
+            config:config,
+            nav:nav,
+            userInfo: req.userInfo,
+            galleries: galleries,
+            title: 'gallery',
+            items: Items
+          });
+      });
+  });
+
+  router.post('/gallery/edit',function (req, res) {
+      let id = req.body._id || '',
+      npToken =  req.body.npToken;
+       jwt.verify(npToken, 'secret', function(err, decoded) {
+        if (err) {
+          return res.json({ success: false, message: 'Failed to authenticate token.' });
+        } else {
+          req.decoded = decoded;
+          Gallery.update({
+              _id: id
+          },{
+              userImg: req.userInfo.userImg,
+              user: req.userInfo.userName,
+              title: req.body.title,
+              sub: req.body.sub,
+              url: req.body.url
+          })
+          .then(function (response) {
+              res.json({ success: true, message: 'New gallery item updated!' });
+              return;
+          });
+        }
+      });
+
+  });
+  router.get('/gallery/del',function(req, res){
+      let id = req.query.id || '';
+      Gallery.remove({
+          _id: id
+      }).then(function(){
+          res.json(responseData);
+          return;
+      });
+  });
+}
+
 
 router.get('/message',function(req, res){
 
@@ -393,19 +606,29 @@ router.get('/message/reply',function (req, res) {
 
 router.post('/message/reply',function (req, res) {
     let id = req.body.id || '';
-    Message.update({
-        _id: id
-    },{
-        reply: {
-            content: req.body.reply,
-            user: req.userInfo.userName,
-            userImg: req.userInfo.userImg,
-            addTime: new Date()
-        }
-    }).then(function () {
-        res.json(responseData);
-        return;
+    npToken =  req.body.npToken;
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        Message.update({
+            _id: id
+        },{
+            reply: {
+                content: req.body.reply,
+                user: req.userInfo.userName,
+                userImg: req.userInfo.userImg,
+                addTime: Date.now()
+            }
+        })
+        .then(function (response) {
+            res.json({ success: true, message: 'Message updated!' });
+            return;
+        });
+      }
     });
+
 });
 
 router.get('/message/del',function(req, res){

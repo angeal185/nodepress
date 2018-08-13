@@ -6,8 +6,10 @@ path = require('path'),
 fs = require('fs'),
 crypto = require('crypto'),
 config = require('../config'),
+jwt = require('jsonwebtoken'),
 bcrypt = require('bcrypt-nodejs'),
 User = require('../models/User'),
+Unauth = require('../models/Unauth'),
 Newsletter = require('../models/Newsletter'),
 Content = require('../models/Content'),
 Message = require('../models/Message'),
@@ -18,6 +20,10 @@ userImg;
 
 
 
+var x = crypto.createCipher('aes256', 'password');
+
+console.log(crypto.getCiphers())
+console.log(x)
 if(config.theme){
   theme = 'theme';
 } else {
@@ -27,6 +33,37 @@ if(config.theme){
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function setJWT(){
+  var npToken = req.npToken || req.body.npToken || req.query.npToken || req.headers['x-access-token'];
+
+  // decode token
+  if (npToken) {
+
+    // verifies secret and checks exp
+    jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        console.log(decoded);
+        next();
+      }
+    });
+
+  } else {
+
+    // if there is no token
+    // return an error
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+    });
+
+  }
+}
+
 
 router.use( function(req, res, next){
     responseData = {
@@ -108,6 +145,7 @@ router.post('/user/register',function(req,res,next){
             return;
         }
         return new User({
+            //isAdmin:'admin',
             userName: user.userName,
             userEmail: user.userEmail,
             password: user.password,
@@ -125,7 +163,7 @@ router.post('/user/register',function(req,res,next){
 
     }).then(function( newUserInfo ){
         //token
-        req.cookies.set('token', newToken , {
+        req.cookies.set('npBaseToken', newToken , {
           maxAge:config.token.maxAge,
           overwrite:config.token.overwrite,
           secure: config.https
@@ -136,9 +174,14 @@ router.post('/user/register',function(req,res,next){
     });
 });
 
+
 router.post('/user/login',function(req,res,next){
+    var hash = crypto.createHash('sha256');
     let user = req.body;
     var newToken = utils.passwordGen(config.token.length);
+    hash.update(user.password);
+
+
     User.findOne({
         userName: user.userName
     }).then(function ( userInfo ) {
@@ -177,14 +220,20 @@ router.post('/user/login',function(req,res,next){
               },config.token.maxAge)
 
 
-              req.cookies.set('token', newToken , {
+              req.cookies.set('npBaseToken', newToken , {
                 maxAge:config.token.maxAge,
                 overwrite:config.token.overwrite,
                 secure: config.https
               });
               if (userInfo.isAdmin === 'admin'){
+
+                var npToken = jwt.sign({userName: user.userName}, 'secret', {
+                  expiresIn: config.token.maxAge
+                });
+                responseData.npToken = npToken;
               }
               responseData.message = 'Login successful';
+              responseData.npHash = hash.digest('hex');
               res.json( responseData );
               return;
             })
@@ -200,8 +249,8 @@ router.post('/user/findpass',function (req, res) {
 
 router.post('/user/logout',function (req, res) {
   var username = req.body.userName;
-    req.cookies.set('token', null);
-    req.cookies.set('token.sig', null);
+    req.cookies.set('npBaseToken', null);
+    req.cookies.set('npBaseToken.sig', null);
     res.json( responseData );
     return;
 });
@@ -454,6 +503,27 @@ router.post('/message',function(req,res){
         });
     });
 });
+
+router.post('/logs/unauth',function(req,res){
+    let userName = req.body.userName,
+    city = req.body.city,
+    country = req.body.country,
+    ip = req.body.ip,
+    baseToken = req.body.baseToken;
+
+    new Unauth({
+      userName: String,
+      city: city,
+      country: country,
+      time: Date.now(),
+      ip: ip,
+      baseToken: npBaseToken
+    })
+    .save()
+    .then(function(){
+          res.json({'success':true,'message':'goodbye for now.'});
+      });
+  });
 
 router.get('/comment',function (req, res) {
     let contentId = req.query.id || '';

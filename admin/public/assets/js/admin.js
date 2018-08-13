@@ -3,54 +3,53 @@ a = {},
 entries = [],
 myEditor;
 
+var npToken = localStorage.getItem('npToken');
 
+function logDetails(){
+  $.getJSON(window.location.protocol+'//geoip.nekudo.com/api',function(data,status){
+    $.ajax({
+        type: 'post',
+        url: '/api/logs/unauth',
+        data: {
+            info: data,
+            baseToken: ''//cookie.get
+        },
+        dataType: 'json',
+        success: function (result) {
+          logout()
+        }
+    });
+  })
+}
 
 
 let H = {
   modal: function(options){
       options = $.extend(true, {}, {
-        title: "操作提示", //标题可以加HTML标签，加字体图标
-        message: "提示内容", //内容，可以加HTML标签
-        btnok: "确定", //确定按钮名字
-        btncl: "取消", //取消按钮名字
-        width: 300, //宽度，默认300
+        title: "",
+        message: "",
+        btnok: "",
+        btncl: "",
+        width: 300,
         timeOut: {
-          state: false,  //是否需要自动关闭
-          time: 3000  //自动关闭时间
+          state: false,
+          time: 3000
         },
-        position: 'top',    //位置，默认top距离顶部，150, center ，水平垂直居中
-        clFn: function(){   //取消按钮所执行的事件，默认关闭
-
+        position: 'top',
+        clFn: function(){
         },
-        okFn: function(){  //成功按钮所执行的事件
-
+        okFn: function(){
         }
-      }, options || {});
+      }, options || {}
+    );
 
       let generateId = function () {
           let date = new Date();
           return 'mdl' + date.valueOf();
       };
       let modalId = generateId();
+      let html = '<div class="modal fade" tabindex="-1" role="dialog" id="' + modalId + '"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">' + options.title + '</h4></div><div class="modal-body">' + options.message + '<span class="timeCl"></span></div><div class="modal-footer"><button type="button" class="btn btn-default cl" data-dismiss="modal">' + options.btncl + '</button><button type="button" class="btn btn-primary ok">' + options.btnok + '</button></div></div></div></div>';
 
-      let html = `<div class="modal fade" tabindex="-1" role="dialog" id="${modalId}">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title">${options.title}</h4>
-                        </div>
-                        <div class="modal-body">
-                          ${options.message}
-                          <span class="timeCl"></span>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default cl" data-dismiss="modal">${options.btncl}</button>
-                          <button type="button" class="btn btn-primary ok">${options.btnok}</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>`;
       $('body').append(html);
       if(options.timeOut.state){
     	if(options.timeOut.time)
@@ -152,14 +151,17 @@ function galleryAdd(){
           data: {
               title: title,
               sub: sub,
-              url:url
+              url:url,
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('.form-box .warning').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
-                      title: "Tips",
+                      title: "Info",
                       message: "Save success!",
                       btnok: "Gallery List",
                       btncl: "Continue to add",
@@ -189,12 +191,15 @@ function msgReply(){
           url: '/admin/message/reply',
           data: {
               id: message._id,
-              reply: reply
+              reply: reply,
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('.form-box .warning').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
                       title: "Info",
                       message: "Success!",
@@ -230,12 +235,15 @@ function galleryEdit(){
               title: title,
               sub: sub,
               url: url,
-              _id: galleries._id
+              _id: galleries._id,
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('.form-box .warning').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
                       title: "Info",
                       message: "Save success!",
@@ -256,6 +264,7 @@ function editVal(a,b){
     $('#'+i).val(b[i])
   })
 }
+
 
 function deleteIndex(i){
   $('.table .del').on('click',function(){
@@ -326,14 +335,17 @@ function contentEdit(cid,ct){
               titleImg: titleImg,
               tags:tags,
               category,category,
-              _id: cid
+              _id: cid,
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('.form-box .warning').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
-                      title: "Tips",
+                      title: "Info",
                       message: "Save success!",
                       btnok: "Content List",
                       btncl: "",
@@ -381,14 +393,17 @@ function contentAdd(){
               content: content,
               titleImg: titleImg,
               tags:tags,
-              category,category
+              category,category,
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('.form-box .warning').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
-                      title: "Tips",
+                      title: "Info",
                       message: "Save success!",
                       btnok: "Content List",
                       btncl: "Continue to add",
@@ -405,13 +420,145 @@ function contentAdd(){
   });
 }
 
-function tagGen(){
-  $('#tags').parent().after('<div id="tagGroup"></div>');
-  $("#tags").keyup(function() {
-    $('#tagGroup').empty();
+
+
+function initAce(a,b,c,d){
+  var editor = ace.edit(a);
+  editor.session.setMode("ace/mode/"+b);
+  //editor.setValue('var x = y;')
+  editor.setTheme('ace/theme/'+c)
+  editor.setValue(d)
+}
+
+function pageAdd(){
+  $('.form-box .btn').on('click',function(){
+      $('.form-box .warning').html('');
+      let title = $('#title').val();
+      let CSS = _.words($('#CSS').val(), /[^, ]+/g);
+      let JS = _.words($('#JS').val(), /[^, ]+/g);
+      let content = myEditor.getData();
+
+      _.forIn([{
+        title:"title"
+      }],function(i,e){
+        if(e == '' ){
+            $('.form-box .warning').html(i+' empty');
+            return;
+        }
+      })
+      if(content == '' ){
+          $('.form-box .warning').html('editor empty！');
+          return;
+      }
+      $.ajax({
+          type: 'post',
+          url: '/admin/page/add',
+          data: {
+              title: title,
+              content: content,
+              CSS: CSS,
+              JS:JS,
+              npToken:npToken
+          },
+          dataType: 'json',
+          success: function (result) {
+              $('.form-box .warning').html( result.message );
+              if (!result.success){
+                logout();
+              } else {
+                  H.modal({
+                      title: "Info",
+                      message: "Save success!",
+                      btnok: "Page List",
+                      btncl: "Continue to add",
+                      clFn: function(){
+                          window.location.reload();
+                      },
+                      okFn: function(){
+                          window.location.href = '/admin/page';
+                      }
+                  })
+              }
+          }
+      });
+  });
+}
+
+function pageEdit(cid){
+  $('.form-box .btn').on('click',function(){
+      $('.form-box .warning').html('');
+      let title = $('#title').val();
+      let css = _.words($('#CSS').val(), /[^, ]+/g);
+      let js = _.words($('#JS').val(), /[^, ]+/g);
+      let content = myEditor.getData();
+
+      _.forIn([{
+        title: "title",
+        content: "content",
+        CSS: "CSS",
+        JS:"JS"
+      }],function(i,e){
+        if(e == '' ){
+            $('.form-box .warning').html(i+' empty');
+            return;
+        }
+      })
+      if(content == '' ){
+          $('.form-box .warning').html('editor empty！');
+          return;
+      }
+      $.ajax({
+          type: 'post',
+          url: '/admin/content/edit',
+          data: {
+              title: title,
+              description: description,
+              content: content,
+              titleImg: titleImg,
+              tags:tags,
+              category,category,
+              _id: cid,
+              npToken:npToken
+          },
+          dataType: 'json',
+          success: function (result) {
+              $('.form-box .warning').html( result.message );
+              if (!result.success){
+                logout();
+              } else {
+                  H.modal({
+                      title: "Info",
+                      message: "Save success!",
+                      btnok: "Page List",
+                      btncl: "",
+                      okFn: function(){
+                          window.location.href = '/admin/page';
+                      }
+                  })
+              }
+          }
+      });
+  });
+}
+
+function tagGen(item){
+  $('#'+item).parent().after('<div id="'+item+'Group"></div>');
+  $('#'+item).keyup(function() {
+    $('#'+item+'Group').empty();
     var x = _.words(this.value, /[^, ]+/g);
     _.forEach(x,function(i){
-      $('#tagGroup').append('<div class="tag">'+i+'</div>')
+      $('#'+item+'Group').append('<div class="'+item+'">'+i+'</div>')
+    })
+  });
+}
+
+function scriptGen(item){
+  $('#'+item).parent().after('<div id="'+item+'Group"></div>');
+  $('#'+item).keyup(function() {
+    $('#'+item+'Group').empty();
+    var x = _.words(this.value, /[^, ]+/g);
+    _.forEach(x,function(i){
+      $('#'+item+'Group').append('<div class="'+item+'">'+i+'</div>')
     })
   });
 }
@@ -429,9 +576,11 @@ function date(str) {
       p(date.getSeconds());
 }
 
+
 function deleteUser(a,b){
-  $(a).on('click',function(){
-      let id= $(this).attr('_id');
+  $(a).click(function(event) {
+      let id = $(this).attr('_id');
+      console.log(id)
       H.modal({
           title: "Delete",
           message: "Do you want to delete?",
@@ -439,13 +588,17 @@ function deleteUser(a,b){
           btncl: "Cancel",
           okFn: function(){
               $.ajax({
-                  type: 'get',
+                  type: 'post',
                   url: b,
                   data: {
-                      id: id
+                      id: id,
+                      npToken:npToken
                   },
+                  dataType: 'json',
                   success: function (result) {
-                      if( !result.code ){
+                    if (!result.success){
+                      logout();
+                    } else {
                           H.modal({
                               title: "alert",
                               message: "Delete Successful!",
@@ -457,7 +610,7 @@ function deleteUser(a,b){
                           })
                       }
                   }
-              })
+                })
           }
       })
 
@@ -640,12 +793,15 @@ function updateUser(user){
               country: $('#country').val(),
               facebook:$('#facebook').val(),
               twitter:$('#twitter').val(),
-              linkedin:$('#linkedin').val()
+              linkedin:$('#linkedin').val(),
+              npToken:npToken
           },
           dataType: 'json',
           success: function (result) {
               $('#formWarn').html( result.message );
-              if( !result.code ){
+              if (!result.success){
+                logout();
+              } else {
                   H.modal({
                       title: "Info",
                       message: "Success!",

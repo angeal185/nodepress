@@ -7,12 +7,15 @@
   <script>
     galleryAdd()
   </script>
-  {% elif title === "content" %}
+  {% elif title === "content" or "page" %}
   {{share.js(s="ckeditor")}}
+  {{share.js(s="src-min-noconflict/ace")}}
   <script>
-    tagGen('tags');
+    tagGen('CSS')
+    tagGen('JS')
     initEditor();
-    contentAdd();
+    pageAdd()
+    initAce('aceEditor','html','monokai','')
   </script>
   {% endif %}
 {% endblock %}

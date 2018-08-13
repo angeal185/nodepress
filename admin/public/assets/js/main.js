@@ -21,7 +21,14 @@ function regInit(){
   }
 }
 
-
+function detailCheck(){
+  if(!localStorage.getItem("npGeo") || localStorage.getItem("npGeo") === ''){
+    $.getJSON(window.location.protocol+'//geoip.nekudo.com/api',function(data,status){
+      var toStore = _.omit(data, 'location');
+      localStorage.setItem("npGeo", JSON.stringify(toStore));
+    })
+  }
+}
 function initEvents(){
 
 	$('#loadText').click(function(){
@@ -150,7 +157,7 @@ function login(){
         $('#signFrm .login .warning').html('password must be at least 6 characters');
         return;
     }
-
+    detailCheck();
     $.ajax({
         type: 'post',
         url: '/api/user/login',
@@ -160,9 +167,16 @@ function login(){
         },
         dataType: 'json',
         success: function (result) {
-          console.log(result)
+          var encPersonal = localStorage.getItem("npGeo"),
+          hsh = localStorage.getItem("npHash");
+
+          if (result.npHash){
+            localStorage.setItem("npHash",result.npHash);
+          }
+
             $('#sign .login .warning').html( result.message );
-            if( !result.code ){
+
+
                 if($('#rememberme').is(':checked')){
                     localStorage.setItem("npRemember",'{"userName":"'+ userName +'","password":"'+password+'"}');
                 } else {
@@ -171,6 +185,9 @@ function login(){
                 if (result.npToken){
                   localStorage.setItem("npToken",result.npToken);
                 }
+
+
+
 
                 /*
                 var friends = {
@@ -185,7 +202,7 @@ function login(){
                 }
                 */
                 window.location = './';
-            }
+
         }
     });
 }
@@ -266,10 +283,11 @@ function logout(){
 			},
 			dataType: 'json',
 			success: function (result) {
-				if( !result.code ){
-          localStorage.removeItem("npToken");
-					window.location.reload();
-				}
+
+
+        localStorage.setItem("npToken","");
+        localStorage.setItem("npHash","");
+				window.location.reload();
 			}
 	});
 }

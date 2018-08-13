@@ -1,0 +1,21 @@
+{
+  "name": "nodepress",
+  "description": "nodepress",
+  "main": "./admin/bin/socketio.js",
+  "keywords": [
+    "nodejs"
+  ],
+  "authors": [
+    "ben eaves"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

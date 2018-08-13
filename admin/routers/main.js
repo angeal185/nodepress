@@ -70,8 +70,8 @@ if (config.maintenance.enabled){
       });
       next();
   });
-  //home
-  router.get('/', function(req, res, next){
+  //blog
+  router.get('/blog', function(req, res, next){
       data.count = 0;
       data.page = Number( req.query.page || 1 );
       data.limit = 1;
@@ -90,7 +90,7 @@ if (config.maintenance.enabled){
           });
       }).then(function (contents) {
           data.contents = contents;
-          res.render(theme +'/index',{
+          res.render(theme +'/blog',{
             nav:nav,
             data:data,
             config:config
@@ -98,6 +98,18 @@ if (config.maintenance.enabled){
       })
   });
 
+  //home
+  router.get('/', function(req, res, next){
+
+          res.render(theme +'/index',{
+            nav:nav,
+            data:data,
+            config:config
+          });
+
+  });
+
+if (config.app.gallery) {
   router.route("/gallery")
       .get(function(req, res, next){
         Gallery.find().then(function(i){
@@ -110,7 +122,7 @@ if (config.maintenance.enabled){
             });
         });
       })
-
+}
 
     router.route("/profile")
         .get(function(req, res, next){

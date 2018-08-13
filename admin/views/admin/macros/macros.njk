@@ -101,7 +101,7 @@
     {{heading(i=title|capitalize + " " + type)}}
     <div class="form-box">
       {{input(item=items.admin[title].add.input)}}
-      {% if title === "content" %}
+      {% if title === "content" or "page" %}
         {{textarea(item=items.admin[title].add.textarea)}}
       {% endif %}
       {{share.warningBtn(i="Submit")}}

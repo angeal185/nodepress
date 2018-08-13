@@ -23,6 +23,47 @@
         ]
       }
     },
+    "logs":{
+      "tabs":[{
+        "unauth":"unauthorised"
+      }],
+      "unauth":{
+        "input":{
+          "title":"enter title",
+          "category":"enter category",
+          "tags":"enter tags seperated by comma or space",
+          "titleImg":"enter img url"
+        },
+        "th":[
+          "Title",
+          "Description",
+          "Avatar",
+          "Author",
+          "Add Time",
+          "Reading count",
+          "Action"
+        ]
+      }
+    },
+    "page":{
+      "add":{
+        "input":{
+          "title":"enter title",
+          "CSS":"enter css",
+          "JS": "add js"
+        },
+        "textarea":{
+          "editor":"",
+          "aceEditor":""
+        },
+        "th":[
+          "Title",
+          "Add Time",
+          "views",
+          "Action"
+        ]
+      }
+    },
     "gallery":{
       "add":{
         "input":{

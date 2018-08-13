@@ -9,17 +9,44 @@
     editVal(["title","sub","url"],galleries)
     galleryEdit();
   </script>
-{% elif title === "content" %}
+{% elif title === "content" or "page" %}
   {{share.js(s="ckeditor")}}
+  {{share.js(s="src-min-noconflict/ace")}}
   <script>
     var content = {{content|dump|safe}},
-    cid = content._id;
-    tagGen();
-    editVal(["title","category","tags","description","editor","titleImg"],content);
-    $('#editor').val(content.content)
-    initEditor();
-    contentEdit(cid)
 
+    cid = content["_id"];
+    console.log(cid);
+    {% if title === "content" %}
+    tagGen('tags');
+    editVal(["title","category","tags","description","editor","titleImg"],content);
+    contentEdit(cid)
+    {% elif title ===  "page" %}
+    scriptGen('CSS')
+    scriptGen('JS')
+    editVal(["title","editor"],content);
+    _.forEach(['CSS','JS'],function(i){
+      $('#'+i).val(_.join(content[i], ',')).keyup();
+    })
+    pageEdit(cid)
+    {% endif %}
+
+    function switchText(i,e){
+      if ($(this).text(i)){
+        $(this).text(e);
+      } else {
+        $(this).text(i)
+      }
+    }
+
+    $('#editor').val(content.content)
+
+    $('#editor').before('<span class="editorSwitch">ace</span>');
+    $('.editorSwitch').click(function() {
+      initAce('aceEditor','html','monokai','')
+    },function() {
+      initEditor();
+    });
   </script>
 {% endif %}
 {% endblock %}

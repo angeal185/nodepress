@@ -104,7 +104,8 @@
     "lodash.min",
     "jquery.min",
     "bootstrap.min",
-    "pagination"
+    "pagination",
+    "aes"
   ],
   "aStyles": [
     "bootstrap.min",
