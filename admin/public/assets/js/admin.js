@@ -5,6 +5,65 @@ myEditor;
 
 var npToken = localStorage.getItem('npToken');
 
+
+$(function() {
+    $('#side-menu').metisMenu();
+});
+
+//Loads the correct sidebar on window load,
+//collapses the sidebar on window resize.
+// Sets the min-height of #page-wrapper to window size
+$(function() {
+    var setupPage = function() {
+        var topOffset = 50;
+        var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+        if (width < 768) {
+            $('div.navbar-collapse').removeClass('show');
+            topOffset = 100; // 2-row-menu
+        } else {
+            $('div.navbar-collapse').addClass('show');
+        }
+
+        var height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
+        height = height - topOffset;
+        if (height < 1) height = 1;
+        if (height > topOffset) {
+            $("#page-wrapper").css("min-height", (height) + "px");
+        }
+    };
+
+    $(window).bind("load resize", setupPage);
+
+    var url = window.location;
+    var element = $('ul.nav a').filter(function() {
+        return this.href == url;
+    }).addClass('active').parent();
+
+    while (true) {
+        if (element.is('li')) {
+            element = element.parent().addClass('in').parent();
+        } else {
+            break;
+        }
+    }
+
+    setupPage();
+});
+
+
+
+function lstMsg(){
+  $.getJSON('/api/message', function(data, textStatus) {
+    _.forEach(data.data,function(i,e){
+      if (e < 5){
+        $('#msgList').prepend('<a class="dropdown-item" href="#"><div><strong>'+i.user+'</strong><span class="float-right text-muted"><em>'+date(i.addTime)+'</em></span></div><div>'+i.message+'</div></a><div class="dropdown-divider"></div>')
+      }
+    })
+  });
+}
+
+
+
 function logDetails(){
   $.getJSON(window.location.protocol+'//geoip.nekudo.com/api',function(data,status){
     $.ajax({
@@ -126,6 +185,8 @@ function initEditor(){
           console.error( err.stack );
       } );
 }
+
+
 
 function galleryAdd(){
   $('.form-box .btn').on('click',function(){
@@ -564,16 +625,11 @@ function scriptGen(item){
 }
 
 function date(str) {
-    let date = new Date(str);
-    function p(s) {
-        return s < 10 ? '0' + s: s;
-    }
-    return date.getFullYear() + '-' +
-      p((date.getMonth() + 1)) + '-' +
-      p(date.getDate()) + '  ' +
-      p(date.getHours()) + ':' +
-      p(date.getMinutes()) + ':' +
-      p(date.getSeconds());
+  let date = new Date(str);
+  function p(s) {
+    return s < 10 ? '0' + s : s;
+  }
+  return p(date.getDate()) + '-' + p((date.getMonth() + 1)) + '-' + date.getFullYear() + '  ' + p(date.getHours()) + ':' + p(date.getMinutes()) + ':' + p(date.getSeconds());
 }
 
 

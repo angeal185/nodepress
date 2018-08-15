@@ -100,7 +100,7 @@
     "type":"text"
     },{
     "name":"userEmail",
-    "type":"text"
+    "type":"email"
     },{
     "name":"firstName",
     "type":"text"
@@ -115,16 +115,29 @@
     "type":"text"
     },{
     "name":"password",
-    "type":"text"
+    "type":"password"
     },{
     "name":"confirmPassword",
-    "type":"text"
+    "type":"password"
     }],
     "login":[{
-      "name":"username",
-      "type":"text"
+        "name":"username",
+        "type":"text"
       },{
-      "name":"password",
-      "type":"text"
+        "name":"password",
+        "type":"password"
+      }],
+    "recover":[{
+        "name":"firstName",
+        "type":"text"
+      },{
+        "name":"lastName",
+        "type":"text"
+      },{
+        "name":"userEmail",
+        "type":"email"
+      },{
+        "name":"confirmEmail",
+        "type":"email"
       }]
 }

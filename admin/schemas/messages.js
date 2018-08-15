@@ -12,6 +12,10 @@ module.exports = new mongoose.Schema({
         addTime: Date
     },
     userImg: String,
+    viewed: {
+        type: Boolean,
+        default: false
+    },
     user: String,
     email: String,
     addTime: {

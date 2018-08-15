@@ -5,15 +5,15 @@ _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 function regInit(){
   if(localStorage.getItem("npGeo") && localStorage.getItem("npGeo") != ''){
     var ipInfo = JSON.parse(localStorage.getItem("npGeo"));
-    $('#signFrm .register').find('[name = city]').val(ipInfo.city).attr('disabled','true');
-    $('#signFrm .register').find('[name = country]').val(ipInfo.country.name).attr('disabled','true');
-    $('#signFrm .register').find('[name = ip]').val(ipInfo.ip);
+    $('#signFrm').find('[name = city]').val(ipInfo.city).attr('disabled','true');
+    $('#signFrm').find('[name = country]').val(ipInfo.country.name).attr('disabled','true');
+    $('#signFrm').find('[name = ip]').val(ipInfo.ip);
   } else {
     $.getJSON(window.location.protocol+'//geoip.nekudo.com/api',function(data,status){
       console.log(data)
-      $('#signFrm .register').find('[name = city]').val(data.city).attr('disabled','true');
-      $('#signFrm .register').find('[name = country]').val(data.country.name).attr('disabled','true');
-      $('#signFrm .register').find('[name = ip]').val(data.ip);
+      $('#signFrm').find('[name = city]').val(data.city).attr('disabled','true');
+      $('#signFrm').find('[name = country]').val(data.country.name).attr('disabled','true');
+      $('#signFrm').find('[name = ip]').val(data.ip);
       var toStore = _.omit(data, 'location');
       console.log(toStore)
       localStorage.setItem("npGeo", JSON.stringify(toStore));
@@ -37,7 +37,7 @@ function initEvents(){
 		var pwInputs = ['username','password']
 	  reader.onload = function (e) {
 				_.forEach(pwInputs,function(i){
-					$('#signFrm .login').find('[name = '+i+']').val(e.target.result);
+					$('#signFrm').find('[name = '+i+']').val(e.target.result);
 				})
 	  };
 	  reader.readAsText(file);
@@ -79,30 +79,28 @@ function initEvents(){
 
 
 
-	$('#signFrm .login .login-btn').on('click',login);
+	$('#signFrm .login-btn').on('click',login);
 
-	$('#signFrm .login input').bind('keypress',function(event){
+	$('#signFrm input').bind('keypress',function(event){
 			if (event.keyCode == 13) {
 					login();
 			}
 	});
 
-	$('#signFrm .register input').bind('keypress',function(event){
+	$('#signFrm input').bind('keypress',function(event){
 			if (event.keyCode == 13) {
 					register();
 			}
 	});
-	$('#signFrm .register .register-btn').on('click',register);
+	$('#signFrm .register-btn').on('click',register);
 	$('.logout').on('click', logout);
 
 	if(localStorage.getItem("npRemember") && localStorage.getItem("npRemember") != ''){
 			let userInfo = JSON.parse(localStorage.getItem("npRemember"));
-			$('#signFrm .login').find('[name = username]').val(userInfo.userName);
-			$('#signFrm .login').find('[name = password]').val(userInfo.password);
+			$('#signFrm').find('[name = username]').val(userInfo.userName);
 	}
 }
 
-console.log(window.location.protocol)
 
 function subscribeInit(){
 	$('#subscribeBtn').on('click',function(){
@@ -137,85 +135,188 @@ function subscribeInit(){
 	});
 }
 
+
+
+function setCounterTime(){
+  var timeout = Date.now() + 10000;
+  var attempts =  JSON.parse(localStorage.getItem('npTimeout')) && JSON.parse(sessionStorage.getItem('npTimeout'));
+  if(localStorage.getItem('npTimeout') && sessionStorage.getItem('npTimeout')){
+    attempts.att =  attempts.att + 1;
+    attempts.tOut =  timeout;
+    localStorage.setItem('npTimeout',JSON.stringify({"att":attempts.att,"tOut":attempts.tOut}))
+    sessionStorage.setItem('npTimeout',JSON.stringify({"att":attempts.att,"tOut":attempts.tOut}))
+    startCountdown(attempts.att)
+  } else {
+    localStorage.setItem('npTimeout',JSON.stringify({"att":1,"tOut":timeout}))
+    sessionStorage.setItem('npTimeout',JSON.stringify({"att":1,"tOut":timeout}))
+    startCountdown(1)
+  }
+
+}
+
+function checkTimeout(){
+  if (!localStorage.getItem('npTimeout')||!sessionStorage.getItem('npTimeout')||localStorage.getItem('npTimeout','')||sessionStorage.getItem('npTimeout','')){
+    localStorage.setItem('npTimeout',JSON.stringify({"att":0,"tOut":0}))
+    sessionStorage.setItem('npTimeout',JSON.stringify({"att":0,"tOut":0}))
+  }
+}
+
+function startCountdown(i){
+	var minutes =  10 * i,
+  secondsRemaining,
+  intervalHandle,
+  timeDisplay = $("#time");
+
+  timeDisplay.css('display', 'block');
+  function tick(){
+
+  	var min = Math.floor(secondsRemaining / 60);
+  	var sec = secondsRemaining - (min * 60);
+  	if (sec < 10) {
+  		sec = "0" + sec;
+  	}
+  	var message = min.toString() + ":" + sec;
+  	$(timeDisplay).html(message);
+
+  	if (secondsRemaining === 0){
+  		timeDisplay.css('display', 'none');
+  		clearInterval(intervalHandle);
+  	}
+  	secondsRemaining--;
+  }
+	secondsRemaining = minutes;
+	intervalHandle = setInterval(tick, 1000);
+}
+
+
+
+function initReg(){
+  $('.recover-btn').click(function(event) {
+    var confirmEmail = $('#signFrm').find('[name = confirmEmail]').val(),
+    userEmail = $('#signFrm').find('[name = userEmail]').val(),
+		firstName = $('#signFrm').find('[name = firstName]').val(),
+		lastName = $('#signFrm').find('[name = lastName]').val(),
+    ipDetails = JSON.parse(localStorage.getItem("npGeo")),
+		country = ipDetails.country.name;
+    let attempts =  JSON.parse(localStorage.getItem('npTimeout')) && JSON.parse(sessionStorage.getItem('npTimeout'));
+    if (attempts.tOut > Date.now()){
+      $('#signFrm .warning').html('wait!');
+      return;
+    }
+
+    if( confirmEmail != userEmail ){
+        $('#signFrm .warning').html('emails do not match!');
+        return;
+    }
+
+    let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    if(!regEmail.test(userEmail ) ){
+        $('#signFrm .warning').html('enter valid email!');
+        return;
+    }
+
+    _.forEach([userEmail,firstName,lastName],function(i){
+      if( i == '' ){
+          $('#signFrm .warning').html('all fields must be filled out!');
+          return;
+      }
+    })
+
+    $('#signFrm .warning').html('connecting to your email server, please hold...');
+
+    $.ajax({
+        type: 'post',
+        url: '/api/recover',
+        data: {
+            userEmail:userEmail,
+            firstName: firstName,
+            lastName: lastName,
+            country:country
+        },
+        dataType: 'json',
+        success: function (result) {
+          if (result.success){
+            $('#signFrm .warning').css('color', 'green').html('done. check your email.');
+            $('.recover-btn').remove();
+          } else {
+            setCounterTime()
+          }
+        }
+    });
+
+  });
+}
+
 function login(){
-    let userName = $('#signFrm .login').find('[name = username]').val();
-    let password = $('#signFrm .login').find('[name = password]').val();
+    let userName = $('#signFrm').find('[name = username]').val();
+    let password = $('#signFrm').find('[name = password]').val();
+
+    let attempts =  JSON.parse(localStorage.getItem('npTimeout')) && JSON.parse(sessionStorage.getItem('npTimeout'));
+    if (attempts.tOut > Date.now()){
+      $('#signFrm .warning').html('login details incorrect, you must wait to try again.');
+      return;
+    }
+
     if(userName == '' ){
-        $('#signFrm .login .warning').html('username cannot be empty!');
+        $('#signFrm .warning').html('username cannot be empty!');
         return;
     }
     if( password == '' ){
-        $('#signFrm .login .warning').html('password cannot be empty!');
+        $('#signFrm .warning').html('password cannot be empty!');
         return;
     }
     let reg = /[a-zA-Z]/;
     if( !reg.test(userName )){
-        $('#signFrm .login .warning').html('Please enter the English username!');
+        $('#signFrm .warning').html('Please enter the English username!');
         return;
     }
     if( password.length < 6 ){
-        $('#signFrm .login .warning').html('password must be at least 6 characters');
+        $('#signFrm .warning').html('password must be at least 6 characters');
         return;
     }
     detailCheck();
+    var ipDetails = JSON.parse(localStorage.getItem("npGeo"))
     $.ajax({
         type: 'post',
         url: '/api/user/login',
         data: {
             userName: userName,
-            password: password
+            password: password,
+            city:ipDetails.city,
+            country:ipDetails.country.name,
+            ip:ipDetails.ip
         },
         dataType: 'json',
         success: function (result) {
-          var encPersonal = localStorage.getItem("npGeo"),
-          hsh = localStorage.getItem("npHash");
-
-          if (result.npHash){
-            localStorage.setItem("npHash",result.npHash);
-          }
-
-            $('#sign .login .warning').html( result.message );
 
 
-                if($('#rememberme').is(':checked')){
-                    localStorage.setItem("npRemember",'{"userName":"'+ userName +'","password":"'+password+'"}');
-                } else {
-                    localStorage.setItem("npRemember",'');
-                }
-                if (result.npToken){
-                  localStorage.setItem("npToken",result.npToken);
-                }
-
-
-
-
-                /*
-                var friends = {
-                  friendRequests:,
-                  friendRequesting:,
-                  friends
-                }
-                if(!localStorage.getItem("npFriends") || localStorage.getItem("npFriends")  === ''){
-
-                } else {
-
-                }
-                */
-                window.location = './';
-
+            $('#sign .warning').html( result.message );
+            if (result.success){
+              if($('#rememberme').is(':checked')){
+                  localStorage.setItem("npRemember",'{"userName":"'+ userName +'"}');
+              } else {
+                  localStorage.setItem("npRemember",'');
+              }
+              if (result.npToken){
+                localStorage.setItem("npToken",result.npToken);
+              }
+              window.location = './';
+            } else {
+              setCounterTime()
+            }
         }
     });
 }
 
 function register(){
-    let userName = $('#signFrm .register').find('[name = username]').val(),
-    userEmail = $('#signFrm .register').find('[name = userEmail]').val(),
-		firstName = $('#signFrm .register').find('[name = firstName]').val(),
-		lastName = $('#signFrm .register').find('[name = lastName]').val(),
-		city = $('#signFrm .register').find('[name = city]').val(),
-		country = $('#signFrm .register').find('[name = country]').val(),
-    password = $('#signFrm .register').find('[name = password]').val(),
-    confirmPassword = $('#signFrm .register').find('[name = confirmPassword]').val();
+    let userName = $('#signFrm').find('[name = username]').val(),
+    userEmail = $('#signFrm').find('[name = userEmail]').val(),
+		firstName = $('#signFrm').find('[name = firstName]').val(),
+		lastName = $('#signFrm').find('[name = lastName]').val(),
+		city = $('#signFrm').find('[name = city]').val(),
+		country = $('#signFrm').find('[name = country]').val(),
+    password = $('#signFrm').find('[name = password]').val(),
+    confirmPassword = $('#signFrm').find('[name = confirmPassword]').val();
 
 		var validateIt = {
 			userName:"username",
@@ -229,27 +330,27 @@ function register(){
 
 		_.forIn(validateIt,function(i,e){
 			if(e === '' ){
-          $('#signFrm .register .warning').html(i + ' cannot be empty!');
+          $('#signFrm .warning').html(i + ' cannot be empty!');
           return;
       }
 		})
 
     let reg = /[a-zA-Z]/;
     if( !reg.test(userName )){
-        $('#signFrm .register .warning').html('Please enter the English username!');
+        $('#signFrm .warning').html('Please enter the English username!');
         return;
     }
     let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
     if(!regEmail.test(userEmail ) ){
-        $('#signFrm .register .warning').html('enter valid email!');
+        $('#signFrm .warning').html('enter valid email!');
         return;
     }
     if( password.length < 6 ){
-        $('#signFrm .register .warning').html('password must be at least 6 characters');
+        $('#signFrm .warning').html('password must be at least 6 characters');
         return;
     }
     if( password != confirmPassword ){
-        $('#signFrm .register .warning').html('passwords do not match!');
+        $('#signFrm .warning').html('passwords do not match!');
         return;
     }
     $.ajax({
@@ -266,7 +367,7 @@ function register(){
         },
         dataType: 'json',
         success: function (result) {
-            $('#signFrm .register .warning').html( result.message );
+            $('#signFrm .warning').html( result.message );
             if( !result.code ){
                 window.location = './';
             }
@@ -283,10 +384,7 @@ function logout(){
 			},
 			dataType: 'json',
 			success: function (result) {
-
-
         localStorage.setItem("npToken","");
-        localStorage.setItem("npHash","");
 				window.location.reload();
 			}
 	});
@@ -338,7 +436,7 @@ function tagCatEnable(){
 };
 
 
-function date(str,style) {
+function date(str) {
 		let date = new Date(str);
 		function p(s) {
 				return s < 10 ? '0' + s: s;
@@ -540,7 +638,7 @@ function sendMsg(){
 			$('.form-box .warning').html('');
 			let userName = $('.form-box').find('[name = userName]').val();
 			let userEmail = $('.form-box').find('[name = userEmail]').val();
-			let content = myEditor.getData();
+			let content = $('#msg').val();
 
 			if( typeof (userName) != "undefined" ){
 					if(userName == '' ){
@@ -584,32 +682,12 @@ function sendMsg(){
 											}
 									},500);
 									messages = result.data.reverse();
-									renderMessage();
+
 							}
 					}
 			});
 	});
 
-	function renderMessage() {
-		$('.form-box .userBox .count').html('There is already ' + messages.length + ' messages.')
-
-			_.forEach(messages,function(e){
-				if(!e.reply){
-						$('#message-conent').append('<div class="comment clearfix"><div class="comment-img"><img class="userRad" src="'+e.userImg+'"></div><div class="comment-content"><div class="comment-name clearfix"><div class="left"><span>'+ e.user +'</span></div></div><div class="comment-mes">'+ e.message +'</div><div class="date">'+ date(e.addTime,'Text') +'</div></div></div>');
-				} else {
-						$('#message-conent').append('<div class="comment clearfix"><div class="comment-img"><img class="userRad" src="'+e.userImg+'"></div><div class="comment-content"><div class="comment-name clearfix"><div class="left"><span>'+ e.user +'</span></div></div><div class="comment-mes">'+ e.message +'</div><div class="date">'+ date(e.addTime,'Text') +'</div><div class="reply"><div class="reply-img"><img class="userRad" src="'+e.reply.userImg+'" /><span>'+e.reply.user+'</span></div><div class="reply-content"><div class="reply-rep">'+e.reply.content+'</div></div></div></div></div>');
-				}
-		})
-}
-
-	$.ajax({
-			url: '/api/message',
-			dataType: 'json',
-			success: function (responseData) {
-					messages = responseData.data.reverse();
-					renderMessage();
-			}
-	});
 }
 
 //gallery

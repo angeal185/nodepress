@@ -1,7 +1,13 @@
 {
   "admin":{
     "index":"admin",
-    "ddSingle":["user","message","status"],
+    "ddSingle":{
+      "user":"users",
+      "message":"envelope-o",
+      "status":"tasks",
+      "invoice":"bank",
+      "profile":"user"
+    },
     "dd":["content","gallery","page"],
     "right":[{
           "title":"home",

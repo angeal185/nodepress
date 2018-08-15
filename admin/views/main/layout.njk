@@ -19,7 +19,6 @@
       {% block main %}{% endblock %}
   </div>
   {{macro.footer()}}
-  <div class="shade"></div>
   {% for i in config.scripts %}
     {{share.js(s=i)}}
   {% endfor %}

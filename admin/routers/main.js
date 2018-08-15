@@ -245,6 +245,15 @@ if (config.app.gallery) {
       });
   });
 
+  router.get('/recover',function(req,res,next){
+      res.render(theme +'/recover',{
+        title:"recover",
+        items:Items,
+        nav:nav,
+        data:data,
+        config:config
+      });
+  });
 
   //about
   router.get('/about',function(req,res,next){

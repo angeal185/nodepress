@@ -1,37 +1,32 @@
 {% extends './layout.njk' %}
 {% block main %}
-<div id="signFrm">
-    <div class="login">
+<div class="container">
+  <div id="signFrm" class="card login">
+    <div class="card-header">
       <h3 class="text-center">{{title|capitalize}}</h3>
-      <div class="row">
-
-        {% for i in items.login %}
-          {{macro.regForm(i=i)}}
-        {% endfor %}
-
-
-        {% if config.app.loadKeyfile %}
-        {{addon.keyfile()}}
-        {{addon.keyfileBtn()}}
-        {% endif %}
-
-
-      <div class="col-md-6">
-        <div class="form-group">
-          <a class="lost" href="/findpass">Forgot password?</a>
-          <a class="lost" href="/register">Register</a>
-        </div>
+    </div>
+    <div class="card-body">
+      {% for i in items.login %}
+        {{macro.regForm(i=i)}}
+      {% endfor %}
+      {% if config.app.loadKeyfile %}
+      {{addon.keyfile()}}
+      {{addon.keyfileBtn()}}
+      {% endif %}
+      <div class="form-group">
+        <a class="lost" href="/recover">Recover password?</a>
+        <a class="lost" href="/register">Register</a>
       </div>
-
-
     </div>
-    {{share.warningBtn(i="Login",x="login-btn")}}
+    <div class="card-footer">
+      {{share.warningBtn(i="Login",x="login-btn")}}
     </div>
+    {{macro.timeout()}}
+  </div>
 </div>
 {% endblock %}
 {% block script %}
 <script>
-
-
+checkTimeout()
 </script>
 {% endblock %}

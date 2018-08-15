@@ -6,6 +6,7 @@ Page = require('../models/Page'),
 Gallery = require('../models/Gallery'),
 jwt = require('jsonwebtoken'),
 config = require('../config'),
+invoice = require('../config/invoice'),
 Message = require('../models/Message'),
 User = require('../models/User'),
 _ = require('lodash'),
@@ -79,7 +80,26 @@ router.get('/', function(req, res, next){
       config:config,
       nav:nav,
       data:data,
+      title: 'dashboard'
+    })
+});
+
+router.get('/profile', function(req, res, next){
+    res.render('admin/profile',{
+      config:config,
+      nav:nav,
+      data:data,
       title: 'profile'
+    })
+});
+
+router.get('/invoice', function(req, res, next){
+    res.render('admin/invoice',{
+      config:config,
+      nav:nav,
+      data:data,
+      title: 'invoice',
+      invoice:invoice
     })
 });
 

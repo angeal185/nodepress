@@ -3,12 +3,7 @@ node_modules
 bower_components
 development
 
-# Editors
-.idea
-*.iml
+admin/config/nmConfig.json
 
-# OS metadata
-.DS_Store
-Thumbs.db
 
 npm-debug.log

@@ -7,6 +7,7 @@ module.exports = new mongoose.Schema({
     lastName: String,
     password: String,
     userEmail: String,
+    hash: String,
     isAdmin: {
         type: String,
         default: 'author'
@@ -53,5 +54,9 @@ module.exports = new mongoose.Schema({
     pm: {
         type: Array,
         default: []
+    },
+    status: {
+        type: String,
+        default: 'inactive'
     }
 });

@@ -1,7 +1,6 @@
 {% extends './layout.njk' %}
 {% block main %}
 {{macro.breadcrumb(i=title)}}
-{{macro.heading(i="Content List")}}
 <table class="table table-hover table-striped">
     <tr>
       {% for e in items.admin.content.add.th %}

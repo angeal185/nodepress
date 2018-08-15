@@ -1,24 +1,26 @@
 {% extends './layout.njk' %}
 {% block main %}
 <div class="container">
-  <div id="signFrm" class="register card">
+  <div id="signFrm" class="card recover">
     <div class="card-header">
       <h3 class="text-center">{{title|capitalize}}</h3>
     </div>
     <div class="card-body">
-        {% for i in items.register %}
-          {{macro.regForm(i=i)}}
-        {% endfor %}
-    {{macro.hideInput(i="ip")}}
+      {% for i in items.recover %}
+        {{macro.regForm(i=i)}}
+      {% endfor %}
     </div>
     <div class="card-footer">
-      {{share.warningBtn(i="Register",x="register-btn")}}
+      {{share.warningBtn(i="Recover",x="recover-btn")}}
     </div>
   </div>
+  {{macro.timeout()}}
 </div>
 {% endblock %}
 {% block script %}
 <script>
-regInit()
+checkTimeout()
+detailCheck()
+initReg()
 </script>
 {% endblock %}

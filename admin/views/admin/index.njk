@@ -1,16 +1,85 @@
 {% extends './layout.njk' %}
 {% block main %}
 {{macro.breadcrumb(i=title)}}
-{{macro.heading(i="Profile")}}
-<div class="container text-center">
-  {{macro.avatarImg(i=data.userInfo)}}
-    <h1>{{data.userInfo.userName}}</h1>
-    <div id="profileDiv" class="row"></div>
+<div class="row">
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-primary card-inverse">
+            <div class="card-header card-primary">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-comments fa-5x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <div class="huge">26</div>
+                        <div>New Comments!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer card-default">
+                <a href="javascript:;">
+                    <span class="float-sm-left">View Details</span>
+                    <span class="float-sm-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {{macro.infoCard(a="envelope",b="msgLength",c="New Messages",d="/admin/message")}}
+
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-yellow card-inverse">
+            <div class="card-header card-yellow">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <div class="huge">124</div>
+                        <div>New Orders!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer card-yellow">
+                <a href="javascript:;">
+                    <span class="float-sm-left">View Details</span>
+                    <span class="float-sm-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-red card-inverse">
+            <div class="card-header card-red">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fa fa-support fa-5x"></i>
+                    </div>
+                    <div class="col-9 text-right">
+                        <div class="huge">13</div>
+                        <div>Support Tickets!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer card-red">
+                <a href="javascript:;">
+                    <span class="float-sm-left">View Details</span>
+                    <span class="float-sm-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}
 {% block script %}
 <script>
 var dt = {{data.userInfo|dump|safe}}
-initProfile(dt)
+
+$.getJSON('/api/message', function(data, textStatus) {
+    $('#msgLength').html(_.reject(data.data,'viewed').length)
+});
+
 </script>
 {% endblock %}

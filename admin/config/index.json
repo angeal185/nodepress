@@ -97,6 +97,7 @@
     "userPersonalEncryptedMessages": true
   },
   "styles": [
+    "font-awesome",
     "bootstrap.min",
     "main"
   ],
@@ -108,7 +109,9 @@
     "aes"
   ],
   "aStyles": [
+    "font-awesome",
     "bootstrap.min",
+    "menu",
     "admin"
   ],
   "aScripts": [
@@ -116,6 +119,8 @@
     "jquery.min",
     "pagination",
     "bootstrap.min",
+    "flot",
+    "utils",
     "admin"
   ],
   "mStyles": [

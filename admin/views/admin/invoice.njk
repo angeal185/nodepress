@@ -1,0 +1,214 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+<div class="container">
+<div class="row">
+    <div class="col-md-8">
+
+      <div class="invoice-box">
+
+
+
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">options</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Invoice</label>
+            <select id="currentInvoice" class="form-control">
+              {% for i,e in invoice.tpl %}
+                <option class="{{i}}tpl">{{i}}</option>
+              {% endfor %}
+            </select>
+            <small id="invData"></small>
+            <div class="row">
+              <div class="col-md-6">
+                <button id="invoiceSave" type="button" class="btn btn-outline-primary btn-block mt20">save invoice</button>
+              </div>
+              <div class="col-md-6">
+                <button id="invoiceDelete" type="button" class="btn btn-outline-primary btn-block mt20">delete invoice</button>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label>image source</label>
+            <input type="text" id="imgSrc" class="form-control">
+            <button type="button" id="imgSrcBtn" class="btn btn-outline-primary mt20">update</button>
+          </div>
+          <div class="form-group">
+            <label>items</label>
+            <div class="row">
+              <div class="col-md-6">
+                <button type="button" id="newcol" class="btn btn-outline-primary btn-block">Add row</button>
+              </div>
+              <div class="col-md-6">
+                <button type="button" id="calculate" class="btn btn-outline-primary btn-block">calculate</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>invoice email url</label>
+            <input type="text" id="invoiceURL" class="form-control">
+            <button id="invoiceSend" type="button" class="btn btn-outline-primary btn-block mt20">send invoice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="row mt40">
+  <div class="col-md-3">
+    <button id="invoiceSend" type="button" class="btn btn-outline-primary btn-block">send invoice</button>
+  </div>
+
+</div>
+
+{{macro.editModal(a="myModal",b="Edit content",c="invoiceInput",d="invoiceUd")}}
+
+
+{% endblock %}
+{% block script %}
+<script>
+//initInline();
+var inData = {{invoice|dump|safe}}
+
+function initInvoice(){
+
+  $('.invoice-box').html(inData.tpl[inData.main])
+  $('#imgSrc').val($('#titleImg').attr('src'))
+  $('#currentInvoice').val(inData.main)
+  $('#newcol').click(function(event) {
+    $('.total').before('<tr class="calcitem newRow"></tr>');
+
+     _.forEach(['item','price','quantity','cost'], function(i){
+       $('.newRow').append('<td><span class="editIt ed'+i+'">'+i+'</span></td>')
+     })
+     $('.edcost').removeClass('editIt')
+     $( ".newRow" ).promise().done(function() {
+      $('.newRow').removeClass('newRow');
+      initEditIt();
+    });
+
+  });
+
+  $('#currentInvoice').change(function() {
+     $('.invoice-box').html(inData.tpl[this.value]);
+     initEditIt()
+  });
+
+  $('#calculate').click(function(event) {
+    var cost  = 0;
+    $('.calcitem').each(function(index, el) {
+      let price = parseFloat($(this).find('.edprice').html()).toFixed(2);
+      let quantity = parseFloat($(this).find('.edquantity').html());
+      let total = quantity * price;
+      $(this).find('.edcost').html(total.toFixed(2));
+      cost +=  (quantity * price);
+
+    });
+    console.log(cost)
+    $('#ttlCost').html(cost.toFixed(2))
+  });
+
+  $('#imgSrcBtn').click(function(event) {
+    $('#titleImg').attr('src', $('#imgSrc').val());
+  });
+
+}
+
+
+
+function initEditIt(){
+  $('.editIt').off().click(function() {
+    console.log('editIt');
+    var toEdit = this.innerHTML;
+    var to = this;
+    console.log()
+    $('#invoiceInput').val(toEdit)
+    $('#myModal').modal();
+    $('#invoiceUd').click(function() {
+      $(to).html($('#invoiceInput').val())
+      $('#invoiceUd').off();
+      $('#myModal').modal('hide');
+    });
+  });
+}
+initInvoice()
+initEditIt()
+
+saveInvoice()
+deleteInvoice()
+function saveInvoice(){
+  $('#invoiceSave').click(function(event) {
+  let oldInv = $('.invoice-box').html();
+  let newInv = oldInv.replace(/"/g,"'");
+  let invTitle = $('#currentInvoice').val()
+  console.log(invTitle)
+  $.ajax({
+    url: '/api/saveInvoice',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      "invTitle": invTitle,
+      "newInv": JSON.stringify(newInv),
+      "npToken":npToken
+    },
+    success:function(i){
+      if (i.success){
+        $('#invData').html(i.message)
+        setTimeout(function(){
+          window.location.reload();
+        },5000)
+
+      } else {
+        logout()
+      }
+
+    }
+  })
+
+  });
+}
+
+function deleteInvoice(){
+  $('#invoiceDelete').click(function(event) {
+
+  let invTitle = $('#currentInvoice').val()
+  console.log(invTitle)
+  $.ajax({
+    url: '/api/deleteInvoice',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      "invTitle": invTitle,
+      "npToken":npToken
+    },
+    success:function(i){
+      if (i.success){
+        $('#invData').html(i.message)
+        setTimeout(function(){
+          window.location.reload();
+        },5000)
+
+      } else {
+        logout()
+      }
+    }
+  })
+
+  });
+}
+
+
+
+</script>
+{% endblock %}

@@ -307,12 +307,10 @@
 {%- endmacro -%}
 
 {%- macro regForm(i) -%}
-<div class="col-md-6">
   <div class="form-group">
     <label>{{i.name|startCase}}</label>
     <input name="{{i.name}}" class="form-control" type="{{i.type}}">
   </div>
-</div>
 {%- endmacro -%}
 
 {%- macro hideInput(i) -%}
@@ -377,4 +375,8 @@
   </div>
   {% endfor %}
 </div>
+{%- endmacro -%}
+
+{%- macro timeout() -%}
+  <h1 id="time">0:00</h1>
 {%- endmacro -%}

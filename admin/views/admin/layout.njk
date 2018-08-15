@@ -12,11 +12,17 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-{% include "./include/nav.njk" %}
-<div class="container-fluid">
-    {% block main %}{% endblock %}
+<div id="wrapper">
+  {% include "./include/header.njk" %}
+  <div class="d-md-flex">
+  {% include "./include/nav.njk" %}
+    <div id="page-wrapper" class="p-4">
+      <div class="container-fluid">
+        {% block main %}{% endblock %}
+      </div>
+    </div>
+  </div>
 </div>
-
 {% if (title === 'status') %}
 <script>var config = {{config|dump|safe}}</script>
 {% endif %}
@@ -28,6 +34,7 @@
 {% block script %}{% endblock %}
 <script>
 logoutClick();
+lstMsg();
 </script>
 </body>
 </html>

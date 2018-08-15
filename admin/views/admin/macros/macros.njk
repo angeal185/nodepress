@@ -1,11 +1,20 @@
 {% import "../../main/macros/shared.njk" as share %}
 
 
+
+
 {%- macro breadcrumb(i) -%}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
     <li class="breadcrumb-item"><span>{{i}}</span></li>
 </ol>
+<h4 class="page-title">{{i}}</h4>
+{%- endmacro -%}
+
+{%- macro link(a,b,c) -%}
+<li class="list-group-item">
+    <a href="/{{a}}"><i class="fa fa-{{b}} fa-fw"></i> {{c|capitalize}}</a>
+</li>
 {%- endmacro -%}
 
 {%- macro heading(i) -%}
@@ -119,4 +128,76 @@
         A total of {{c}} Piece of data, per page display  {{l}}  Piece of data, altogether  {{pgs}}  page, current article on Page {{pg}}
     </p>
 </nav>
+{%- endmacro -%}
+
+{%- macro infoCard(a,b,c,d) -%}
+<div class="col-xl-3 col-lg-6">
+    <div class="card card-green card-inverse">
+        <div class="card-header card-green">
+            <div class="row">
+                <div class="col-3">
+                    <i class="fa fa-{{a}} fa-5x"></i>
+                </div>
+                <div class="col-9 text-right">
+                    <div id="{{b}}" class="huge"></div>
+                    <div>{{c}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer card-green">
+            <a href="{{d}}">
+                <span class="float-sm-left">View Details</span>
+                <span class="float-sm-right"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
+            </a>
+        </div>
+    </div>
+</div>
+{%- endmacro -%}
+
+{%- macro editModal(a,b,c,d) -%}
+<div class="modal fade" id="{{a}}" tabindex="-1" role="dialog" aria-labelledby="{{a}}Label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{a}}Label">{{b}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+              <textarea type="text" id="{{c}}" class="form-control"></textarea>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="{{d}}" class="btn btn-primary">update</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%- endmacro -%}
+
+{%- macro dd(i) -%}
+<li class="list-group-item">
+    <a href="#"><i class="fa fa-file-code-o fa-fw"></i> {{i}}<span class="fa arrow"></span></a>
+    <ul class="nav-second-level list-group nested">
+        <li class="list-group-item">
+            <a href="/admin/{{i}}">{{i}}</a>
+        </li>
+        <li class="list-group-item">
+            <a href="/admin/{{i}}/add">add</a>
+        </li>
+    </ul>
+</li>
+{%- endmacro -%}
+
+{%- macro search(i,e) -%}
+<div class="input-group custom-search-form">
+    <input id="{{i}}" type="text" class="form-control" placeholder="Search...">
+    <span class="input-group-btn">
+        <button id="{{e}}" class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
+    </span>
+</div>
 {%- endmacro -%}

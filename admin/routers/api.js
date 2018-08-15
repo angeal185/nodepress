@@ -9,21 +9,38 @@ config = require('../config'),
 jwt = require('jsonwebtoken'),
 bcrypt = require('bcrypt-nodejs'),
 User = require('../models/User'),
+Session = require('../models/Session'),
 Unauth = require('../models/Unauth'),
 Newsletter = require('../models/Newsletter'),
 Content = require('../models/Content'),
 Message = require('../models/Message'),
 utils = require('../utils/utils'),
-nodemailer = require('nodemailer');
+nodemailer = require('nodemailer'),
+nmConfig = require('../config/nmConfig');
 let responseData,
 userImg;
 
+function hash512(i){
+  let hashGen = require('crypto')
+    .createHash('sha512')
+    .update(i)
+    .digest('hex')
+    return hashGen;
+}
 
 
-var x = crypto.createCipher('aes256', 'password');
 
-console.log(crypto.getCiphers())
-console.log(x)
+const transporter = nodemailer.createTransport({
+    service: nmConfig.service,
+    port: 465, // SMTP
+    secureConnection: config.https, //  SSL
+    auth: {
+        user: nmConfig.auth.user,
+        pass: nmConfig.auth.pass
+    }
+});
+
+
 if(config.theme){
   theme = 'theme';
 } else {
@@ -133,6 +150,7 @@ router.post('/user/register',function(req,res,next){
     let user = req.body;
     var newToken = utils.passwordGen(config.token.length);
     user.password = bcrypt.hashSync(user.password);
+    var usrHash = hash512(user.userEmail)
 
 
     User.findOne({
@@ -144,42 +162,62 @@ router.post('/user/register',function(req,res,next){
             res.json( responseData );
             return;
         }
-        return new User({
+        new User({
             //isAdmin:'admin',
             userName: user.userName,
             userEmail: user.userEmail,
             password: user.password,
             country: user.country,
             city: user.city,
+            ip: user.ip,
             firstName: user.firstName,
             lastName: user.lastName,
             addTime: Date.now(),
             userImg: userImgSrc[Math.floor(Math.random()*userImgSrc.length)],
-            token: newToken
+            token: newToken,
+            hash: usrHash
         }).save();
 
+        new Session({
+          userName: user.userName,
+          time: Date.now(),
+          token: newToken,
+          country: user.country,
+          city: user.city,
+          ip: user.ip
+        }).save();
 
+        let mailOptions = {
+            from: 'beneaves01@hotmail.com',
+            to: 'beneaves01@hotmail.com',//user.userEmail,
+            subject: 'np signup',
+            text:'<p>welcome '+ user.username + ' please click here to activate your account: <a href="http://localhost:8000/api/activate/'+usrHash+'" target="_blank">activate</a><p>',
+            html: '<p>welcome '+ user.username + ' please click here to activate your account: <a href="http://localhost:8000/api/activate/'+usrHash+'" target="_blank">activate</a><p>'
+        };
 
-
-    }).then(function( newUserInfo ){
-        //token
-        req.cookies.set('npBaseToken', newToken , {
-          maxAge:config.token.maxAge,
-          overwrite:config.token.overwrite,
-          secure: config.https
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                return console.log(error);
+            } else {
+              req.cookies.set('npBaseToken', newToken , {
+                maxAge:config.token.maxAge,
+                overwrite:config.token.overwrite,
+                secure: config.https
+              });
+              responseData.message = 'Registration successful!';
+              res.json( responseData );
+              return;
+            }
         });
-        responseData.message = 'Registration successful!';
-        res.json( responseData );
-        return;
+
+
     });
 });
 
 
 router.post('/user/login',function(req,res,next){
-    var hash = crypto.createHash('sha256');
     let user = req.body;
     var newToken = utils.passwordGen(config.token.length);
-    hash.update(user.password);
 
 
     User.findOne({
@@ -188,6 +226,7 @@ router.post('/user/login',function(req,res,next){
         if(!userInfo || !bcrypt.compareSync(user.password, userInfo.password) ){
             responseData.code = 2;
             responseData.message = 'User name or password incorrect';
+            responseData.success = false;
             res.json( responseData );
             return;
         } else {
@@ -233,9 +272,16 @@ router.post('/user/login',function(req,res,next){
                 responseData.npToken = npToken;
               }
               responseData.message = 'Login successful';
-              responseData.npHash = hash.digest('hex');
+              responseData.success = true;
               res.json( responseData );
-              return;
+              return new Session({
+                userName: user.userName,
+                time: Date.now(),
+                token: newToken,
+                country: user.country,
+                city: user.city,
+                ip: user.ip
+              }).save();
             })
           })
         }
@@ -535,6 +581,65 @@ router.get('/comment',function (req, res) {
     });
 });
 
+router.post('/saveInvoice',function (req, res) {
+    var invFile = './admin/config/invoice.json';
+    let npToken = req.body.npToken;
+    let invTitle = req.body.invTitle;
+    let newInv = JSON.parse(req.body.newInv);
+
+
+    jwt.verify(npToken, 'secret', function(err, decoded) {
+     if (err) {
+       return res.json({ success: false, message: 'Failed to authenticate token.' });
+     } else {
+       req.decoded = decoded;
+       fs.readFile(invFile,'utf8', function(err, data) {
+         if (err) throw err;
+         data = JSON.parse(data);
+         //_.pick(data.tpl, invTitle) = newInv
+         data.tpl[invTitle] = newInv;
+         fs.writeFile(invFile, JSON.stringify(data), function(err, data) {
+           if (err) throw err;
+           console.log('The file has been saved!');
+           res.json({ success: true, message: 'invoice successfully saved!'})
+         });
+       });
+     }
+    });
+});
+
+router.post('/deleteInvoice',function (req, res) {
+    var invFile = './admin/config/invoice.json';
+    let invTitle = req.body.invTitle;
+    let npToken = req.body.npToken;
+    jwt.verify(npToken, 'secret', function(err, decoded) {
+     if (err) {
+       return res.json({ success: false, message: 'Failed to authenticate token.' });
+     } else {
+       req.decoded = decoded;
+       fs.readFile(invFile,'utf8', function(err, data) {
+         if (err) throw err;
+         data = JSON.parse(data);
+         if(invTitle === data.main){
+           res.json('main template cannot be deleted!')
+           return;
+         } else{
+           data.tpl =  _.omit(data.tpl, invTitle);
+           console.log(data.tpl)
+           fs.writeFile(invFile, JSON.stringify(data), function(err, data) {
+             if (err) throw err;
+             console.log('The file has been deleted!');
+             if(invTitle === data)
+             res.json({ success: true, message: 'invoice successfully deleted!'})
+             return;
+           });
+         }
+       });
+     }
+    });
+
+});
+
 router.post('/comment',function(req, res){
     let contentId = req.body.id || '';
     let userName = req.body.userName;
@@ -567,32 +672,75 @@ router.post('/comment',function(req, res){
 });
 
 
+router.route("/activate/:id")
+    .get(function(req, res, next){
+      var usrHash = req.params.id
+
+        User.findOne({
+            hash: usrHash
+        }).then(function (userdata) {
+          if (userdata.status === 'inactive'){
+            userdata.status = 'active';
+            userdata.save();
+            res.json('Activation success!');
+          } else {
+            res.redirect('/')
+          }
+
+          return;
+        });
+
+    })
+
 //mail
-router.post('/email/password',function(req, res){
-    let transporter = nodemailer.createTransport({
-        service: 'hotmail',
-        port: 465, // SMTP
-        secureConnection: true, //  SSL
-        auth: {
-            user: '‘’',
-            pass: '‘’'
-        }
-    });
-    let mailOptions = {
-        from: 'beneaves01@hotmail.com',
-        to: '',
-        subject: 'subject',
-        text: 'add text',
-        html: '<b>Hello world ?</b>'
-    };
+router.post('/recover',function(req, res){
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            return console.log(error);
-        }
-        console.log('Message sent: ' + info.response);
+  let user = req.body;
 
-    });
+  User.findOne({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userEmail: user.userEmail,
+      country: user.country
+  }).then(function ( userInfo ) {
+      if( userInfo ){
+
+          var newPass = utils.passwordGen(32);
+
+          let mailOptions = {
+              from: 'beneaves01@hotmail.com',
+              to: user.userEmail,
+              subject: 'np recovery info',
+              text: 'your new password is: '+newPass+'. Please delete this message',
+              html: '<p>your new password is: <b>'+newPass+'</b><p><p>Please delete this message</p>'
+          };
+
+          transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                  return console.log(error);
+              } else{
+                //console.log('Message sent: ' + info.response);
+                userInfo.password = bcrypt.hashSync(newPass);
+                responseData.code = 4;
+                responseData.message = 'new password has been sent. check your email!';
+                responseData.success = true;
+                res.json( responseData );
+                userInfo.save();
+              }
+          });
+
+          return
+
+      } else {
+        responseData.message = 'user not found';
+        responseData.success = false;
+        res.json( responseData );
+        return;
+      }
+
+  });
+
+
 })
 
 

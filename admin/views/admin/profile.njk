@@ -1,0 +1,15 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+<div class="container text-center">
+  {{macro.avatarImg(i=data.userInfo)}}
+    <h1>{{data.userInfo.userName}}</h1>
+    <div id="profileDiv" class="row"></div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+var dt = {{data.userInfo|dump|safe}}
+initProfile(dt)
+</script>
+{% endblock %}
