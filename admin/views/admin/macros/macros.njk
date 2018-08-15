@@ -99,11 +99,6 @@
 <img class="img-thumbnail avatar-img" src="{{ i.userImg }}" alt="none" >
 {%- endmacro -%}
 
-
-
-
-
-
 {%- macro edit(title,type,items) -%}
 <div class="container">
     {{breadcrumb(i=title)}}
@@ -130,10 +125,10 @@
 </nav>
 {%- endmacro -%}
 
-{%- macro infoCard(a,b,c,d) -%}
+{%- macro infoCard(a,b,c,d,e) -%}
 <div class="col-xl-3 col-lg-6">
-    <div class="card card-green card-inverse">
-        <div class="card-header card-green">
+    <div class="card card-{{e}} card-inverse">
+        <div class="card-header card-{{e}}">
             <div class="row">
                 <div class="col-3">
                     <i class="fa fa-{{a}} fa-5x"></i>
@@ -144,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer card-green">
+        <div class="card-footer card-{{e}}">
             <a href="{{d}}">
                 <span class="float-sm-left">View Details</span>
                 <span class="float-sm-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -179,9 +174,9 @@
 </div>
 {%- endmacro -%}
 
-{%- macro dd(i) -%}
+{%- macro dd(i,e) -%}
 <li class="list-group-item">
-    <a href="#"><i class="fa fa-file-code-o fa-fw"></i> {{i}}<span class="fa arrow"></span></a>
+    <a href="#"><i class="fa fa-{{e}} fa-fw"></i> {{i}}<span class="fa arrow"></span></a>
     <ul class="nav-second-level list-group nested">
         <li class="list-group-item">
             <a href="/admin/{{i}}">{{i}}</a>
@@ -199,5 +194,24 @@
     <span class="input-group-btn">
         <button id="{{e}}" class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
     </span>
+</div>
+{%- endmacro -%}
+
+
+{%- macro taskIgroup(i,e) -%}
+<div class="form-group col-md-6">
+  <label>{{i}}</label>
+  <input type="text" id="{{e}}" class="form-control">
+</div>
+{%- endmacro -%}
+
+{%- macro taskSelect(i,e) -%}
+<div class="form-group col-md-6">
+  <label>{{i}}</label>
+  <select class="form-control" id="priority">
+    {% for i in e %}
+      {{option(a=i)}}
+    {% endfor %}
+  </select>
 </div>
 {%- endmacro -%}

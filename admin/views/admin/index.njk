@@ -24,7 +24,9 @@
             </div>
         </div>
     </div>
-    {{macro.infoCard(a="envelope",b="msgLength",c="New Messages",d="/admin/message")}}
+    {{macro.infoCard(a="envelope",b="msgLength",c="New Messages",d="/admin/message",e="green")}}
+    {{macro.infoCard(a="tasks",b="tasksLength",c="Tasks",d="/admin/tasks",e="info")}}
+    {{macro.infoCard(a="database",b="sessionsLength",c="Sessions",d="/admin/sessions",e="red")}}
 
     <div class="col-xl-3 col-lg-6">
         <div class="card card-yellow card-inverse">
@@ -77,9 +79,25 @@
 <script>
 var dt = {{data.userInfo|dump|safe}}
 
-$.getJSON('/api/message', function(data, textStatus) {
-    $('#msgLength').html(_.reject(data.data,'viewed').length)
-});
+if (!sessionStorage.getItem('npMsgLength') || sessionStorage.getItem('npMsgLength') === ''){
+  $.getJSON('/api/message', function(data, textStatus) {
+    let msgLength = _.reject(data,'viewed').length
+      $('#msgLength').html(msgLength)
+      sessionStorage.setItem('npMsgLength',msgLength)
+  });
+} else {
+  $('#msgLength').html(sessionStorage.getItem('npMsgLength'))
+}
+_.forEach(['tasks','sessions'],function(i){
+  if (!sessionStorage.getItem('np'+_.capitalize(i)+'Length') || sessionStorage.getItem('np'+_.capitalize(i)+'Length') === ''){
+  $.getJSON('/api/'+i, function(data, textStatus) {
+      $('#'+i+'Length').html(data.length)
+      sessionStorage.setItem('np'+_.capitalize(i)+'Length',data.length)
+  });
+  } else {
+    $('#'+i+'Length').html(sessionStorage.getItem('np'+_.capitalize(i)+'Length'))
+  }
+})
 
 </script>
 {% endblock %}

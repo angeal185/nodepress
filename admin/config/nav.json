@@ -6,10 +6,14 @@
       "message":"envelope-o",
       "status":"line-chart",
       "invoice":"bank",
-      "profile":"user",
+      "profile":"user"
+    },
+    "dd":{
+      "content":"pencil-square-o",
+      "gallery":"image",
+      "page":"file-code-o",
       "tasks":"tasks"
     },
-    "dd":["content","gallery","page"],
     "right":[{
           "title":"home",
           "href":"/",

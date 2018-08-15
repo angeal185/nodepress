@@ -86,15 +86,26 @@ router.get('/', function(req, res, next){
     })
 });
 
+router.get('/tasks/add', function(req, res, next){
+    res.render('admin/tasks_add',{
+      config:config,
+      nav:nav,
+      data:data,
+      title: 'tasks',
+      items: Items
+    })
+});
+
+
 router.get('/tasks', function(req, res, next){
     res.render('admin/tasks',{
       config:config,
       nav:nav,
       data:data,
-      title: 'tasks'
+      title: 'tasks',
+      items: Items
     })
 });
-
 
 router.post('/tasks/add',function (req, res) {
 

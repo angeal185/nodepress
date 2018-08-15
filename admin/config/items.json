@@ -139,5 +139,28 @@
       },{
         "name":"confirmEmail",
         "type":"email"
-      }]
+      }],
+      "tasks":{
+        "input":[{
+          "name":"task",
+          "id":"tasks"
+        },{
+          "name":"description",
+          "id":"description"
+        },{
+          "name":"start",
+          "id":"datetimepicker1"
+        },{
+          "name":"finish",
+          "id":"datetimepicker2"
+        },{
+          "name":"startTime",
+          "id":"output1"
+        },{
+          "name":"finishTime",
+          "id":"output2"
+        }],
+        "select1":["unstarted","started","complete"],
+        "select2":["store","delete"]
+      }
 }

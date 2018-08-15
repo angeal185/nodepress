@@ -276,6 +276,59 @@ function msgReply(){
   });
 }
 
+function addTask(){
+  _.forEach(["1","2"],function(i){
+    $('#datetimepicker'+i).datetimepicker({
+      format:'d-m-Y H:i',
+      inline:true,
+      lang:'en',
+      minDate:Date.parse(new Date()),
+      onChangeDateTime:function(dp,$input){
+        $('#output'+i).val($input.val());
+        //$('#timestamp'+i).val(getTimestamp($input.val()));
+      }
+    });
+  })
+
+  $('#addTask').click(function(event) {
+    $.ajax({
+      url: '/admin/tasks/add',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        task: $('#task').val(),
+        description: $('#description').val(),
+        start: $('#output1').val(),
+        finish: $('#output2').val(),
+        status: $('#status').val(),
+        npToken:npToken
+      },
+      success: function(result){
+        $('.form-box .warning').html( result.message );
+        if (!result.success){
+          logout();
+        } else {
+            H.modal({
+                title: "Info",
+                message: "Save success!",
+                btnok: "Tasks",
+                btncl: "Continue to add",
+                clFn: function(){
+                    window.location.reload();
+                },
+                okFn: function(){
+                    window.location.href = '/admin/gallery';
+                }
+            })
+        }
+      },
+      fail:function() {
+        console.log("error");
+      }
+    })
+});
+}
+
 function galleryEdit(){
   $('.form-box .btn').on('click',function(){
       $('.form-box .warning').html('');

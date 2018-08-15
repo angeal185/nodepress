@@ -8,8 +8,8 @@
       {% for i,e in nav.admin.ddSingle %}
         {{macro.link(a="admin/"+i,b=e,c=i|capitalize)}}
       {% endfor %}
-      {% for i in nav.admin.dd %}
-        {{macro.dd(i=i)}}
+      {% for i,e in nav.admin.dd %}
+        {{macro.dd(i=i,e=e)}}
       {% endfor %}
     </ul>
   </div>

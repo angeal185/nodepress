@@ -14,6 +14,7 @@ Unauth = require('../models/Unauth'),
 Newsletter = require('../models/Newsletter'),
 Content = require('../models/Content'),
 Message = require('../models/Message'),
+Tasks = require('../models/Tasks'),
 utils = require('../utils/utils'),
 nodemailer = require('nodemailer'),
 nmConfig = require('../config/nmConfig');
@@ -515,7 +516,21 @@ router.post('/view',function(req,res){
 
 router.get('/message',function (req, res) {
     Message.find().then(function(message){
-        responseData.data = message;
+        responseData = message;
+        res.json(responseData);
+    });
+});
+
+router.get('/tasks',function (req, res) {
+    Tasks.find().then(function(task){
+        responseData = task;
+        res.json(responseData);
+    });
+});
+
+router.get('/sessions',function (req, res) {
+    Session.find().then(function(sessions){
+        responseData = sessions;
         res.json(responseData);
     });
 });

@@ -1143,6 +1143,21 @@ table.dataTable thead .sorting:after {
     .card-red > a:hover {
       color: #b52b27; }
 
+.card-info {
+  border-color: #000;
+}
+.card-info > .card-header {
+  border-color: #000;
+  color: white;
+  background-color: #000;
+}
+.card-info > a {
+  color: #000;
+}
+.card-info > a:hover {
+  color: #111;
+}
+
 .card-yellow {
   border-color: #f0ad4e; }
   .card-yellow > .card-header {
