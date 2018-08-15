@@ -4,6 +4,7 @@ Items = require('../config/items'),
 Content = require('../models/Content'),
 Page = require('../models/Page'),
 Gallery = require('../models/Gallery'),
+Tasks = require('../models/Tasks'),
 jwt = require('jsonwebtoken'),
 config = require('../config'),
 invoice = require('../config/invoice'),
@@ -14,6 +15,7 @@ nav = require('../config/nav');
 
 let data;
 let responseData;
+
 
 function setJWT(req,res,next){
   var npToken =  req.body.npToken || req.query.npToken || req.headers['x-access-token'];
@@ -83,6 +85,44 @@ router.get('/', function(req, res, next){
       title: 'dashboard'
     })
 });
+
+router.get('/tasks', function(req, res, next){
+    res.render('admin/tasks',{
+      config:config,
+      nav:nav,
+      data:data,
+      title: 'tasks'
+    })
+});
+
+
+router.post('/tasks/add',function (req, res) {
+
+    let task = req.body,
+    npToken =  req.body.npToken;
+
+     jwt.verify(npToken, 'secret', function(err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        new Tasks({
+            task: task.task,
+            description: task.description,
+            start: task.start,
+            finish: task.finish,
+            status: task.status
+        })
+        .save()
+        .then(function (response) {
+            res.json({ success: true, message: 'Task added!' });
+            return;
+        });
+      }
+    });
+
+});
+
 
 router.get('/profile', function(req, res, next){
     res.render('admin/profile',{

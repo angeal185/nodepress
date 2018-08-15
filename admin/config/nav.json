@@ -4,9 +4,10 @@
     "ddSingle":{
       "user":"users",
       "message":"envelope-o",
-      "status":"tasks",
+      "status":"line-chart",
       "invoice":"bank",
-      "profile":"user"
+      "profile":"user",
+      "tasks":"tasks"
     },
     "dd":["content","gallery","page"],
     "right":[{

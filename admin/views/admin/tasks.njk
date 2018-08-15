@@ -1,0 +1,125 @@
+{% extends './layout.njk' %}
+{% block main %}
+{{macro.breadcrumb(i=title)}}
+
+
+<div class="container">
+
+
+
+			<div class="row">
+        <div class="form-group col-md-6">
+          <label>Task</label>
+					<input type="text" class="form-control" id="task">
+				</div>
+        <div class="form-group col-md-6">
+          <label>description</label>
+					<input type="text" class="form-control" id="description">
+				</div>
+        <div class="form-group col-md-6">
+          <label>start</label>
+					<input id="datetimepicker1" type="text" >
+				</div>
+        <div class="form-group col-md-6">
+          <label>finish</label>
+					<input id="datetimepicker2" type="text" >
+				</div>
+
+        <div class="form-group col-md-6">
+					<input type="text" class="form-control" id="output1" disabled>
+				</div>
+        <div class="form-group col-md-6">
+					<input type="text" class="form-control" id="output2" disabled>
+				</div>
+
+
+
+        <div class="form-group col-md-6">
+          <label>status</label>
+          <select class="form-control" id="status">
+            <option data-attr="unstarted">unstarted</option>
+            <option data-attr="started">started</option>
+            <option data-attr="complete">complete</option>
+          </select>
+				</div>
+				<div class="form-group col-md-6">
+          <label>action</label>
+					<select class="form-control" id="priority">
+            <option data-attr="store">store</option>
+            <option data-attr="delete">delete</option>
+          </select>
+				</div>
+
+			</div>
+      <div>
+        <button type="button" id="addTask" class="btn btn-outline-primary">Add</button>
+      </div>
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+{%block script%}
+{{share.js(s="datetimepicker")}}
+<script>
+_.forEach(["1","2"],function(i){
+  $('#datetimepicker'+i).datetimepicker({
+    format:'d-m-Y H:i',
+    inline:true,
+    lang:'en',
+    minDate:Date.parse(new Date()),
+    onChangeDateTime:function(dp,$input){
+      $('#output'+i).val($input.val());
+      //$('#timestamp'+i).val(getTimestamp($input.val()));
+    }
+  });
+})
+
+$('#addTask').click(function(event) {
+  $.ajax({
+    url: '/admin/tasks/add',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      task: $('#task').val(),
+      description: $('#description').val(),
+      start: $('#output1').val(),
+      finish: $('#output2').val(),
+      status: $('#status').val(),
+      npToken:npToken
+    },
+    success: function(result){
+      $('.form-box .warning').html( result.message );
+      if (!result.success){
+        logout();
+      } else {
+          H.modal({
+              title: "Info",
+              message: "Save success!",
+              btnok: "Tasks",
+              btncl: "Continue to add",
+              clFn: function(){
+                  window.location.reload();
+              },
+              okFn: function(){
+                  window.location.href = '/admin/gallery';
+              }
+          })
+      }
+    },
+    fail:function() {
+      console.log("error");
+    }
+  })
+
+
+
+});
+</script>
+{% endblock %}
